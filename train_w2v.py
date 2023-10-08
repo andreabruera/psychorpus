@@ -21,7 +21,7 @@ class corpus_reader:
                             line = re.sub(r'-', r'', l)
                             line = re.sub('\W', ' ', line)
                             line = re.sub('\s+', r' ', line)
-                            line = line.split()
+                            line = line.lower().split()
                             sentence.extend(line)
                             if len(sentence) >= 512:
                                 yield sentence
@@ -55,11 +55,17 @@ class corpus_reader:
                                 if '$' in line[1]:
                                     continue
                                 else:
-                                    sentence.append(line[0])
+                                    sentence.append(line[0].lower())
 global corpora
 global encoding
 
 parser = argparse.ArgumentParser()
+parser.add_argument(
+                    '--corpora_path', 
+                    required=True,
+                    help='path to the folder containing '
+                    'the files for all the languages/corpora'
+                    )
 parser.add_argument('--language', choices=['it', 'en', 'de'], required=True)
 args = parser.parse_args()
 
@@ -77,16 +83,16 @@ corpora_folder = [
            'opensubs_ready', 
            wac_folder
            ]
-corpora = [os.path.join(args.language, c) for c in corpora_folder]
+corpora = [os.path.join(args.corpora_path, args.language, c) for c in corpora_folder]
 
 model = Word2Vec(
                  sentences=corpus_reader(), 
                  size=300, 
                  window=6, 
-                 min_count=100, 
-                 workers=int(os.cpu_count()/2),
+                 workers=int(os.cpu_count()),
+                 min_count=50,
                  negative=10,
                  sg=0,
                  sample=1e-5,
                  )
-model.save("word2vec_{}_opensubs+wac_param-mandera2017_min-count-100.model".format(args.language))
+model.save("word2vec_{}_opensubs+wac_param-mandera2017_min-count-50.model".format(args.language))
