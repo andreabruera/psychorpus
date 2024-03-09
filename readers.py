@@ -9,11 +9,16 @@ def wiki_reader(folder_path):
                     'word' : list(), 
                     }
         with open(os.path.join(folder_path, file_path)) as i:
-        ### grouping by chunks of 512 tokens
             for l in i:
                 line = l.replace('[[[', '').replace(']]]', '')
                 line = re.sub('\s+', r' ', line)
                 line = line.split()
+                sentence['word'].extend(line)
+                if len(sentence['word']) > 1:
+                    #yield(sentence)
+                    sentences.append(sentence)
+                '''
+                ### grouping by chunks of 512 tokens
                 sentence['word'].extend(line)
                 if len(sentence) >= 512:
                     #yield sentence
@@ -21,6 +26,10 @@ def wiki_reader(folder_path):
                     sentence = {
                         'word' : list(), 
                         }
+                '''
+                sentence = {
+                    'word' : list(), 
+                    }
             if len(sentence['word']) > 1:
                 #yield(sentence)
                 sentences.append(sentence)
