@@ -1,0 +1,4 @@
+word	valid_pos_tags
+passera	NOUN
+passerotto	NOUN
+passero	VER:fin	NOUN	VER:infi	VER:ppre	VER:ppast	ADJ

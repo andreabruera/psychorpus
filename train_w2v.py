@@ -24,6 +24,7 @@ class corpus_reader:
                             line = line.lower().split()
                             sentence.extend(line)
                             if len(sentence) >= 512:
+                                #print(sentence)
                                 yield sentence
                                 sentence = list()
                         if len(sentence) > 1:
@@ -76,15 +77,17 @@ if args.language == 'de':
     wac_folder = 'sdewac-v3-tagged_smaller_files'
     encoding = 'utf-8'
 elif args.language == 'it':
-    wac_folder = 'itwac'
+    wac_folder = 'itwac_smaller_files'
     encoding = 'latin-1'
 
 corpora_folder = [
            'opensubs_ready', 
-           wac_folder
+           wac_folder,
            ]
 corpora = [os.path.join(args.corpora_path, args.language, c) for c in corpora_folder]
 
+### mandera et al 2017
+'''
 model = Word2Vec(
                  sentences=corpus_reader(), 
                  size=300, 
@@ -96,3 +99,18 @@ model = Word2Vec(
                  sample=1e-5,
                  )
 model.save("word2vec_{}_opensubs+wac_param-mandera2017_min-count-50.model".format(args.language))
+'''
+
+### baroni et al 2014
+model = Word2Vec(
+                 sentences=corpus_reader(), 
+                 size=400, 
+                 window=5, 
+                 workers=int(os.cpu_count()),
+                 min_count=50,
+                 negative=10,
+                 sg=1,
+                 sample=1e-5,
+                 )
+model.save("word2vec_{}_opensubs+wac_param-baroni2014_min-count-50.model".format(args.language))
+

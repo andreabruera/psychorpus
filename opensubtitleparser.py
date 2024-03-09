@@ -15,7 +15,6 @@ import errno
 Loops through folders recursively to find all xml files
 '''
 
-
 def findXmlFiles(directory):
     xmlFiles = []
     for f in os.listdir(directory):
@@ -121,6 +120,7 @@ args = parser.parse_args()
 processed_data_dir = args.dataDir
 raw_data_dir = args.rootXmlDir
 
+import pdb; pdb.set_trace()
 files = [(f, processed_data_dir, f_i) for f_i, f in enumerate(findXmlFiles(raw_data_dir))]
 print("Have {} to parse!".format(len(files)))
 # Setup folder structure and data file
