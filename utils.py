@@ -114,6 +114,7 @@ def build_ppmi_vecs(coocs, vocab, row_words, col_words):
     #matrix_[matrix_ != 0] = np.array(1.0/matrix_[matrix_ != 0])
     axis_one_sum = pmi_mtrx.sum(axis=1)
     axis_one_mtrx = numpy.divide(1, axis_one_sum, where=axis_one_sum!=0).reshape(-1, 1)
+    ### raising to 0.75 as suggested in Levy & Goldberg 2015
     axis_zero_sum = pmi_mtrx.sum(axis=0)
     axis_zero_mtrx = numpy.divide(1, axis_zero_sum, where=axis_zero_sum!=0).reshape(1, -1)
     total_sum = pmi_mtrx.sum()
