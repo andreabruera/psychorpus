@@ -8,7 +8,7 @@ import scipy
 
 from scipy import spatial, stats
 
-from utils import build_ppmi_vecs, read_ratings, read_men, read_men_test
+from utils import build_ppmi_vecs, read_ratings, read_men, read_men_test, read_simlex
 
 ratings = read_ratings()
 
@@ -17,6 +17,12 @@ men_sims = read_men()
 men_words = set([w for ws in men_sims.keys() for w in ws])
 print('annotated MEN words: {}'.format(len(men_words)))
 
+simlex_sims = read_simlex()
+simlex_words = set([w for ws in simlex_sims.keys() for w in ws])
+print('annotated SimLex999 words: {}'.format(len(simlex_words)))
+
+test_words = men_words.union(simlex_words)
+#test_words = men_words
 
 for corpus in [
                'bnc',
@@ -45,7 +51,7 @@ for corpus in [
         vocab = pickle.load(i)
     missing = list()
     present = dict()
-    for w in men_words:
+    for w in test_words:
         if w not in freqs.keys():
             missing.append(w)
         else:
@@ -79,45 +85,40 @@ for corpus in [
     print('average number of mentions: {}'.format(avg_n))
     print('median number of mentions: {}'.format(med_n))
 
-    ### creating word vectors
-    print('removing test cases containing: {}'.format(missing))
-    test_men_sims = dict()
-    for ws, val in men_sims.items():
-        marker = True
-        for w in missing:
-            if w in ws:
-                marker = False
-        if marker:
-            test_men_sims[ws] = val
-    test_men_words = set([w for ws in test_men_sims.keys() for w in ws])
+    pruned_test_words = [w for w in test_words if w not in missing]
 
     ### removing rare words
     pruned_ratings = {w : dct for w, dct in ratings.items() if w in freqs.keys() and freqs[w] >= 100 and vocab[w]!=0}
-    one_percent = int(len(pruned_ratings.items())*0.001)
+    percent = int(len(pruned_ratings.items())*0.001)
+    #percent = int(len(pruned_ratings.items())*0.05)
     ### context words
-    ctx_words = set(test_men_words)
+    ### things improve when including the words directly
+    ctx_words = set(pruned_test_words)
+    #ctx_words = set()
     sem_dims = set([var for k,v in pruned_ratings.items() for var in v.keys()])
     for dim in sem_dims:
         if dim == 'concreteness':
             continue
         sorted_ws = sorted([(w, v[dim]) for w, v in pruned_ratings.items()], key=lambda item: item[1])
-        ctx_words = ctx_words.union(set([w for w, val in sorted_ws[-one_percent:]]))
+        ctx_words = ctx_words.union(set([w for w, val in sorted_ws[-percent:]]))
         ### also adding super abstract words
         #    ctx_words = ctx_words.union(set([w[0] for w in sorted_ws[:one_percent]]))
         #    ctx_words = ctx_words.union(set([w for w, val in sorted_ws[-one_percent:]]))
     print('considering {} context words'.format(len(ctx_words)))
     ctx_words = sorted(ctx_words)
     ctx_idxs = [vocab[w] for w in ctx_words]
-    vecs = {w : numpy.array([coocs[vocab[w]][idx] if idx in coocs[vocab[w]].keys() else 1 for idx in ctx_idxs]) for w in test_men_words}
+    vecs = {w : numpy.array([coocs[vocab[w]][idx] if idx in coocs[vocab[w]].keys() else 0 for idx in ctx_idxs]) for w in pruned_test_words}
     ### pmi
     ### building the matrix
+    ### things are better when including in the rows the words from MEN...
     trans_pmi_vecs = build_ppmi_vecs(coocs, vocab, ctx_words, ctx_words)
+    #trans_pmi_vecs = build_ppmi_vecs(coocs, vocab, test_men_words, ctx_words)
     ### total occurrences
     
     for case in [
                  'random',
                  'raw',
-                 'log2', 
+                 #'log2', 
                  'pmi',
                  'fasttext',
                  ]:
@@ -132,15 +133,29 @@ for corpus in [
         elif case == 'fasttext':
             ft = fasttext.load_model('../../dataset/word_vectors/en/cc.en.300.bin')
             current_vecs = {k : ft[k] for k, v in vecs.items()}
-        ### only using the test set from MEN
-        real = list()
-        pred = list()
-        for k, v in test_men_sims.items():
-            real.append(v)
-            current_pred = 1 - scipy.spatial.distance.cosine(current_vecs[k[0]], current_vecs[k[1]])
-            pred.append(current_pred)
-        corr = scipy.stats.pearsonr(real, pred)
-        print('\n')
-        print('count {} model'.format(case))
-        print('correlation with MEN test dataset:')
-        print(corr)
+        for dataset_name, dataset in [
+                                      ('MEN', men_sims),
+                                      ('SimLex', simlex_sims),
+                                      ]:
+            ### creating word vectors
+            print('removing test cases containing: {}'.format(missing))
+            test_sims = dict()
+            for ws, val in dataset.items():
+                marker = True
+                for w in missing:
+                    if w in ws:
+                        marker = False
+                if marker:
+                    test_sims[ws] = val
+            ### only using the test set from MEN
+            real = list()
+            pred = list()
+            for k, v in test_sims.items():
+                real.append(v)
+                current_pred = 1 - scipy.spatial.distance.cosine(current_vecs[k[0]], current_vecs[k[1]])
+                pred.append(current_pred)
+            corr = scipy.stats.pearsonr(real, pred)
+            print('\n')
+            print('{} model'.format(case))
+            print('correlation with {} dataset:'.format(dataset_name))
+            print(corr)

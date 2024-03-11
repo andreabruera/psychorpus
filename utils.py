@@ -81,6 +81,16 @@ def read_men():
             sims[(line[0], line[1])] = float(line[2])
     return sims
 
+def read_simlex():
+    sims = dict()
+    with open(os.path.join('data', 'SimLex-999', 'SimLex-999.txt')) as i:
+        for l_i, l in enumerate(i):
+            if l_i==0:
+                continue
+            line = l.strip().split()
+            sims[(line[0], line[1])] = float(line[3])
+    return sims
+
 def read_men_test():
     sims = dict()
     with open(os.path.join('data', 'MEN', 'MEN_dataset_lemma_form.test')) as i:
@@ -101,8 +111,11 @@ def build_ppmi_vecs(coocs, vocab, row_words, col_words):
                               for w in row_words])
     assert pmi_mtrx.shape[0] == len(row_words)
     assert pmi_mtrx.shape[1] == len(col_words)
-    axis_one_mtrx = 1/pmi_mtrx.sum(axis=1).reshape(-1, 1)
-    axis_zero_mtrx = 1/pmi_mtrx.sum(axis=0).reshape(1, -1)
+    #matrix_[matrix_ != 0] = np.array(1.0/matrix_[matrix_ != 0])
+    axis_one_sum = pmi_mtrx.sum(axis=1)
+    axis_one_mtrx = numpy.divide(1, axis_one_sum, where=axis_one_sum!=0).reshape(-1, 1)
+    axis_zero_sum = pmi_mtrx.sum(axis=0)
+    axis_zero_mtrx = numpy.divide(1, axis_zero_sum, where=axis_zero_sum!=0).reshape(1, -1)
     total_sum = pmi_mtrx.sum()
     #trans_pmi_mtrx = numpy.multiply(numpy.multiply(numpy.multiply(pmi_mtrx,1/pmi_mtrx.sum(axis=1).reshape(-1, 1)), 1/pmi_mtrx.sum(axis=0).reshape(1, -1)), pmi_mtrx.sum())
     trans_pmi_mtrx = numpy.multiply(
