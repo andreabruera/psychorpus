@@ -25,8 +25,8 @@ test_words = men_words.union(simlex_words)
 #test_words = men_words
 
 for corpus in [
-               'bnc',
-               #'wac',
+               #'bnc',
+               'wac',
                #'wiki',
                #'opensubs',
                ]:
@@ -85,7 +85,7 @@ for corpus in [
     print('average number of mentions: {}'.format(avg_n))
     print('median number of mentions: {}'.format(med_n))
 
-    pruned_test_words = [w for w in test_words if w not in missing]
+    pruned_test_words = [w for w in test_words if w not in missing and vocab[w]!=0]
 
     ### removing rare words
     pruned_ratings = {w : dct for w, dct in ratings.items() if w in freqs.keys() and freqs[w] >= 100 and vocab[w]!=0}
@@ -109,17 +109,20 @@ for corpus in [
     ctx_idxs = [vocab[w] for w in ctx_words]
     vecs = {w : numpy.array([coocs[vocab[w]][idx] if idx in coocs[vocab[w]].keys() else 0 for idx in ctx_idxs]) for w in pruned_test_words}
     ### pmi
-    ### building the matrix
+    ### building the PPMI matrix
     ### things are better when including in the rows the words from MEN...
     trans_pmi_vecs = build_ppmi_vecs(coocs, vocab, ctx_words, ctx_words)
     #trans_pmi_vecs = build_ppmi_vecs(coocs, vocab, test_men_words, ctx_words)
-    ### total occurrences
+    ### using most frequent words
+    freq_ctx_words = pruned_test_words + [w[0] for w in sorted(freqs.items(), key=lambda item: item[1], reverse=True) if vocab[w[0]]!=0][:4000]
+    freq_pmi_vecs = build_ppmi_vecs(coocs, vocab, freq_ctx_words, freq_ctx_words)
     
     for case in [
                  'random',
                  'raw',
                  #'log2', 
                  'pmi',
+                 'most_frequent_pmi',
                  'fasttext',
                  ]:
         if case == 'random':
@@ -129,7 +132,9 @@ for corpus in [
         elif case == 'log2':
             current_vecs = {k : numpy.log2(v+1) for k, v in vecs.items()}
         elif case == 'pmi':
-            current_vecs = {k : trans_pmi_vecs[k] for k, v in vecs.items()}
+            current_vecs = {k : trans_pmi_vecs[k] for k, v in trans_pmi_vecs.items()}
+        elif case == 'most_frequent_pmi':
+            current_vecs = {k : freq_pmi_vecs[k] for k, v in freq_pmi_vecs.items()}
         elif case == 'fasttext':
             ft = fasttext.load_model('../../dataset/word_vectors/en/cc.en.300.bin')
             current_vecs = {k : ft[k] for k, v in vecs.items()}
@@ -142,12 +147,11 @@ for corpus in [
             test_sims = dict()
             for ws, val in dataset.items():
                 marker = True
-                for w in missing:
-                    if w in ws:
+                for w in ws:
+                    if w not in pruned_test_words:
                         marker = False
                 if marker:
                     test_sims[ws] = val
-            ### only using the test set from MEN
             real = list()
             pred = list()
             for k, v in test_sims.items():

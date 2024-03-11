@@ -121,7 +121,11 @@ with open(freqs_file, 'rb') as i:
     print('loading freqs')
     freqs = pickle.load(i)
     print('loaded!')
-pos_file = os.path.join(pkls, '{}_{}_{}_word_pos.pkl'.format(args.language, args.corpus, args.case))
+if args.corpus == 'wiki':
+    ### wiki does not come with pos tagging...
+    pos_file = os.path.join(pkls.replace('wiki', 'wac'), '{}_wac_{}_word_pos.pkl'.format(args.language, args.case))
+else:
+    pos_file = os.path.join(pkls, '{}_{}_{}_word_pos.pkl'.format(args.language, args.corpus, args.case))
 with open(pos_file, 'rb') as i:
     print('loading pos')
     pos = pickle.load(i)
