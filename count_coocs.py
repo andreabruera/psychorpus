@@ -32,6 +32,8 @@ def multiprocessing_counter(all_args):
 
     file_path = all_args[0]
     coocs = all_args[1]
+    if args.corpus == 'tagged_wiki':
+        all_sentences = tagged_wiki_reader(args, file_path)
     if args.corpus == 'wiki':
         all_sentences = wiki_reader(args, file_path)
     if args.corpus == 'wac':
@@ -100,6 +102,7 @@ parser.add_argument(
 parser.add_argument(
                     '--corpus', 
                     choices=[
+                             'tagged_wiki', 
                              'wiki', 
                              'wac', 
                              'bnc', 
@@ -146,11 +149,14 @@ else:
         ### setting the minimum frequency
         if v > args.min_mentions:
             ### checking pos
-            dom_pos = sorted(list(pos[k].items()), key=lambda item : item[1], reverse=True)[0][0]
-            if dom_pos in ['VERB', 'NOUN', 'ADV', 'ADJ']:
-                vocab[k] = counter
-                counter += 1
-            else:
+            try:
+                dom_pos = sorted(list(pos[k].items()), key=lambda item : item[1], reverse=True)[0][0]
+                if dom_pos in ['VERB', 'NOUN', 'ADV', 'ADJ', 'ENT',]:
+                    vocab[k] = counter
+                    counter += 1
+                else:
+                    vocab[k] = 0
+            except KeyError:
                 vocab[k] = 0
         else:
             vocab[k] = 0

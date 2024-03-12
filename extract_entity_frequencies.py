@@ -31,6 +31,7 @@ for language in [
 
         ### reading entity list
         entity_list_file = os.path.join(
+                                        'data',
                                         'entities',
                                         'wikidata_ids_{}.txt'.format(experiment_id)
                                         )

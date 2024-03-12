@@ -69,7 +69,9 @@ parser.add_argument(
 parser.add_argument('--language', choices=['it', 'en', 'de'], required=True)
 parser.add_argument(
                     '--marker',
-                    choices=['unaware_semantics'],
+                    choices=[
+                             'unaware_semantics',
+                             ],
                     required=True,
                     help='marker for the words dataset'
                     )
@@ -85,7 +87,7 @@ elif args.language == 'it':
 ### reading files
 global words
 words = dict()
-with open(os.path.join('experiments_word_lists', '{}.txt'.format(args.marker))) as i:
+with open(os.path.join('data', 'experiments_word_lists', '{}.txt'.format(args.marker))) as i:
     for l_i, l in enumerate(i):
         if l_i == 0:
             continue

@@ -26,13 +26,13 @@ test_words = men_words.union(simlex_words)
 
 for corpus in [
                #'bnc',
-               'wac',
-               #'wiki',
+               #'wac',
+               'wiki',
                #'opensubs',
                ]:
     if corpus == 'bnc':
         min_count = 10
-    elif corpus in ['wac', 'wiki']:
+    elif corpus in ['opensubs', 'wac', 'wiki']:
         min_count = 100
     with open(os.path.join(
                            'pickles', 'en', corpus, 

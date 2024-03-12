@@ -1,9 +1,10 @@
 import os
 import re
 
-def wiki_reader(args, folder_path, pos=False):
+def wiki_reader(args, folder_path, pos=False, file_paths=False):
     pos_mapper = load_pos_mappers(args)
     sentences = list()
+    paths = list()
     ### in wiki the file is a folder...
     for file_path in os.listdir(folder_path):
         if pos:
@@ -17,13 +18,14 @@ def wiki_reader(args, folder_path, pos=False):
                         }
         with open(os.path.join(folder_path, file_path)) as i:
             for l in i:
-                line = l.replace('[[[', '').replace(']]]', '')
-                line = re.sub('\s+', r' ', line)
+                #line = l.replace('[[[', '').replace(']]]', '')
+                line = re.sub('\s+', r' ', l)
                 line = line.split()
                 sentence['word'].extend(line)
                 if len(sentence['word']) > 1:
                     #yield(sentence)
                     sentences.append(sentence)
+                    paths.append(file_path)
                 '''
                 ### grouping by chunks of 512 tokens
                 sentence['word'].extend(line)
@@ -40,11 +42,16 @@ def wiki_reader(args, folder_path, pos=False):
             if len(sentence['word']) > 1:
                 #yield(sentence)
                 sentences.append(sentence)
+                paths.append(file_path)
         if len(sentence['word']) > 1:
             #yield(sentence)
             sentences.append(sentence)
+            paths.append(file_path)
 
-    return sentences
+    if file_paths:
+        return sentences, paths
+    else:
+        return sentences
 
 def wac_reader(args, file_path, pos=False):
     pos_mapper = load_pos_mappers(args)
@@ -93,7 +100,58 @@ def wac_reader(args, file_path, pos=False):
             sentences.append(sentence)
     return sentences
 
-def opensubs_reader(args, file_path, pos=False):
+def tagged_wiki_reader(args, folder_path, pos=False):
+    pos_mapper = load_pos_mappers(args)
+    sentences = list()
+    ### in tagged wiki the file is a folder...
+    for file_path in os.listdir(folder_path):
+        if pos:
+            sentence = {
+                        'word' : list(), 
+                        'pos' : list(), 
+                        }
+        else:
+            sentence = {
+                        'word' : list(), 
+                        }
+        with open(os.path.join(folder_path, file_path)) as i:
+            for l in i:
+                line = l.strip().split('\t')
+                if line[0] == '<EOS>':
+                    #yield sentence
+                    sentences.append(sentence)
+                    if pos:
+                        sentence = {
+                                    'word' : list(), 
+                                    'pos' : list(), 
+                                    }
+                    else:
+                        sentence = {
+                                    'word' : list(), 
+                                    }
+                elif len(line) < 4:
+                    continue
+                else:
+                    w = re.sub('\W+', '_', line[0])
+                    if line[2] == 'ENT':
+                        w = '{}_#ent#'.format(w)
+                    if w != '_':
+                        sentence['word'].append(w)
+                        if pos:
+                            if line[2] == 'ENT':
+                                pos = 'ENT'
+                            else:
+                                try:
+                                    pos = pos_mapper[line[3]]
+                                except KeyError:
+                                    pos = line[3]
+                            sentence['pos'].append(pos)
+            if len(sentence['word']) > 1:
+                #yield(sentence)
+                sentences.append(sentence)
+    return sentences
+
+def opensubs_reader(args, folder_path, pos=False):
     pos_mapper = load_pos_mappers(args)
     sentences = list()
     ### in opensubs the file is a folder...
@@ -205,9 +263,10 @@ def paths_loader(args, pos=False):
         assert os.path.exists(wac_path)
         paths = [os.path.join(root, f) for root, direc, filez in os.walk(wac_path) for f in filez]
     if args.corpus == 'opensubs':
-        opensubs_path = os.path.join(basic_folder, 'opensubs_ready')
+        opensubs_path = os.path.join(basic_folder, 'opensubs-2018_parsed_{}'.format(args.language))
         assert os.path.exists(opensubs_path)
-        paths = [os.path.join(root, f) for root, direc, filez in os.walk(opensubs_path) for f in filez]
+        ### for opensubs we do not take files but folders!
+        paths = [os.path.join(opensubs_path, direc) for direc in os.listdir(opensubs_path)]
     if args.corpus == 'bnc':
         if args.language != 'en':
             raise RuntimeError('BNC is obviously only available in English!')
@@ -296,8 +355,6 @@ def load_pos_mappers(args):
                     }
     if args.corpus == 'wiki':
         mapper = {
-                  'SUBST' : 'NOUN',
-                  'UNC' : 'UNK',
                   }
     return mapper
 

@@ -5,7 +5,10 @@ from tqdm import tqdm
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--language', choices=['en', 'it', 'de'], required=True)
+parser.add_argument('--corpora_folder', required=True)
 args = parser.parse_args()
+
+assert os.path.join(args.corpora_folder)
 
 if args.language == 'en':
     wac_folder = 'PukWaC'
@@ -17,7 +20,7 @@ elif args.language == 'de':
     wac_folder = 'sdewac-v3-tagged'
     encoding = 'latin-1'
 
-full_wac_folder = os.path.join(args.language, wac_folder)
+full_wac_folder = os.path.join(args.corpora_folder, args.language, wac_folder)
 assert os.path.exists(full_wac_folder)
 
 out_folder = os.path.join(args.language, '{}_smaller_files'.format(wac_folder))

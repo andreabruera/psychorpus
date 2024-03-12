@@ -7,10 +7,12 @@ import re
 
 from tqdm import tqdm
 
-from readers import wiki_reader, wac_reader, bnc_reader, opensubs_reader, paths_loader
+from readers import tagged_wiki_reader, wiki_reader, wac_reader, bnc_reader, opensubs_reader, paths_loader
 
 def multiprocessing_counter(file_path):
 
+    if args.corpus == 'tagged_wiki':
+        all_sentences = tagged_wiki_reader(args, file_path)
     if args.corpus == 'wiki':
         all_sentences = wiki_reader(args, file_path)
     if args.corpus == 'wac':
@@ -45,6 +47,7 @@ parser.add_argument(
 parser.add_argument(
                     '--corpus', 
                     choices=[
+                             'tagged_wiki', 
                              'wiki', 
                              'wac', 
                              'bnc', 
