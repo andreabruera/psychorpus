@@ -1,5 +1,6 @@
 import numpy
 import os
+import re
 
 def read_ratings():
     ### sensory ratings
@@ -68,6 +69,64 @@ def read_ratings():
 
     return final_norms
 
+def read_fernandino(vocab, pos):
+
+    words = {1 : list(), 2 : list()}
+    subjects_data = {1 : dict(), 2 : dict()}
+
+    for d in words.keys():
+        missing_idxs = list()
+        ### words
+        with open(os.path.join('data', 'fernandino{}_words.txt'.format(d))) as i:
+            for l_i, l in enumerate(i):
+                line = l.strip()
+                if line != '':
+                    if vocab[line] == 0:
+                        missing_idxs.append(l_i)
+                        print('missing: {}'.format([line, pos[line]]))
+                        continue
+                    words[d].append(line)
+        ### similarities
+        ### other anterior-frontal areas
+        ### reading mapper
+        mapper = dict()
+        with open(os.path.join('data', 'colortable_desikan_killiany.txt')) as i:
+            for l in i:
+                l = re.sub('\s+', r'\t', l)
+                line = l.strip().split('\t')
+                assert len(line) > 2
+                mapper[line[0]] = 'L_{}'.format(line[1])
+                mapper[str(int(line[0])+35)] = 'R_{}'.format(line[1])
+        folder = 'Study{}_neural_vectors_RSMs'.format(d)
+        for brain_area_folder in os.listdir(os.path.join('data', folder)):
+            brain_area = re.sub(r'ALE|DK_|roi|_mask', '', brain_area_folder)
+            if brain_area in mapper.keys():
+                brain_area = mapper[brain_area]
+            print(brain_area)
+            for f in os.listdir(os.path.join('data', folder, brain_area_folder,)):
+                if 'txt' not in f:
+                    continue
+                mtrx = list()
+                sub = f.split('_')[-1].replace('.txt', '')
+                with open(os.path.join('data', folder, brain_area_folder, f)) as i:
+                    for l_i, l in enumerate(i):
+                        if l_i in missing_idxs:
+                            continue
+                        line = [sim for sim_i, sim in enumerate(l.strip().split('\t')) if sim_i not in missing_idxs]
+                        mtrx.append(line)
+                ### checks
+                assert len(mtrx) == len(words[d])
+                for line in mtrx:
+                    assert len(line) == len(words[d])
+                ### adding data
+                if brain_area not in subjects_data[d].keys():
+                    subjects_data[d][brain_area] = dict()
+                ### RSA
+                ### removing diagonal
+                subjects_data[d][brain_area][sub] = numpy.array([val for line_i, line in enumerate(mtrx) for val_i, val in enumerate(line) if val_i>line_i], dtype=numpy.float64)
+
+    return words, subjects_data
+
 def read_men():
     sims = dict()
     with open(os.path.join('data', 'MEN', 'MEN_dataset_natural_form_full')) as i:
@@ -115,6 +174,7 @@ def build_ppmi_vecs(coocs, vocab, row_words, col_words):
     axis_one_sum = pmi_mtrx.sum(axis=1)
     axis_one_mtrx = numpy.divide(1, axis_one_sum, where=axis_one_sum!=0).reshape(-1, 1)
     ### raising to 0.75 as suggested in Levy & Goldberg 2015
+    axis_zero_sum = numpy.power(pmi_mtrx, 0.75).sum(axis=0)
     axis_zero_sum = pmi_mtrx.sum(axis=0)
     axis_zero_mtrx = numpy.divide(1, axis_zero_sum, where=axis_zero_sum!=0).reshape(1, -1)
     total_sum = pmi_mtrx.sum()

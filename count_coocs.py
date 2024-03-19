@@ -7,7 +7,7 @@ import re
 
 from tqdm import tqdm
 
-from readers import wiki_reader, wac_reader, bnc_reader, opensubs_reader, paths_loader
+from readers import tagged_wiki_reader, wiki_reader, wac_reader, bnc_reader, opensubs_reader, paths_loader
 
 def coocs_counter(keyed_sentence, coocs):
     for start_i, start in enumerate(keyed_sentence):
@@ -83,6 +83,7 @@ parser.add_argument(
                              10, 
                              50, 
                              100,
+                             500,
                              ],
                     required=True,
                     type=int,
@@ -90,6 +91,7 @@ parser.add_argument(
 parser.add_argument(
                     '--window_size', 
                     choices=[
+                             4,
                              5,
                              10, 
                              15, 
@@ -110,8 +112,14 @@ parser.add_argument(
                              ],
                     required=True,
                     )
+parser.add_argument('--no_entities', action='store_true')
 global args
 args = parser.parse_args()
+
+if args.no_entities:
+    selected_pos = ['PROPN', 'VERB', 'NOUN', 'ADV', 'ADJ', ]
+else:
+    selected_pos = ['PROPN', 'VERB', 'NOUN', 'ADV', 'ADJ', 'ENT',]
 
 global half_win
 half_win = int(args.window_size/2)
@@ -151,7 +159,7 @@ else:
             ### checking pos
             try:
                 dom_pos = sorted(list(pos[k].items()), key=lambda item : item[1], reverse=True)[0][0]
-                if dom_pos in ['VERB', 'NOUN', 'ADV', 'ADJ', 'ENT',]:
+                if dom_pos in selected_pos:
                     vocab[k] = counter
                     counter += 1
                 else:
@@ -173,7 +181,10 @@ ids = set(vocab.values())
 general_coocs = {i_one : dict() for i_one in ids}
 final_coocs = general_coocs.copy()
 print('ready!')
-coocs_file = os.path.join(pkls, '{}_{}_coocs_{}_min_{}_win_{}.pkl'.format(args.language, args.corpus, args.case, args.min_mentions, args.window_size))
+if args.no_entities:
+    coocs_file = os.path.join(pkls, '{}_{}_coocs_{}_min_{}_win_{}_no_entities.pkl'.format(args.language, args.corpus, args.case, args.min_mentions, args.window_size))
+else:
+    coocs_file = os.path.join(pkls, '{}_{}_coocs_{}_min_{}_win_{}.pkl'.format(args.language, args.corpus, args.case, args.min_mentions, args.window_size))
 
 for file_path in tqdm(paths):
     general_coocs = multiprocessing_counter([file_path, general_coocs])

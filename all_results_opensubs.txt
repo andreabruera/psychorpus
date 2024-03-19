@@ -1,0 +1,2522 @@
+
+opensubs - min 100 - 10.0 percent - window size 4
+L_caudalmiddlefrontal
+pmi model
+correlation with L_caudalmiddlefrontal - fernandino 1 dataset:
+0.012488145665248016
+R_superiorfrontal
+pmi model
+correlation with R_superiorfrontal - fernandino 1 dataset:
+0.012908994788424048
+R_IFG
+pmi model
+correlation with R_IFG - fernandino 1 dataset:
+0.004507608204527496
+L_superiorfrontal
+pmi model
+correlation with L_superiorfrontal - fernandino 1 dataset:
+0.024055961261023943
+PSTG
+pmi model
+correlation with PSTG - fernandino 1 dataset:
+0.005311334644873962
+R_ER
+pmi model
+correlation with R_ER - fernandino 1 dataset:
+-0.010028984498799997
+AMTG
+pmi model
+correlation with AMTG - fernandino 1 dataset:
+0.013029842011219477
+L_inferiorparietal
+pmi model
+correlation with L_inferiorparietal - fernandino 1 dataset:
+0.03762390897545667
+R_AFG
+pmi model
+correlation with R_AFG - fernandino 1 dataset:
+0.0006724818345848298
+R_lateralorbitofrontal
+pmi model
+correlation with R_lateralorbitofrontal - fernandino 1 dataset:
+-0.0030761049007502093
+R_PSTG
+pmi model
+correlation with R_PSTG - fernandino 1 dataset:
+-0.007332540688326711
+AFG
+pmi model
+correlation with AFG - fernandino 1 dataset:
+-0.001787623805982155
+R_rostralanteriorcingulate
+pmi model
+correlation with R_rostralanteriorcingulate - fernandino 1 dataset:
+0.0016396824906911355
+R_PMTG
+pmi model
+correlation with R_PMTG - fernandino 1 dataset:
+0.001189749040300868
+R_caudalmiddlefrontal
+pmi model
+correlation with R_caudalmiddlefrontal - fernandino 1 dataset:
+-0.012042846772001077
+_semantic_network
+pmi model
+correlation with _semantic_network - fernandino 1 dataset:
+0.04219159215975532
+R_ATLerh
+pmi model
+correlation with R_ATLerh - fernandino 1 dataset:
+-0.004438815220829709
+R_middletemporal
+pmi model
+correlation with R_middletemporal - fernandino 1 dataset:
+0.00237085585494001
+R_bankssts
+pmi model
+correlation with R_bankssts - fernandino 1 dataset:
+-0.011652506549533904
+L_precuneus
+pmi model
+correlation with L_precuneus - fernandino 1 dataset:
+0.039499311751897574
+TP
+pmi model
+correlation with TP - fernandino 1 dataset:
+0.002464200886591191
+R_ATL
+pmi model
+correlation with R_ATL - fernandino 1 dataset:
+-0.002561462283456018
+R_precuneus
+pmi model
+correlation with R_precuneus - fernandino 1 dataset:
+0.0012373080764262216
+R_AITG
+pmi model
+correlation with R_AITG - fernandino 1 dataset:
+-0.004008678268472503
+L_middletemporal
+pmi model
+correlation with L_middletemporal - fernandino 1 dataset:
+0.010880492634866675
+PITG
+pmi model
+correlation with PITG - fernandino 1 dataset:
+-0.0037624535870472557
+R_entorhinal
+pmi model
+correlation with R_entorhinal - fernandino 1 dataset:
+-0.010028984498799997
+L_PCinIst
+pmi model
+correlation with L_PCinIst - fernandino 1 dataset:
+0.018251091534056452
+L_inferiortemporal
+pmi model
+correlation with L_inferiortemporal - fernandino 1 dataset:
+-0.0028867104013934374
+R_PCinIst
+pmi model
+correlation with R_PCinIst - fernandino 1 dataset:
+0.003304954065090668
+APPG
+pmi model
+correlation with APPG - fernandino 1 dataset:
+0.0038699681161345756
+R_medialorbitofrontal
+pmi model
+correlation with R_medialorbitofrontal - fernandino 1 dataset:
+-0.005958705126351896
+L_medialorbitofrontal
+pmi model
+correlation with L_medialorbitofrontal - fernandino 1 dataset:
+0.002994594243728679
+ER
+pmi model
+correlation with ER - fernandino 1 dataset:
+-0.007184103276475679
+R_PITG
+pmi model
+correlation with R_PITG - fernandino 1 dataset:
+0.000974768132068015
+L_bankssts
+pmi model
+correlation with L_bankssts - fernandino 1 dataset:
+-0.004789517050123266
+L_IFG
+pmi model
+correlation with L_IFG - fernandino 1 dataset:
+0.029990030357408617
+L_lateralorbitofrontal
+pmi model
+correlation with L_lateralorbitofrontal - fernandino 1 dataset:
+0.004531666311337312
+R_ASTG
+pmi model
+correlation with R_ASTG - fernandino 1 dataset:
+0.004161311780082909
+R_fusiform
+pmi model
+correlation with R_fusiform - fernandino 1 dataset:
+-0.007746982066588446
+L_supramarginal
+pmi model
+correlation with L_supramarginal - fernandino 1 dataset:
+-0.002580602221874079
+R_inferiorparietal
+pmi model
+correlation with R_inferiorparietal - fernandino 1 dataset:
+0.0010344613131447423
+R_PFG
+pmi model
+correlation with R_PFG - fernandino 1 dataset:
+-0.013925920019162449
+ATL
+pmi model
+correlation with ATL - fernandino 1 dataset:
+0.005241910548749564
+L_superiortemporal
+pmi model
+correlation with L_superiortemporal - fernandino 1 dataset:
+0.005833144228531376
+R_inferiortemporal
+pmi model
+correlation with R_inferiortemporal - fernandino 1 dataset:
+0.0004125195320191658
+L_parahippocampal
+pmi model
+correlation with L_parahippocampal - fernandino 1 dataset:
+0.012641197122249105
+AITG
+pmi model
+correlation with AITG - fernandino 1 dataset:
+-0.00014393005215103567
+R_parahippocampal
+pmi model
+correlation with R_parahippocampal - fernandino 1 dataset:
+-0.003106571611748073
+R_supramarginal
+pmi model
+correlation with R_supramarginal - fernandino 1 dataset:
+0.0017547289625551741
+R_PPPG
+pmi model
+correlation with R_PPPG - fernandino 1 dataset:
+-0.003010223275401308
+R_APPG
+pmi model
+correlation with R_APPG - fernandino 1 dataset:
+-0.0031802073257044343
+PFG
+pmi model
+correlation with PFG - fernandino 1 dataset:
+-0.007501816824632334
+PMTG
+pmi model
+correlation with PMTG - fernandino 1 dataset:
+0.007764007238468488
+PPPG
+pmi model
+correlation with PPPG - fernandino 1 dataset:
+0.013961185986107235
+R_TP
+pmi model
+correlation with R_TP - fernandino 1 dataset:
+-0.008137499560059406
+L_ATLerh
+pmi model
+correlation with L_ATLerh - fernandino 1 dataset:
+0.00514739219240773
+L_entorhinal
+pmi model
+correlation with L_entorhinal - fernandino 1 dataset:
+-0.00609664786895205
+ASTG
+pmi model
+correlation with ASTG - fernandino 1 dataset:
+0.0047634068822305555
+L_rostralanteriorcingulate
+pmi model
+correlation with L_rostralanteriorcingulate - fernandino 1 dataset:
+-0.004936725794103886
+L_fusiform
+pmi model
+correlation with L_fusiform - fernandino 1 dataset:
+-0.005129894502306322
+R_AMTG
+pmi model
+correlation with R_AMTG - fernandino 1 dataset:
+0.0013764872524794493
+R_superiortemporal
+pmi model
+correlation with R_superiortemporal - fernandino 1 dataset:
+-0.0003764046051182796
+L_caudalmiddlefrontal
+pmi model
+correlation with L_caudalmiddlefrontal - fernandino 2 dataset:
+0.012614025810860303
+R_superiorfrontal
+pmi model
+correlation with R_superiorfrontal - fernandino 2 dataset:
+0.00901771764484843
+APPG
+pmi model
+correlation with APPG - fernandino 2 dataset:
+0.002186148040750934
+R_IFG
+pmi model
+correlation with R_IFG - fernandino 2 dataset:
+0.025427970820384713
+L_superiorfrontal
+pmi model
+correlation with L_superiorfrontal - fernandino 2 dataset:
+0.02252363106084472
+R_ER
+pmi model
+correlation with R_ER - fernandino 2 dataset:
+0.0001324049630430195
+PITG
+pmi model
+correlation with PITG - fernandino 2 dataset:
+-0.002311713280427177
+L_inferiorparietal
+pmi model
+correlation with L_inferiorparietal - fernandino 2 dataset:
+0.02607035199476734
+R_AFG
+pmi model
+correlation with R_AFG - fernandino 2 dataset:
+-0.0006407501679087294
+R_lateralorbitofrontal
+pmi model
+correlation with R_lateralorbitofrontal - fernandino 2 dataset:
+0.015192052676688121
+R_PSTG
+pmi model
+correlation with R_PSTG - fernandino 2 dataset:
+-0.005039667672088127
+PMTG
+pmi model
+correlation with PMTG - fernandino 2 dataset:
+0.01834171216257525
+R_rostralanteriorcingulate
+pmi model
+correlation with R_rostralanteriorcingulate - fernandino 2 dataset:
+0.0043483396170209375
+R_PMTG
+pmi model
+correlation with R_PMTG - fernandino 2 dataset:
+0.007144597431277631
+R_caudalmiddlefrontal
+pmi model
+correlation with R_caudalmiddlefrontal - fernandino 2 dataset:
+0.00048565200565521934
+_semantic_network
+pmi model
+correlation with _semantic_network - fernandino 2 dataset:
+0.029514640681623405
+PPPG
+pmi model
+correlation with PPPG - fernandino 2 dataset:
+0.008772201383624022
+ER
+pmi model
+correlation with ER - fernandino 2 dataset:
+0.00186041128959324
+AITG
+pmi model
+correlation with AITG - fernandino 2 dataset:
+0.0033562097924155453
+R_ATLerh
+pmi model
+correlation with R_ATLerh - fernandino 2 dataset:
+0.009690045447906194
+R_middletemporal
+pmi model
+correlation with R_middletemporal - fernandino 2 dataset:
+0.008367886623644773
+R_bankssts
+pmi model
+correlation with R_bankssts - fernandino 2 dataset:
+0.003925145098309751
+L_precuneus
+pmi model
+correlation with L_precuneus - fernandino 2 dataset:
+0.03127784141320162
+R_ATL
+pmi model
+correlation with R_ATL - fernandino 2 dataset:
+0.007704225655114708
+R_precuneus
+pmi model
+correlation with R_precuneus - fernandino 2 dataset:
+0.009544877912729262
+R_AITG
+pmi model
+correlation with R_AITG - fernandino 2 dataset:
+0.001147014526873426
+L_middletemporal
+pmi model
+correlation with L_middletemporal - fernandino 2 dataset:
+0.024527442223141727
+R_entorhinal
+pmi model
+correlation with R_entorhinal - fernandino 2 dataset:
+0.0003704453978342231
+TP
+pmi model
+correlation with TP - fernandino 2 dataset:
+0.006139314449952391
+L_PCinIst
+pmi model
+correlation with L_PCinIst - fernandino 2 dataset:
+0.046100814850179646
+L_inferiortemporal
+pmi model
+correlation with L_inferiortemporal - fernandino 2 dataset:
+8.945200213838582e-05
+R_PCinIst
+pmi model
+correlation with R_PCinIst - fernandino 2 dataset:
+0.01772740044732244
+PFG
+pmi model
+correlation with PFG - fernandino 2 dataset:
+-0.016204741809443084
+R_medialorbitofrontal
+pmi model
+correlation with R_medialorbitofrontal - fernandino 2 dataset:
+-0.00039536320316487856
+L_medialorbitofrontal
+pmi model
+correlation with L_medialorbitofrontal - fernandino 2 dataset:
+0.005250882106348645
+R_PITG
+pmi model
+correlation with R_PITG - fernandino 2 dataset:
+-0.0027490930348836383
+L_bankssts
+pmi model
+correlation with L_bankssts - fernandino 2 dataset:
+0.0026075794295327553
+ATL
+pmi model
+correlation with ATL - fernandino 2 dataset:
+0.01786516855628116
+L_IFG
+pmi model
+correlation with L_IFG - fernandino 2 dataset:
+0.031863391847086614
+ASTG
+pmi model
+correlation with ASTG - fernandino 2 dataset:
+0.014988693506707349
+PSTG
+pmi model
+correlation with PSTG - fernandino 2 dataset:
+-0.0026626923288289145
+L_lateralorbitofrontal
+pmi model
+correlation with L_lateralorbitofrontal - fernandino 2 dataset:
+0.021646323866652564
+R_ASTG
+pmi model
+correlation with R_ASTG - fernandino 2 dataset:
+0.008433441520984958
+R_fusiform
+pmi model
+correlation with R_fusiform - fernandino 2 dataset:
+-0.005406718289854903
+L_supramarginal
+pmi model
+correlation with L_supramarginal - fernandino 2 dataset:
+0.01409846552929407
+R_inferiorparietal
+pmi model
+correlation with R_inferiorparietal - fernandino 2 dataset:
+0.004921490244673962
+AFG
+pmi model
+correlation with AFG - fernandino 2 dataset:
+0.0026687676719939495
+R_PFG
+pmi model
+correlation with R_PFG - fernandino 2 dataset:
+-0.007387424345775356
+L_superiortemporal
+pmi model
+correlation with L_superiortemporal - fernandino 2 dataset:
+0.005874657509128826
+R_inferiortemporal
+pmi model
+correlation with R_inferiortemporal - fernandino 2 dataset:
+-0.0017023021312926314
+L_parahippocampal
+pmi model
+correlation with L_parahippocampal - fernandino 2 dataset:
+0.007121601688115395
+R_parahippocampal
+pmi model
+correlation with R_parahippocampal - fernandino 2 dataset:
+0.00434050880830881
+R_supramarginal
+pmi model
+correlation with R_supramarginal - fernandino 2 dataset:
+0.004033147383739014
+R_PPPG
+pmi model
+correlation with R_PPPG - fernandino 2 dataset:
+0.005161987622219386
+R_APPG
+pmi model
+correlation with R_APPG - fernandino 2 dataset:
+-0.0002045919585346639
+R_TP
+pmi model
+correlation with R_TP - fernandino 2 dataset:
+0.001686160740295721
+L_ATLerh
+pmi model
+correlation with L_ATLerh - fernandino 2 dataset:
+0.01887161503998835
+L_entorhinal
+pmi model
+correlation with L_entorhinal - fernandino 2 dataset:
+0.0020661682921820712
+L_rostralanteriorcingulate
+pmi model
+correlation with L_rostralanteriorcingulate - fernandino 2 dataset:
+0.006235779762770299
+AMTG
+pmi model
+correlation with AMTG - fernandino 2 dataset:
+0.025604250887828663
+L_fusiform
+pmi model
+correlation with L_fusiform - fernandino 2 dataset:
+-0.011793010364966642
+R_AMTG
+pmi model
+correlation with R_AMTG - fernandino 2 dataset:
+0.006091131432890858
+R_superiortemporal
+pmi model
+correlation with R_superiortemporal - fernandino 2 dataset:
+0.002732762523982496
+L_caudalmiddlefrontal
+most_frequent_pmi model
+correlation with L_caudalmiddlefrontal - fernandino 1 dataset:
+0.014780862856170652
+R_superiorfrontal
+most_frequent_pmi model
+correlation with R_superiorfrontal - fernandino 1 dataset:
+0.018939228166238983
+R_IFG
+most_frequent_pmi model
+correlation with R_IFG - fernandino 1 dataset:
+0.013296781744952989
+L_superiorfrontal
+most_frequent_pmi model
+correlation with L_superiorfrontal - fernandino 1 dataset:
+0.025017576520482435
+PSTG
+most_frequent_pmi model
+correlation with PSTG - fernandino 1 dataset:
+0.001641407928198305
+R_ER
+most_frequent_pmi model
+correlation with R_ER - fernandino 1 dataset:
+-0.011327460553137316
+AMTG
+most_frequent_pmi model
+correlation with AMTG - fernandino 1 dataset:
+0.014642611017391869
+L_inferiorparietal
+most_frequent_pmi model
+correlation with L_inferiorparietal - fernandino 1 dataset:
+0.035813603358744894
+R_AFG
+most_frequent_pmi model
+correlation with R_AFG - fernandino 1 dataset:
+0.00042091902230005683
+R_lateralorbitofrontal
+most_frequent_pmi model
+correlation with R_lateralorbitofrontal - fernandino 1 dataset:
+0.002029681475088064
+R_PSTG
+most_frequent_pmi model
+correlation with R_PSTG - fernandino 1 dataset:
+-0.006375411058894547
+AFG
+most_frequent_pmi model
+correlation with AFG - fernandino 1 dataset:
+-0.003265667755400159
+R_rostralanteriorcingulate
+most_frequent_pmi model
+correlation with R_rostralanteriorcingulate - fernandino 1 dataset:
+0.0043069339086368
+R_PMTG
+most_frequent_pmi model
+correlation with R_PMTG - fernandino 1 dataset:
+0.0026158944564270274
+R_caudalmiddlefrontal
+most_frequent_pmi model
+correlation with R_caudalmiddlefrontal - fernandino 1 dataset:
+0.0007092364041050747
+_semantic_network
+most_frequent_pmi model
+correlation with _semantic_network - fernandino 1 dataset:
+0.04241729024959004
+R_ATLerh
+most_frequent_pmi model
+correlation with R_ATLerh - fernandino 1 dataset:
+-0.004158786471572897
+R_middletemporal
+most_frequent_pmi model
+correlation with R_middletemporal - fernandino 1 dataset:
+0.0030487491129052658
+R_bankssts
+most_frequent_pmi model
+correlation with R_bankssts - fernandino 1 dataset:
+-0.010595249305106231
+L_precuneus
+most_frequent_pmi model
+correlation with L_precuneus - fernandino 1 dataset:
+0.04130630868518118
+TP
+most_frequent_pmi model
+correlation with TP - fernandino 1 dataset:
+0.0051808344170321385
+R_ATL
+most_frequent_pmi model
+correlation with R_ATL - fernandino 1 dataset:
+-0.004625171249160745
+R_precuneus
+most_frequent_pmi model
+correlation with R_precuneus - fernandino 1 dataset:
+0.010863074866030253
+R_AITG
+most_frequent_pmi model
+correlation with R_AITG - fernandino 1 dataset:
+-0.008290142457337866
+L_middletemporal
+most_frequent_pmi model
+correlation with L_middletemporal - fernandino 1 dataset:
+0.009170100065441673
+PITG
+most_frequent_pmi model
+correlation with PITG - fernandino 1 dataset:
+0.0012366488008240118
+R_entorhinal
+most_frequent_pmi model
+correlation with R_entorhinal - fernandino 1 dataset:
+-0.011327460553137315
+L_PCinIst
+most_frequent_pmi model
+correlation with L_PCinIst - fernandino 1 dataset:
+0.017102088310151475
+L_inferiortemporal
+most_frequent_pmi model
+correlation with L_inferiortemporal - fernandino 1 dataset:
+0.0013096476383736813
+R_PCinIst
+most_frequent_pmi model
+correlation with R_PCinIst - fernandino 1 dataset:
+0.011550471686613934
+APPG
+most_frequent_pmi model
+correlation with APPG - fernandino 1 dataset:
+0.001146275552794441
+R_medialorbitofrontal
+most_frequent_pmi model
+correlation with R_medialorbitofrontal - fernandino 1 dataset:
+-0.0023470176523234555
+L_medialorbitofrontal
+most_frequent_pmi model
+correlation with L_medialorbitofrontal - fernandino 1 dataset:
+0.002949862414233218
+ER
+most_frequent_pmi model
+correlation with ER - fernandino 1 dataset:
+-0.005741367478548899
+R_PITG
+most_frequent_pmi model
+correlation with R_PITG - fernandino 1 dataset:
+-0.0001321753588982423
+L_bankssts
+most_frequent_pmi model
+correlation with L_bankssts - fernandino 1 dataset:
+-0.008476136617801725
+L_IFG
+most_frequent_pmi model
+correlation with L_IFG - fernandino 1 dataset:
+0.027203467757403066
+L_lateralorbitofrontal
+most_frequent_pmi model
+correlation with L_lateralorbitofrontal - fernandino 1 dataset:
+0.005181411590825805
+R_ASTG
+most_frequent_pmi model
+correlation with R_ASTG - fernandino 1 dataset:
+0.0024382666223131794
+R_fusiform
+most_frequent_pmi model
+correlation with R_fusiform - fernandino 1 dataset:
+-0.005913290580427636
+L_supramarginal
+most_frequent_pmi model
+correlation with L_supramarginal - fernandino 1 dataset:
+0.005295907806416553
+R_inferiorparietal
+most_frequent_pmi model
+correlation with R_inferiorparietal - fernandino 1 dataset:
+0.009322004328194999
+R_PFG
+most_frequent_pmi model
+correlation with R_PFG - fernandino 1 dataset:
+-0.009228339417471441
+ATL
+most_frequent_pmi model
+correlation with ATL - fernandino 1 dataset:
+0.004283300415815015
+L_superiortemporal
+most_frequent_pmi model
+correlation with L_superiortemporal - fernandino 1 dataset:
+0.0016662662206897074
+R_inferiortemporal
+most_frequent_pmi model
+correlation with R_inferiortemporal - fernandino 1 dataset:
+-0.002612710679272128
+L_parahippocampal
+most_frequent_pmi model
+correlation with L_parahippocampal - fernandino 1 dataset:
+0.013030622641937497
+AITG
+most_frequent_pmi model
+correlation with AITG - fernandino 1 dataset:
+-0.0011501054286175386
+R_parahippocampal
+most_frequent_pmi model
+correlation with R_parahippocampal - fernandino 1 dataset:
+-0.004330130893045367
+R_supramarginal
+most_frequent_pmi model
+correlation with R_supramarginal - fernandino 1 dataset:
+0.005489517824201491
+R_PPPG
+most_frequent_pmi model
+correlation with R_PPPG - fernandino 1 dataset:
+-0.004586902929605541
+R_APPG
+most_frequent_pmi model
+correlation with R_APPG - fernandino 1 dataset:
+-0.001135088164601534
+PFG
+most_frequent_pmi model
+correlation with PFG - fernandino 1 dataset:
+-0.007480220632117015
+PMTG
+most_frequent_pmi model
+correlation with PMTG - fernandino 1 dataset:
+0.004226835966487556
+PPPG
+most_frequent_pmi model
+correlation with PPPG - fernandino 1 dataset:
+0.016936055529366827
+R_TP
+most_frequent_pmi model
+correlation with R_TP - fernandino 1 dataset:
+-0.003826523146451803
+L_ATLerh
+most_frequent_pmi model
+correlation with L_ATLerh - fernandino 1 dataset:
+0.004488119891369619
+L_entorhinal
+most_frequent_pmi model
+correlation with L_entorhinal - fernandino 1 dataset:
+-0.004868240306936366
+ASTG
+most_frequent_pmi model
+correlation with ASTG - fernandino 1 dataset:
+0.0022382587936094485
+L_rostralanteriorcingulate
+most_frequent_pmi model
+correlation with L_rostralanteriorcingulate - fernandino 1 dataset:
+-0.004446255601642671
+L_fusiform
+most_frequent_pmi model
+correlation with L_fusiform - fernandino 1 dataset:
+-0.004892534740098383
+R_AMTG
+most_frequent_pmi model
+correlation with R_AMTG - fernandino 1 dataset:
+0.0009673081188749837
+R_superiortemporal
+most_frequent_pmi model
+correlation with R_superiortemporal - fernandino 1 dataset:
+-0.0010405355920978746
+L_caudalmiddlefrontal
+most_frequent_pmi model
+correlation with L_caudalmiddlefrontal - fernandino 2 dataset:
+0.012182023622423451
+R_superiorfrontal
+most_frequent_pmi model
+correlation with R_superiorfrontal - fernandino 2 dataset:
+0.007718605544351682
+APPG
+most_frequent_pmi model
+correlation with APPG - fernandino 2 dataset:
+0.0007983688020451534
+R_IFG
+most_frequent_pmi model
+correlation with R_IFG - fernandino 2 dataset:
+0.02677327546192745
+L_superiorfrontal
+most_frequent_pmi model
+correlation with L_superiorfrontal - fernandino 2 dataset:
+0.02005281211137651
+R_ER
+most_frequent_pmi model
+correlation with R_ER - fernandino 2 dataset:
+-0.0013829154079581718
+PITG
+most_frequent_pmi model
+correlation with PITG - fernandino 2 dataset:
+-0.002085436010037475
+L_inferiorparietal
+most_frequent_pmi model
+correlation with L_inferiorparietal - fernandino 2 dataset:
+0.02527359576377837
+R_AFG
+most_frequent_pmi model
+correlation with R_AFG - fernandino 2 dataset:
+-0.0017068857722528032
+R_lateralorbitofrontal
+most_frequent_pmi model
+correlation with R_lateralorbitofrontal - fernandino 2 dataset:
+0.014834355947302631
+R_PSTG
+most_frequent_pmi model
+correlation with R_PSTG - fernandino 2 dataset:
+-0.006376352843450582
+PMTG
+most_frequent_pmi model
+correlation with PMTG - fernandino 2 dataset:
+0.018263260983350113
+R_rostralanteriorcingulate
+most_frequent_pmi model
+correlation with R_rostralanteriorcingulate - fernandino 2 dataset:
+0.00270263148769431
+R_PMTG
+most_frequent_pmi model
+correlation with R_PMTG - fernandino 2 dataset:
+0.0068638916781002405
+R_caudalmiddlefrontal
+most_frequent_pmi model
+correlation with R_caudalmiddlefrontal - fernandino 2 dataset:
+-0.0028641125580268012
+_semantic_network
+most_frequent_pmi model
+correlation with _semantic_network - fernandino 2 dataset:
+0.027935333701311262
+PPPG
+most_frequent_pmi model
+correlation with PPPG - fernandino 2 dataset:
+0.010852326238487612
+ER
+most_frequent_pmi model
+correlation with ER - fernandino 2 dataset:
+0.0015270414087234724
+AITG
+most_frequent_pmi model
+correlation with AITG - fernandino 2 dataset:
+0.0024943731289461275
+R_ATLerh
+most_frequent_pmi model
+correlation with R_ATLerh - fernandino 2 dataset:
+0.009833170607578216
+R_middletemporal
+most_frequent_pmi model
+correlation with R_middletemporal - fernandino 2 dataset:
+0.008461864063605886
+R_bankssts
+most_frequent_pmi model
+correlation with R_bankssts - fernandino 2 dataset:
+0.004751087167293703
+L_precuneus
+most_frequent_pmi model
+correlation with L_precuneus - fernandino 2 dataset:
+0.03240528580672578
+R_ATL
+most_frequent_pmi model
+correlation with R_ATL - fernandino 2 dataset:
+0.007790928088614063
+R_precuneus
+most_frequent_pmi model
+correlation with R_precuneus - fernandino 2 dataset:
+0.009710422826203895
+R_AITG
+most_frequent_pmi model
+correlation with R_AITG - fernandino 2 dataset:
+0.0016791471104742506
+L_middletemporal
+most_frequent_pmi model
+correlation with L_middletemporal - fernandino 2 dataset:
+0.024571833000619485
+R_entorhinal
+most_frequent_pmi model
+correlation with R_entorhinal - fernandino 2 dataset:
+-0.00117694571578138
+TP
+most_frequent_pmi model
+correlation with TP - fernandino 2 dataset:
+0.0057692337868297215
+L_PCinIst
+most_frequent_pmi model
+correlation with L_PCinIst - fernandino 2 dataset:
+0.046994212485359926
+L_inferiortemporal
+most_frequent_pmi model
+correlation with L_inferiortemporal - fernandino 2 dataset:
+-0.00012181729233331781
+R_PCinIst
+most_frequent_pmi model
+correlation with R_PCinIst - fernandino 2 dataset:
+0.017132371156107478
+PFG
+most_frequent_pmi model
+correlation with PFG - fernandino 2 dataset:
+-0.015640056337222694
+R_medialorbitofrontal
+most_frequent_pmi model
+correlation with R_medialorbitofrontal - fernandino 2 dataset:
+-0.0010913971906804608
+L_medialorbitofrontal
+most_frequent_pmi model
+correlation with L_medialorbitofrontal - fernandino 2 dataset:
+0.005040788649349546
+R_PITG
+most_frequent_pmi model
+correlation with R_PITG - fernandino 2 dataset:
+-0.0031430426943458243
+L_bankssts
+most_frequent_pmi model
+correlation with L_bankssts - fernandino 2 dataset:
+0.0014755757008628283
+ATL
+most_frequent_pmi model
+correlation with ATL - fernandino 2 dataset:
+0.016647857369191228
+L_IFG
+most_frequent_pmi model
+correlation with L_IFG - fernandino 2 dataset:
+0.028735323626600955
+ASTG
+most_frequent_pmi model
+correlation with ASTG - fernandino 2 dataset:
+0.013018831239412974
+PSTG
+most_frequent_pmi model
+correlation with PSTG - fernandino 2 dataset:
+-0.005740660520128783
+L_lateralorbitofrontal
+most_frequent_pmi model
+correlation with L_lateralorbitofrontal - fernandino 2 dataset:
+0.020523382076864792
+R_ASTG
+most_frequent_pmi model
+correlation with R_ASTG - fernandino 2 dataset:
+0.009120069924370124
+R_fusiform
+most_frequent_pmi model
+correlation with R_fusiform - fernandino 2 dataset:
+-0.00509053626117026
+L_supramarginal
+most_frequent_pmi model
+correlation with L_supramarginal - fernandino 2 dataset:
+0.013789578163493632
+R_inferiorparietal
+most_frequent_pmi model
+correlation with R_inferiorparietal - fernandino 2 dataset:
+0.003777912508238881
+AFG
+most_frequent_pmi model
+correlation with AFG - fernandino 2 dataset:
+0.0015911603007471634
+R_PFG
+most_frequent_pmi model
+correlation with R_PFG - fernandino 2 dataset:
+-0.006779256677504443
+L_superiortemporal
+most_frequent_pmi model
+correlation with L_superiortemporal - fernandino 2 dataset:
+0.0025767075264956055
+R_inferiortemporal
+most_frequent_pmi model
+correlation with R_inferiortemporal - fernandino 2 dataset:
+-0.0015122146504748036
+L_parahippocampal
+most_frequent_pmi model
+correlation with L_parahippocampal - fernandino 2 dataset:
+0.008965861721551751
+R_parahippocampal
+most_frequent_pmi model
+correlation with R_parahippocampal - fernandino 2 dataset:
+0.004928034624923354
+R_supramarginal
+most_frequent_pmi model
+correlation with R_supramarginal - fernandino 2 dataset:
+0.0013418499405410133
+R_PPPG
+most_frequent_pmi model
+correlation with R_PPPG - fernandino 2 dataset:
+0.005737802985691667
+R_APPG
+most_frequent_pmi model
+correlation with R_APPG - fernandino 2 dataset:
+-0.0006798151406342352
+R_TP
+most_frequent_pmi model
+correlation with R_TP - fernandino 2 dataset:
+0.0010956082782964211
+L_ATLerh
+most_frequent_pmi model
+correlation with L_ATLerh - fernandino 2 dataset:
+0.017142329494255856
+L_entorhinal
+most_frequent_pmi model
+correlation with L_entorhinal - fernandino 2 dataset:
+0.001641426709623205
+L_rostralanteriorcingulate
+most_frequent_pmi model
+correlation with L_rostralanteriorcingulate - fernandino 2 dataset:
+0.00506291732318416
+AMTG
+most_frequent_pmi model
+correlation with AMTG - fernandino 2 dataset:
+0.025591499674163493
+L_fusiform
+most_frequent_pmi model
+correlation with L_fusiform - fernandino 2 dataset:
+-0.01183942867810435
+R_AMTG
+most_frequent_pmi model
+correlation with R_AMTG - fernandino 2 dataset:
+0.00673111333426632
+R_superiortemporal
+most_frequent_pmi model
+correlation with R_superiortemporal - fernandino 2 dataset:
+0.002070135797998593
+L_caudalmiddlefrontal
+fasttext model
+correlation with L_caudalmiddlefrontal - fernandino 1 dataset:
+0.004782860189732233
+R_superiorfrontal
+fasttext model
+correlation with R_superiorfrontal - fernandino 1 dataset:
+0.015143641518573812
+R_IFG
+fasttext model
+correlation with R_IFG - fernandino 1 dataset:
+0.019790578343312597
+L_superiorfrontal
+fasttext model
+correlation with L_superiorfrontal - fernandino 1 dataset:
+0.016936669408195146
+PSTG
+fasttext model
+correlation with PSTG - fernandino 1 dataset:
+-0.005633160697814282
+R_ER
+fasttext model
+correlation with R_ER - fernandino 1 dataset:
+-0.001883778727269189
+AMTG
+fasttext model
+correlation with AMTG - fernandino 1 dataset:
+0.009989093843047553
+L_inferiorparietal
+fasttext model
+correlation with L_inferiorparietal - fernandino 1 dataset:
+0.0322049691607456
+R_AFG
+fasttext model
+correlation with R_AFG - fernandino 1 dataset:
+0.0026261999070477816
+R_lateralorbitofrontal
+fasttext model
+correlation with R_lateralorbitofrontal - fernandino 1 dataset:
+0.00832021556513077
+R_PSTG
+fasttext model
+correlation with R_PSTG - fernandino 1 dataset:
+-0.0023162818741422828
+AFG
+fasttext model
+correlation with AFG - fernandino 1 dataset:
+1.856062963279245e-05
+R_rostralanteriorcingulate
+fasttext model
+correlation with R_rostralanteriorcingulate - fernandino 1 dataset:
+0.003934229655686226
+R_PMTG
+fasttext model
+correlation with R_PMTG - fernandino 1 dataset:
+0.0039566950716202216
+R_caudalmiddlefrontal
+fasttext model
+correlation with R_caudalmiddlefrontal - fernandino 1 dataset:
+0.007153643773934465
+_semantic_network
+fasttext model
+correlation with _semantic_network - fernandino 1 dataset:
+0.04118241145912642
+R_ATLerh
+fasttext model
+correlation with R_ATLerh - fernandino 1 dataset:
+0.0033038274063528538
+R_middletemporal
+fasttext model
+correlation with R_middletemporal - fernandino 1 dataset:
+0.005967689897835467
+R_bankssts
+fasttext model
+correlation with R_bankssts - fernandino 1 dataset:
+-0.008573464494601902
+L_precuneus
+fasttext model
+correlation with L_precuneus - fernandino 1 dataset:
+0.0470769736578595
+TP
+fasttext model
+correlation with TP - fernandino 1 dataset:
+-0.000560245781689398
+R_ATL
+fasttext model
+correlation with R_ATL - fernandino 1 dataset:
+0.004354401632407306
+R_precuneus
+fasttext model
+correlation with R_precuneus - fernandino 1 dataset:
+0.024815185233690702
+R_AITG
+fasttext model
+correlation with R_AITG - fernandino 1 dataset:
+0.0017053431353747195
+L_middletemporal
+fasttext model
+correlation with L_middletemporal - fernandino 1 dataset:
+0.0038065184469104315
+PITG
+fasttext model
+correlation with PITG - fernandino 1 dataset:
+-0.0023206406659653225
+R_entorhinal
+fasttext model
+correlation with R_entorhinal - fernandino 1 dataset:
+-0.0018837787272691885
+L_PCinIst
+fasttext model
+correlation with L_PCinIst - fernandino 1 dataset:
+0.026548132616137043
+L_inferiortemporal
+fasttext model
+correlation with L_inferiortemporal - fernandino 1 dataset:
+0.0003768290388870806
+R_PCinIst
+fasttext model
+correlation with R_PCinIst - fernandino 1 dataset:
+0.01522193089919463
+APPG
+fasttext model
+correlation with APPG - fernandino 1 dataset:
+-0.0015749727172065572
+R_medialorbitofrontal
+fasttext model
+correlation with R_medialorbitofrontal - fernandino 1 dataset:
+0.004786838973901788
+L_medialorbitofrontal
+fasttext model
+correlation with L_medialorbitofrontal - fernandino 1 dataset:
+0.010045994242317408
+ER
+fasttext model
+correlation with ER - fernandino 1 dataset:
+-0.00283544627579406
+R_PITG
+fasttext model
+correlation with R_PITG - fernandino 1 dataset:
+-0.005528546980709249
+L_bankssts
+fasttext model
+correlation with L_bankssts - fernandino 1 dataset:
+-0.010406388682558502
+L_IFG
+fasttext model
+correlation with L_IFG - fernandino 1 dataset:
+0.018284400541408855
+L_lateralorbitofrontal
+fasttext model
+correlation with L_lateralorbitofrontal - fernandino 1 dataset:
+0.005108112840701687
+R_ASTG
+fasttext model
+correlation with R_ASTG - fernandino 1 dataset:
+0.005195432270392448
+R_fusiform
+fasttext model
+correlation with R_fusiform - fernandino 1 dataset:
+-0.0018663152515982276
+L_supramarginal
+fasttext model
+correlation with L_supramarginal - fernandino 1 dataset:
+0.003651494978297673
+R_inferiorparietal
+fasttext model
+correlation with R_inferiorparietal - fernandino 1 dataset:
+0.01763470005987931
+R_PFG
+fasttext model
+correlation with R_PFG - fernandino 1 dataset:
+-0.003202915658865186
+ATL
+fasttext model
+correlation with ATL - fernandino 1 dataset:
+0.0036660611675039876
+L_superiortemporal
+fasttext model
+correlation with L_superiortemporal - fernandino 1 dataset:
+-0.00033158580381186583
+R_inferiortemporal
+fasttext model
+correlation with R_inferiortemporal - fernandino 1 dataset:
+-0.0044329328898763155
+L_parahippocampal
+fasttext model
+correlation with L_parahippocampal - fernandino 1 dataset:
+0.011091772911325286
+AITG
+fasttext model
+correlation with AITG - fernandino 1 dataset:
+0.003817528650037164
+R_parahippocampal
+fasttext model
+correlation with R_parahippocampal - fernandino 1 dataset:
+0.005796348090745012
+R_supramarginal
+fasttext model
+correlation with R_supramarginal - fernandino 1 dataset:
+0.0038678962605175685
+R_PPPG
+fasttext model
+correlation with R_PPPG - fernandino 1 dataset:
+0.005525337722140653
+R_APPG
+fasttext model
+correlation with R_APPG - fernandino 1 dataset:
+0.002874021827143538
+PFG
+fasttext model
+correlation with PFG - fernandino 1 dataset:
+-0.0022768493031901068
+PMTG
+fasttext model
+correlation with PMTG - fernandino 1 dataset:
+-0.0008666200352595668
+PPPG
+fasttext model
+correlation with PPPG - fernandino 1 dataset:
+0.015704063191667117
+R_TP
+fasttext model
+correlation with R_TP - fernandino 1 dataset:
+-0.0011216458380459765
+L_ATLerh
+fasttext model
+correlation with L_ATLerh - fernandino 1 dataset:
+0.00169661329325816
+L_entorhinal
+fasttext model
+correlation with L_entorhinal - fernandino 1 dataset:
+-0.0024710042559884155
+ASTG
+fasttext model
+correlation with ASTG - fernandino 1 dataset:
+0.0024757969780595684
+L_rostralanteriorcingulate
+fasttext model
+correlation with L_rostralanteriorcingulate - fernandino 1 dataset:
+0.002211702350816514
+L_fusiform
+fasttext model
+correlation with L_fusiform - fernandino 1 dataset:
+-0.0022891775723071456
+R_AMTG
+fasttext model
+correlation with R_AMTG - fernandino 1 dataset:
+0.007044078481962723
+R_superiortemporal
+fasttext model
+correlation with R_superiortemporal - fernandino 1 dataset:
+0.0025959837105412236
+L_caudalmiddlefrontal
+fasttext model
+correlation with L_caudalmiddlefrontal - fernandino 2 dataset:
+0.020321019312281044
+R_superiorfrontal
+fasttext model
+correlation with R_superiorfrontal - fernandino 2 dataset:
+0.015395635239357571
+APPG
+fasttext model
+correlation with APPG - fernandino 2 dataset:
+0.0031321727502505114
+R_IFG
+fasttext model
+correlation with R_IFG - fernandino 2 dataset:
+0.028563127409561566
+L_superiorfrontal
+fasttext model
+correlation with L_superiorfrontal - fernandino 2 dataset:
+0.022969697926509984
+R_ER
+fasttext model
+correlation with R_ER - fernandino 2 dataset:
+0.004039290228913014
+PITG
+fasttext model
+correlation with PITG - fernandino 2 dataset:
+0.012685584735311256
+L_inferiorparietal
+fasttext model
+correlation with L_inferiorparietal - fernandino 2 dataset:
+0.030815334151914793
+R_AFG
+fasttext model
+correlation with R_AFG - fernandino 2 dataset:
+0.004505220258215346
+R_lateralorbitofrontal
+fasttext model
+correlation with R_lateralorbitofrontal - fernandino 2 dataset:
+0.01889585468582093
+R_PSTG
+fasttext model
+correlation with R_PSTG - fernandino 2 dataset:
+0.0014015863415868049
+PMTG
+fasttext model
+correlation with PMTG - fernandino 2 dataset:
+0.025556126227655143
+R_rostralanteriorcingulate
+fasttext model
+correlation with R_rostralanteriorcingulate - fernandino 2 dataset:
+0.006885056567899666
+R_PMTG
+fasttext model
+correlation with R_PMTG - fernandino 2 dataset:
+0.012847029954254992
+R_caudalmiddlefrontal
+fasttext model
+correlation with R_caudalmiddlefrontal - fernandino 2 dataset:
+0.009954511619045908
+_semantic_network
+fasttext model
+correlation with _semantic_network - fernandino 2 dataset:
+0.04042883211205888
+PPPG
+fasttext model
+correlation with PPPG - fernandino 2 dataset:
+0.013740789387153906
+ER
+fasttext model
+correlation with ER - fernandino 2 dataset:
+0.004838051623198321
+AITG
+fasttext model
+correlation with AITG - fernandino 2 dataset:
+0.005537610052849565
+R_ATLerh
+fasttext model
+correlation with R_ATLerh - fernandino 2 dataset:
+0.016229845548730516
+R_middletemporal
+fasttext model
+correlation with R_middletemporal - fernandino 2 dataset:
+0.015174854538082618
+R_bankssts
+fasttext model
+correlation with R_bankssts - fernandino 2 dataset:
+0.011480070007212214
+L_precuneus
+fasttext model
+correlation with L_precuneus - fernandino 2 dataset:
+0.027493445463163093
+R_ATL
+fasttext model
+correlation with R_ATL - fernandino 2 dataset:
+0.016574575810405216
+R_precuneus
+fasttext model
+correlation with R_precuneus - fernandino 2 dataset:
+0.01807513639627831
+R_AITG
+fasttext model
+correlation with R_AITG - fernandino 2 dataset:
+0.006644804730609966
+L_middletemporal
+fasttext model
+correlation with L_middletemporal - fernandino 2 dataset:
+0.029467513986687358
+R_entorhinal
+fasttext model
+correlation with R_entorhinal - fernandino 2 dataset:
+0.004023932832250005
+TP
+fasttext model
+correlation with TP - fernandino 2 dataset:
+0.005741182927108891
+L_PCinIst
+fasttext model
+correlation with L_PCinIst - fernandino 2 dataset:
+0.03593715599142652
+L_inferiortemporal
+fasttext model
+correlation with L_inferiortemporal - fernandino 2 dataset:
+0.012990748871948468
+R_PCinIst
+fasttext model
+correlation with R_PCinIst - fernandino 2 dataset:
+0.025366038802933935
+PFG
+fasttext model
+correlation with PFG - fernandino 2 dataset:
+0.011611703337533183
+R_medialorbitofrontal
+fasttext model
+correlation with R_medialorbitofrontal - fernandino 2 dataset:
+0.007580325847869645
+L_medialorbitofrontal
+fasttext model
+correlation with L_medialorbitofrontal - fernandino 2 dataset:
+0.009047010732027454
+R_PITG
+fasttext model
+correlation with R_PITG - fernandino 2 dataset:
+0.005239487136528293
+L_bankssts
+fasttext model
+correlation with L_bankssts - fernandino 2 dataset:
+0.01629257745233368
+ATL
+fasttext model
+correlation with ATL - fernandino 2 dataset:
+0.019581495122213494
+L_IFG
+fasttext model
+correlation with L_IFG - fernandino 2 dataset:
+0.045363154992335286
+ASTG
+fasttext model
+correlation with ASTG - fernandino 2 dataset:
+0.015750225330129635
+PSTG
+fasttext model
+correlation with PSTG - fernandino 2 dataset:
+0.0055202632394284095
+L_lateralorbitofrontal
+fasttext model
+correlation with L_lateralorbitofrontal - fernandino 2 dataset:
+0.021766004573859077
+R_ASTG
+fasttext model
+correlation with R_ASTG - fernandino 2 dataset:
+0.014863872217958993
+R_fusiform
+fasttext model
+correlation with R_fusiform - fernandino 2 dataset:
+0.00764985402692225
+L_supramarginal
+fasttext model
+correlation with L_supramarginal - fernandino 2 dataset:
+0.018451347417604767
+R_inferiorparietal
+fasttext model
+correlation with R_inferiorparietal - fernandino 2 dataset:
+0.01520271404273611
+AFG
+fasttext model
+correlation with AFG - fernandino 2 dataset:
+0.004758499642274562
+R_PFG
+fasttext model
+correlation with R_PFG - fernandino 2 dataset:
+0.006276230708986865
+L_superiortemporal
+fasttext model
+correlation with L_superiortemporal - fernandino 2 dataset:
+0.010989179731911181
+R_inferiortemporal
+fasttext model
+correlation with R_inferiortemporal - fernandino 2 dataset:
+0.006593981133770853
+L_parahippocampal
+fasttext model
+correlation with L_parahippocampal - fernandino 2 dataset:
+0.013630263444774866
+R_parahippocampal
+fasttext model
+correlation with R_parahippocampal - fernandino 2 dataset:
+0.010131122303988611
+R_supramarginal
+fasttext model
+correlation with R_supramarginal - fernandino 2 dataset:
+0.0038627024267427223
+R_PPPG
+fasttext model
+correlation with R_PPPG - fernandino 2 dataset:
+0.010411297917777652
+R_APPG
+fasttext model
+correlation with R_APPG - fernandino 2 dataset:
+0.0010515011293049446
+R_TP
+fasttext model
+correlation with R_TP - fernandino 2 dataset:
+0.0046378577139044065
+L_ATLerh
+fasttext model
+correlation with L_ATLerh - fernandino 2 dataset:
+0.019028176973428235
+L_entorhinal
+fasttext model
+correlation with L_entorhinal - fernandino 2 dataset:
+0.004939111292505886
+L_rostralanteriorcingulate
+fasttext model
+correlation with L_rostralanteriorcingulate - fernandino 2 dataset:
+0.008408211516770674
+AMTG
+fasttext model
+correlation with AMTG - fernandino 2 dataset:
+0.02457397549667333
+L_fusiform
+fasttext model
+correlation with L_fusiform - fernandino 2 dataset:
+0.01215470636761503
+R_AMTG
+fasttext model
+correlation with R_AMTG - fernandino 2 dataset:
+0.0170839626987637
+R_superiortemporal
+fasttext model
+correlation with R_superiortemporal - fernandino 2 dataset:
+0.009355120679167295
+L_caudalmiddlefrontal
+glove model
+correlation with L_caudalmiddlefrontal - fernandino 1 dataset:
+0.007083687166924142
+R_superiorfrontal
+glove model
+correlation with R_superiorfrontal - fernandino 1 dataset:
+0.003943530456154657
+R_IFG
+glove model
+correlation with R_IFG - fernandino 1 dataset:
+0.003177995534508436
+L_superiorfrontal
+glove model
+correlation with L_superiorfrontal - fernandino 1 dataset:
+0.020311099189856505
+PSTG
+glove model
+correlation with PSTG - fernandino 1 dataset:
+0.007761312574241971
+R_ER
+glove model
+correlation with R_ER - fernandino 1 dataset:
+-0.0023400315399919793
+AMTG
+glove model
+correlation with AMTG - fernandino 1 dataset:
+0.01189165988701716
+L_inferiorparietal
+glove model
+correlation with L_inferiorparietal - fernandino 1 dataset:
+0.031222968943322216
+R_AFG
+glove model
+correlation with R_AFG - fernandino 1 dataset:
+0.00039070444578786806
+R_lateralorbitofrontal
+glove model
+correlation with R_lateralorbitofrontal - fernandino 1 dataset:
+-0.0009007686952668716
+R_PSTG
+glove model
+correlation with R_PSTG - fernandino 1 dataset:
+-0.004342777031471033
+AFG
+glove model
+correlation with AFG - fernandino 1 dataset:
+-0.00048672578778364585
+R_rostralanteriorcingulate
+glove model
+correlation with R_rostralanteriorcingulate - fernandino 1 dataset:
+-0.0010206916569992005
+R_PMTG
+glove model
+correlation with R_PMTG - fernandino 1 dataset:
+-9.87381693253503e-05
+R_caudalmiddlefrontal
+glove model
+correlation with R_caudalmiddlefrontal - fernandino 1 dataset:
+-0.013160712920625917
+_semantic_network
+glove model
+correlation with _semantic_network - fernandino 1 dataset:
+0.034303252046372794
+R_ATLerh
+glove model
+correlation with R_ATLerh - fernandino 1 dataset:
+0.000249515827099857
+R_middletemporal
+glove model
+correlation with R_middletemporal - fernandino 1 dataset:
+0.0016860980205046783
+R_bankssts
+glove model
+correlation with R_bankssts - fernandino 1 dataset:
+-0.007263708472537079
+L_precuneus
+glove model
+correlation with L_precuneus - fernandino 1 dataset:
+0.025829105523380913
+TP
+glove model
+correlation with TP - fernandino 1 dataset:
+0.00031743651713861973
+R_ATL
+glove model
+correlation with R_ATL - fernandino 1 dataset:
+0.0017162853655591434
+R_precuneus
+glove model
+correlation with R_precuneus - fernandino 1 dataset:
+-0.002945020376678476
+R_AITG
+glove model
+correlation with R_AITG - fernandino 1 dataset:
+0.0005415751170631776
+L_middletemporal
+glove model
+correlation with L_middletemporal - fernandino 1 dataset:
+0.01386424175480783
+PITG
+glove model
+correlation with PITG - fernandino 1 dataset:
+-0.003848013059394418
+R_entorhinal
+glove model
+correlation with R_entorhinal - fernandino 1 dataset:
+-0.0023400315399919797
+L_PCinIst
+glove model
+correlation with L_PCinIst - fernandino 1 dataset:
+0.014769830724844685
+L_inferiortemporal
+glove model
+correlation with L_inferiortemporal - fernandino 1 dataset:
+-0.002285998668495525
+R_PCinIst
+glove model
+correlation with R_PCinIst - fernandino 1 dataset:
+0.0022449285324110677
+APPG
+glove model
+correlation with APPG - fernandino 1 dataset:
+-0.00252395631524628
+R_medialorbitofrontal
+glove model
+correlation with R_medialorbitofrontal - fernandino 1 dataset:
+-0.004466489648430013
+L_medialorbitofrontal
+glove model
+correlation with L_medialorbitofrontal - fernandino 1 dataset:
+0.005668578886968626
+ER
+glove model
+correlation with ER - fernandino 1 dataset:
+-0.004122619979562236
+R_PITG
+glove model
+correlation with R_PITG - fernandino 1 dataset:
+-9.815146825375726e-05
+L_bankssts
+glove model
+correlation with L_bankssts - fernandino 1 dataset:
+-0.004365240661158246
+L_IFG
+glove model
+correlation with L_IFG - fernandino 1 dataset:
+0.026982227879430474
+L_lateralorbitofrontal
+glove model
+correlation with L_lateralorbitofrontal - fernandino 1 dataset:
+0.004979955595085489
+R_ASTG
+glove model
+correlation with R_ASTG - fernandino 1 dataset:
+0.00355259015411427
+R_fusiform
+glove model
+correlation with R_fusiform - fernandino 1 dataset:
+-0.00486604233836544
+L_supramarginal
+glove model
+correlation with L_supramarginal - fernandino 1 dataset:
+-0.006941244207427661
+R_inferiorparietal
+glove model
+correlation with R_inferiorparietal - fernandino 1 dataset:
+-0.0027196486273206354
+R_PFG
+glove model
+correlation with R_PFG - fernandino 1 dataset:
+-0.007454321308497042
+ATL
+glove model
+correlation with ATL - fernandino 1 dataset:
+0.007285915795433563
+L_superiortemporal
+glove model
+correlation with L_superiortemporal - fernandino 1 dataset:
+0.011298010924895586
+R_inferiortemporal
+glove model
+correlation with R_inferiortemporal - fernandino 1 dataset:
+0.0010516909604046517
+L_parahippocampal
+glove model
+correlation with L_parahippocampal - fernandino 1 dataset:
+0.003123587979891988
+AITG
+glove model
+correlation with AITG - fernandino 1 dataset:
+0.0033756216727130026
+R_parahippocampal
+glove model
+correlation with R_parahippocampal - fernandino 1 dataset:
+0.0003765451352230149
+R_supramarginal
+glove model
+correlation with R_supramarginal - fernandino 1 dataset:
+-0.006360728312278734
+R_PPPG
+glove model
+correlation with R_PPPG - fernandino 1 dataset:
+0.0015329486693625486
+R_APPG
+glove model
+correlation with R_APPG - fernandino 1 dataset:
+-0.003081495581888696
+PFG
+glove model
+correlation with PFG - fernandino 1 dataset:
+-0.0023935440499412075
+PMTG
+glove model
+correlation with PMTG - fernandino 1 dataset:
+0.012274936491904375
+PPPG
+glove model
+correlation with PPPG - fernandino 1 dataset:
+0.004846424977585022
+R_TP
+glove model
+correlation with R_TP - fernandino 1 dataset:
+-0.004809620536512967
+L_ATLerh
+glove model
+correlation with L_ATLerh - fernandino 1 dataset:
+0.008811606027977453
+L_entorhinal
+glove model
+correlation with L_entorhinal - fernandino 1 dataset:
+-0.004209022041860544
+ASTG
+glove model
+correlation with ASTG - fernandino 1 dataset:
+0.008767290490816303
+L_rostralanteriorcingulate
+glove model
+correlation with L_rostralanteriorcingulate - fernandino 1 dataset:
+4.406362291768163e-05
+L_fusiform
+glove model
+correlation with L_fusiform - fernandino 1 dataset:
+-0.0023948018451811423
+R_AMTG
+glove model
+correlation with R_AMTG - fernandino 1 dataset:
+0.0026219950665674545
+R_superiortemporal
+glove model
+correlation with R_superiortemporal - fernandino 1 dataset:
+0.0016467455893530054
+L_caudalmiddlefrontal
+glove model
+correlation with L_caudalmiddlefrontal - fernandino 2 dataset:
+0.015703734857510518
+R_superiorfrontal
+glove model
+correlation with R_superiorfrontal - fernandino 2 dataset:
+0.01181534494904442
+APPG
+glove model
+correlation with APPG - fernandino 2 dataset:
+0.0020697840439616723
+R_IFG
+glove model
+correlation with R_IFG - fernandino 2 dataset:
+0.01986663103572442
+L_superiorfrontal
+glove model
+correlation with L_superiorfrontal - fernandino 2 dataset:
+0.02039096612990091
+R_ER
+glove model
+correlation with R_ER - fernandino 2 dataset:
+0.0014875237274000204
+PITG
+glove model
+correlation with PITG - fernandino 2 dataset:
+0.010895729237056619
+L_inferiorparietal
+glove model
+correlation with L_inferiorparietal - fernandino 2 dataset:
+0.029227165408531722
+R_AFG
+glove model
+correlation with R_AFG - fernandino 2 dataset:
+0.0025541345322383515
+R_lateralorbitofrontal
+glove model
+correlation with R_lateralorbitofrontal - fernandino 2 dataset:
+0.01580507881014263
+R_PSTG
+glove model
+correlation with R_PSTG - fernandino 2 dataset:
+0.0014047673200142127
+PMTG
+glove model
+correlation with PMTG - fernandino 2 dataset:
+0.021697190814989123
+R_rostralanteriorcingulate
+glove model
+correlation with R_rostralanteriorcingulate - fernandino 2 dataset:
+0.0032922589441310907
+R_PMTG
+glove model
+correlation with R_PMTG - fernandino 2 dataset:
+0.007968387466396356
+R_caudalmiddlefrontal
+glove model
+correlation with R_caudalmiddlefrontal - fernandino 2 dataset:
+0.008516134956546158
+_semantic_network
+glove model
+correlation with _semantic_network - fernandino 2 dataset:
+0.03198350079333109
+PPPG
+glove model
+correlation with PPPG - fernandino 2 dataset:
+0.010854229534235562
+ER
+glove model
+correlation with ER - fernandino 2 dataset:
+0.004248162163207673
+AITG
+glove model
+correlation with AITG - fernandino 2 dataset:
+0.0036056294605890113
+R_ATLerh
+glove model
+correlation with R_ATLerh - fernandino 2 dataset:
+0.010478291735317863
+R_middletemporal
+glove model
+correlation with R_middletemporal - fernandino 2 dataset:
+0.00932888463069883
+R_bankssts
+glove model
+correlation with R_bankssts - fernandino 2 dataset:
+0.005566653727065094
+L_precuneus
+glove model
+correlation with L_precuneus - fernandino 2 dataset:
+0.02167809694596202
+R_ATL
+glove model
+correlation with R_ATL - fernandino 2 dataset:
+0.01013820560411769
+R_precuneus
+glove model
+correlation with R_precuneus - fernandino 2 dataset:
+0.011613192896767656
+R_AITG
+glove model
+correlation with R_AITG - fernandino 2 dataset:
+0.00367767241921336
+L_middletemporal
+glove model
+correlation with L_middletemporal - fernandino 2 dataset:
+0.024840495562875497
+R_entorhinal
+glove model
+correlation with R_entorhinal - fernandino 2 dataset:
+0.0015629249366932352
+TP
+glove model
+correlation with TP - fernandino 2 dataset:
+0.005689847085383997
+L_PCinIst
+glove model
+correlation with L_PCinIst - fernandino 2 dataset:
+0.029500408908294765
+L_inferiortemporal
+glove model
+correlation with L_inferiortemporal - fernandino 2 dataset:
+0.010969774400549
+R_PCinIst
+glove model
+correlation with R_PCinIst - fernandino 2 dataset:
+0.01575610022537832
+PFG
+glove model
+correlation with PFG - fernandino 2 dataset:
+0.005549829169479228
+R_medialorbitofrontal
+glove model
+correlation with R_medialorbitofrontal - fernandino 2 dataset:
+0.0035190260511770454
+L_medialorbitofrontal
+glove model
+correlation with L_medialorbitofrontal - fernandino 2 dataset:
+0.00851144083246289
+R_PITG
+glove model
+correlation with R_PITG - fernandino 2 dataset:
+0.0030146789794027167
+L_bankssts
+glove model
+correlation with L_bankssts - fernandino 2 dataset:
+0.013176015754542912
+ATL
+glove model
+correlation with ATL - fernandino 2 dataset:
+0.01734079058245136
+L_IFG
+glove model
+correlation with L_IFG - fernandino 2 dataset:
+0.03358607411927592
+ASTG
+glove model
+correlation with ASTG - fernandino 2 dataset:
+0.015983658382652362
+PSTG
+glove model
+correlation with PSTG - fernandino 2 dataset:
+0.0077130607790936246
+L_lateralorbitofrontal
+glove model
+correlation with L_lateralorbitofrontal - fernandino 2 dataset:
+0.019254540325335925
+R_ASTG
+glove model
+correlation with R_ASTG - fernandino 2 dataset:
+0.010228217973285037
+R_fusiform
+glove model
+correlation with R_fusiform - fernandino 2 dataset:
+0.0037431084572430956
+L_supramarginal
+glove model
+correlation with L_supramarginal - fernandino 2 dataset:
+0.015257862681611655
+R_inferiorparietal
+glove model
+correlation with R_inferiorparietal - fernandino 2 dataset:
+0.01083603949469724
+AFG
+glove model
+correlation with AFG - fernandino 2 dataset:
+0.003897538793545758
+R_PFG
+glove model
+correlation with R_PFG - fernandino 2 dataset:
+0.002920032011225584
+L_superiortemporal
+glove model
+correlation with L_superiortemporal - fernandino 2 dataset:
+0.01285223567957224
+R_inferiortemporal
+glove model
+correlation with R_inferiortemporal - fernandino 2 dataset:
+0.0039794770651457095
+L_parahippocampal
+glove model
+correlation with L_parahippocampal - fernandino 2 dataset:
+0.010482123459548355
+R_parahippocampal
+glove model
+correlation with R_parahippocampal - fernandino 2 dataset:
+0.005850601405756151
+R_supramarginal
+glove model
+correlation with R_supramarginal - fernandino 2 dataset:
+0.004844045040717415
+R_PPPG
+glove model
+correlation with R_PPPG - fernandino 2 dataset:
+0.006090023941300344
+R_APPG
+glove model
+correlation with R_APPG - fernandino 2 dataset:
+0.00042309386717685597
+R_TP
+glove model
+correlation with R_TP - fernandino 2 dataset:
+0.0022437438791432537
+L_ATLerh
+glove model
+correlation with L_ATLerh - fernandino 2 dataset:
+0.017908688515582007
+L_entorhinal
+glove model
+correlation with L_entorhinal - fernandino 2 dataset:
+0.00440611397275762
+L_rostralanteriorcingulate
+glove model
+correlation with L_rostralanteriorcingulate - fernandino 2 dataset:
+0.003635093576723193
+AMTG
+glove model
+correlation with AMTG - fernandino 2 dataset:
+0.020348060012598815
+L_fusiform
+glove model
+correlation with L_fusiform - fernandino 2 dataset:
+0.006539773733335084
+R_AMTG
+glove model
+correlation with R_AMTG - fernandino 2 dataset:
+0.009720294963931408
+R_superiortemporal
+glove model
+correlation with R_superiortemporal - fernandino 2 dataset:
+0.006932342704983409
+L_caudalmiddlefrontal
+word2vec model
+correlation with L_caudalmiddlefrontal - fernandino 1 dataset:
+0.005115786449545282
+R_superiorfrontal
+word2vec model
+correlation with R_superiorfrontal - fernandino 1 dataset:
+0.011182723986607808
+R_IFG
+word2vec model
+correlation with R_IFG - fernandino 1 dataset:
+0.015192397887615061
+L_superiorfrontal
+word2vec model
+correlation with L_superiorfrontal - fernandino 1 dataset:
+0.015446462579192119
+PSTG
+word2vec model
+correlation with PSTG - fernandino 1 dataset:
+-0.006016662150668913
+R_ER
+word2vec model
+correlation with R_ER - fernandino 1 dataset:
+-0.0013248130461470404
+AMTG
+word2vec model
+correlation with AMTG - fernandino 1 dataset:
+0.006052566943859539
+L_inferiorparietal
+word2vec model
+correlation with L_inferiorparietal - fernandino 1 dataset:
+0.025222417790940574
+R_AFG
+word2vec model
+correlation with R_AFG - fernandino 1 dataset:
+0.0005010802785218389
+R_lateralorbitofrontal
+word2vec model
+correlation with R_lateralorbitofrontal - fernandino 1 dataset:
+0.0045433273317513016
+R_PSTG
+word2vec model
+correlation with R_PSTG - fernandino 1 dataset:
+-0.0007192145457444914
+AFG
+word2vec model
+correlation with AFG - fernandino 1 dataset:
+0.0012314294308340662
+R_rostralanteriorcingulate
+word2vec model
+correlation with R_rostralanteriorcingulate - fernandino 1 dataset:
+0.003129689869529302
+R_PMTG
+word2vec model
+correlation with R_PMTG - fernandino 1 dataset:
+0.000985982082322326
+R_caudalmiddlefrontal
+word2vec model
+correlation with R_caudalmiddlefrontal - fernandino 1 dataset:
+0.004958245167538494
+_semantic_network
+word2vec model
+correlation with _semantic_network - fernandino 1 dataset:
+0.03278322448607306
+R_ATLerh
+word2vec model
+correlation with R_ATLerh - fernandino 1 dataset:
+0.0009438108783272284
+R_middletemporal
+word2vec model
+correlation with R_middletemporal - fernandino 1 dataset:
+0.0033122119787871583
+R_bankssts
+word2vec model
+correlation with R_bankssts - fernandino 1 dataset:
+-0.0068499442450636475
+L_precuneus
+word2vec model
+correlation with L_precuneus - fernandino 1 dataset:
+0.03596174055605313
+TP
+word2vec model
+correlation with TP - fernandino 1 dataset:
+-0.0013471783563086077
+R_ATL
+word2vec model
+correlation with R_ATL - fernandino 1 dataset:
+0.0015099928010691023
+R_precuneus
+word2vec model
+correlation with R_precuneus - fernandino 1 dataset:
+0.02086381431125773
+R_AITG
+word2vec model
+correlation with R_AITG - fernandino 1 dataset:
+0.0001482787362151514
+L_middletemporal
+word2vec model
+correlation with L_middletemporal - fernandino 1 dataset:
+0.0017797475666356567
+PITG
+word2vec model
+correlation with PITG - fernandino 1 dataset:
+-0.004232146922765508
+R_entorhinal
+word2vec model
+correlation with R_entorhinal - fernandino 1 dataset:
+-0.0013248130461470404
+L_PCinIst
+word2vec model
+correlation with L_PCinIst - fernandino 1 dataset:
+0.023600218419565104
+L_inferiortemporal
+word2vec model
+correlation with L_inferiortemporal - fernandino 1 dataset:
+-0.001860518313387975
+R_PCinIst
+word2vec model
+correlation with R_PCinIst - fernandino 1 dataset:
+0.013213532066664114
+APPG
+word2vec model
+correlation with APPG - fernandino 1 dataset:
+-0.003986086340505934
+R_medialorbitofrontal
+word2vec model
+correlation with R_medialorbitofrontal - fernandino 1 dataset:
+0.004477660002679451
+L_medialorbitofrontal
+word2vec model
+correlation with L_medialorbitofrontal - fernandino 1 dataset:
+0.007561836133727525
+ER
+word2vec model
+correlation with ER - fernandino 1 dataset:
+-0.00286305254202965
+R_PITG
+word2vec model
+correlation with R_PITG - fernandino 1 dataset:
+-0.0029670414003286735
+L_bankssts
+word2vec model
+correlation with L_bankssts - fernandino 1 dataset:
+-0.008295507620170724
+L_IFG
+word2vec model
+correlation with L_IFG - fernandino 1 dataset:
+0.011369256742146908
+L_lateralorbitofrontal
+word2vec model
+correlation with L_lateralorbitofrontal - fernandino 1 dataset:
+0.0009386101276887427
+R_ASTG
+word2vec model
+correlation with R_ASTG - fernandino 1 dataset:
+0.0026655352023581057
+R_fusiform
+word2vec model
+correlation with R_fusiform - fernandino 1 dataset:
+-0.002992377870481046
+L_supramarginal
+word2vec model
+correlation with L_supramarginal - fernandino 1 dataset:
+0.002399238283718257
+R_inferiorparietal
+word2vec model
+correlation with R_inferiorparietal - fernandino 1 dataset:
+0.012233502211217398
+R_PFG
+word2vec model
+correlation with R_PFG - fernandino 1 dataset:
+-0.004414367692715604
+ATL
+word2vec model
+correlation with ATL - fernandino 1 dataset:
+0.0018366053406587385
+L_superiortemporal
+word2vec model
+correlation with L_superiortemporal - fernandino 1 dataset:
+-0.0008165321392122899
+R_inferiortemporal
+word2vec model
+correlation with R_inferiortemporal - fernandino 1 dataset:
+-0.003137045667754732
+L_parahippocampal
+word2vec model
+correlation with L_parahippocampal - fernandino 1 dataset:
+0.004976601424686753
+AITG
+word2vec model
+correlation with AITG - fernandino 1 dataset:
+0.0018647672085850824
+R_parahippocampal
+word2vec model
+correlation with R_parahippocampal - fernandino 1 dataset:
+0.006397158642423189
+R_supramarginal
+word2vec model
+correlation with R_supramarginal - fernandino 1 dataset:
+0.000781964007110795
+R_PPPG
+word2vec model
+correlation with R_PPPG - fernandino 1 dataset:
+0.006631508676739479
+R_APPG
+word2vec model
+correlation with R_APPG - fernandino 1 dataset:
+0.0005031007741639988
+PFG
+word2vec model
+correlation with PFG - fernandino 1 dataset:
+-0.004818166412989982
+PMTG
+word2vec model
+correlation with PMTG - fernandino 1 dataset:
+-2.4822169053285124e-05
+PPPG
+word2vec model
+correlation with PPPG - fernandino 1 dataset:
+0.00839589671382486
+R_TP
+word2vec model
+correlation with R_TP - fernandino 1 dataset:
+-0.002332440549063426
+L_ATLerh
+word2vec model
+correlation with L_ATLerh - fernandino 1 dataset:
+0.001076840094682611
+L_entorhinal
+word2vec model
+correlation with L_entorhinal - fernandino 1 dataset:
+-0.0025206177866960947
+ASTG
+word2vec model
+correlation with ASTG - fernandino 1 dataset:
+0.0016947279371074824
+L_rostralanteriorcingulate
+word2vec model
+correlation with L_rostralanteriorcingulate - fernandino 1 dataset:
+0.004620163540450356
+L_fusiform
+word2vec model
+correlation with L_fusiform - fernandino 1 dataset:
+-0.0027912922597214404
+R_AMTG
+word2vec model
+correlation with R_AMTG - fernandino 1 dataset:
+0.006268733936279835
+R_superiortemporal
+word2vec model
+correlation with R_superiortemporal - fernandino 1 dataset:
+0.002069092211418109
+L_caudalmiddlefrontal
+word2vec model
+correlation with L_caudalmiddlefrontal - fernandino 2 dataset:
+0.017294180177634684
+R_superiorfrontal
+word2vec model
+correlation with R_superiorfrontal - fernandino 2 dataset:
+0.01413693940663534
+APPG
+word2vec model
+correlation with APPG - fernandino 2 dataset:
+0.0026444504413290853
+R_IFG
+word2vec model
+correlation with R_IFG - fernandino 2 dataset:
+0.02298906828037081
+L_superiorfrontal
+word2vec model
+correlation with L_superiorfrontal - fernandino 2 dataset:
+0.020601677905024304
+R_ER
+word2vec model
+correlation with R_ER - fernandino 2 dataset:
+0.002677957341127112
+PITG
+word2vec model
+correlation with PITG - fernandino 2 dataset:
+0.012034888270878515
+L_inferiorparietal
+word2vec model
+correlation with L_inferiorparietal - fernandino 2 dataset:
+0.02668513694835403
+R_AFG
+word2vec model
+correlation with R_AFG - fernandino 2 dataset:
+0.003626683118567372
+R_lateralorbitofrontal
+word2vec model
+correlation with R_lateralorbitofrontal - fernandino 2 dataset:
+0.016576728955407193
+R_PSTG
+word2vec model
+correlation with R_PSTG - fernandino 2 dataset:
+0.0007979949690345176
+PMTG
+word2vec model
+correlation with PMTG - fernandino 2 dataset:
+0.0212716381194598
+R_rostralanteriorcingulate
+word2vec model
+correlation with R_rostralanteriorcingulate - fernandino 2 dataset:
+0.003634070168004803
+R_PMTG
+word2vec model
+correlation with R_PMTG - fernandino 2 dataset:
+0.009085239630118487
+R_caudalmiddlefrontal
+word2vec model
+correlation with R_caudalmiddlefrontal - fernandino 2 dataset:
+0.009908973657080482
+_semantic_network
+word2vec model
+correlation with _semantic_network - fernandino 2 dataset:
+0.033539903969835916
+PPPG
+word2vec model
+correlation with PPPG - fernandino 2 dataset:
+0.014472585712881736
+ER
+word2vec model
+correlation with ER - fernandino 2 dataset:
+0.005603612808647454
+AITG
+word2vec model
+correlation with AITG - fernandino 2 dataset:
+0.004969212094144949
+R_ATLerh
+word2vec model
+correlation with R_ATLerh - fernandino 2 dataset:
+0.013966674734523522
+R_middletemporal
+word2vec model
+correlation with R_middletemporal - fernandino 2 dataset:
+0.011388712086667245
+R_bankssts
+word2vec model
+correlation with R_bankssts - fernandino 2 dataset:
+0.008073031057617417
+L_precuneus
+word2vec model
+correlation with L_precuneus - fernandino 2 dataset:
+0.021215789236449
+R_ATL
+word2vec model
+correlation with R_ATL - fernandino 2 dataset:
+0.014384319631315376
+R_precuneus
+word2vec model
+correlation with R_precuneus - fernandino 2 dataset:
+0.014318747887140678
+R_AITG
+word2vec model
+correlation with R_AITG - fernandino 2 dataset:
+0.006741225627248575
+L_middletemporal
+word2vec model
+correlation with L_middletemporal - fernandino 2 dataset:
+0.02371371755193796
+R_entorhinal
+word2vec model
+correlation with R_entorhinal - fernandino 2 dataset:
+0.0027004088484836835
+TP
+word2vec model
+correlation with TP - fernandino 2 dataset:
+0.003775515349136217
+L_PCinIst
+word2vec model
+correlation with L_PCinIst - fernandino 2 dataset:
+0.028715907200917982
+L_inferiortemporal
+word2vec model
+correlation with L_inferiortemporal - fernandino 2 dataset:
+0.012118702931406872
+R_PCinIst
+word2vec model
+correlation with R_PCinIst - fernandino 2 dataset:
+0.020763338930838444
+PFG
+word2vec model
+correlation with PFG - fernandino 2 dataset:
+0.011689364433208397
+R_medialorbitofrontal
+word2vec model
+correlation with R_medialorbitofrontal - fernandino 2 dataset:
+0.006291362000563467
+L_medialorbitofrontal
+word2vec model
+correlation with L_medialorbitofrontal - fernandino 2 dataset:
+0.007002072631630403
+R_PITG
+word2vec model
+correlation with R_PITG - fernandino 2 dataset:
+0.004553419881670297
+L_bankssts
+word2vec model
+correlation with L_bankssts - fernandino 2 dataset:
+0.013482558347034514
+ATL
+word2vec model
+correlation with ATL - fernandino 2 dataset:
+0.016280229750215067
+L_IFG
+word2vec model
+correlation with L_IFG - fernandino 2 dataset:
+0.038018355463444585
+ASTG
+word2vec model
+correlation with ASTG - fernandino 2 dataset:
+0.014309022037651387
+PSTG
+word2vec model
+correlation with PSTG - fernandino 2 dataset:
+0.006246637593618933
+L_lateralorbitofrontal
+word2vec model
+correlation with L_lateralorbitofrontal - fernandino 2 dataset:
+0.01788015414693465
+R_ASTG
+word2vec model
+correlation with R_ASTG - fernandino 2 dataset:
+0.013184472171178137
+R_fusiform
+word2vec model
+correlation with R_fusiform - fernandino 2 dataset:
+0.00832334006892105
+L_supramarginal
+word2vec model
+correlation with L_supramarginal - fernandino 2 dataset:
+0.015845344240481462
+R_inferiorparietal
+word2vec model
+correlation with R_inferiorparietal - fernandino 2 dataset:
+0.012797575187324849
+AFG
+word2vec model
+correlation with AFG - fernandino 2 dataset:
+0.004359432912766357
+R_PFG
+word2vec model
+correlation with R_PFG - fernandino 2 dataset:
+0.007630922380194283
+L_superiortemporal
+word2vec model
+correlation with L_superiortemporal - fernandino 2 dataset:
+0.01081439794472892
+R_inferiortemporal
+word2vec model
+correlation with R_inferiortemporal - fernandino 2 dataset:
+0.006335781061454954
+L_parahippocampal
+word2vec model
+correlation with L_parahippocampal - fernandino 2 dataset:
+0.014481762737099228
+R_parahippocampal
+word2vec model
+correlation with R_parahippocampal - fernandino 2 dataset:
+0.009119365730791832
+R_supramarginal
+word2vec model
+correlation with R_supramarginal - fernandino 2 dataset:
+0.0027460913749150643
+R_PPPG
+word2vec model
+correlation with R_PPPG - fernandino 2 dataset:
+0.009376538664808295
+R_APPG
+word2vec model
+correlation with R_APPG - fernandino 2 dataset:
+0.000922446930811909
+R_TP
+word2vec model
+correlation with R_TP - fernandino 2 dataset:
+0.003532108700206022
+L_ATLerh
+word2vec model
+correlation with L_ATLerh - fernandino 2 dataset:
+0.016134758062386564
+L_entorhinal
+word2vec model
+correlation with L_entorhinal - fernandino 2 dataset:
+0.006242013214364593
+L_rostralanteriorcingulate
+word2vec model
+correlation with L_rostralanteriorcingulate - fernandino 2 dataset:
+0.005802349408175254
+AMTG
+word2vec model
+correlation with AMTG - fernandino 2 dataset:
+0.01828945319650425
+L_fusiform
+word2vec model
+correlation with L_fusiform - fernandino 2 dataset:
+0.011827364823549985
+R_AMTG
+word2vec model
+correlation with R_AMTG - fernandino 2 dataset:
+0.014950098648256561
+R_superiortemporal
+word2vec model
+correlation with R_superiortemporal - fernandino 2 dataset:
+0.007826469475945157

@@ -4,8 +4,12 @@ import multiprocessing
 import os
 import re
 import spacy
+import sys
 
-from .readers import wiki_reader, wac_reader, bnc_reader, opensubs_reader, paths_loader
+from tqdm import tqdm
+
+sys.path.append('..')
+from readers import wiki_reader, wac_reader, bnc_reader, opensubs_reader, paths_loader
 
 def preprocess(folder_path):
     all_sentences, file_paths = wiki_reader(args, folder_path, file_paths=True)
@@ -53,7 +57,7 @@ def preprocess(folder_path):
             o = open(full_out_path, 'w', encoding='utf-8')
             o.write('Word\tLemma\tWord type\tEntity type or POS\n')
             old_path = '{}'.format(full_out_path)
-        for l in cleaned_lines:
+        for l in tqdm(cleaned_lines):
             for w in l:
                 o.write('{}\t'.format(w))
             o.write('\n')
@@ -92,7 +96,7 @@ if args.language == 'it':
 if args.language == 'en':
     model = spacy.load('en_core_web_lg')
 if args.language == 'de':
-    model = spacy.load('en_core_news_lg')
+    model = spacy.load('de_core_news_lg')
 
 paths = paths_loader(args)
 

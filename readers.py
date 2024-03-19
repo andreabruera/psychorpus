@@ -1,6 +1,8 @@
 import os
 import re
 
+from tqdm import tqdm
+
 def wiki_reader(args, folder_path, pos=False, file_paths=False):
     pos_mapper = load_pos_mappers(args)
     sentences = list()
@@ -155,7 +157,7 @@ def opensubs_reader(args, folder_path, pos=False):
     pos_mapper = load_pos_mappers(args)
     sentences = list()
     ### in opensubs the file is a folder...
-    for file_path in os.listdir(folder_path):
+    for file_path in folder_path:
         if pos:
             sentence = {
                         'word' : list(), 
@@ -165,7 +167,7 @@ def opensubs_reader(args, folder_path, pos=False):
             sentence = {
                         'word' : list(), 
                         }
-        with open(os.path.join(folder_path, file_path)) as i:
+        with open(os.path.join(file_path)) as i:
             for l in i:
                 line = l.strip().split('\t')
                 if line[0] == '<EOS>':
@@ -246,10 +248,11 @@ def bnc_reader(args, file_path, pos=False):
 def paths_loader(args, pos=False):
     ### loading sentences
     print('now collecting paths...')
-    basic_folder = os.path.join('..', '..', 'dataset', 'corpora', args.language)
+    basic_folder = os.path.join('/', 'import', 'cogsci', 'andrea', 'dataset', 'corpora', args.language)
     assert os.path.exists(basic_folder)
-    if args.corpus == 'wiki':
-        wiki_path = os.path.join(basic_folder, '{}_wiki_art_by_art_2024-01-01'.format(args.language))
+    if args.corpus in ['wiki', 'tagged_wiki']:
+        marker = args.corpus.replace('wiki', '')
+        wiki_path = os.path.join(basic_folder, '{}_wiki_{}art_by_art_2024-01-01'.format(args.language, marker))
         assert os.path.exists(wiki_path)
         ### for wikipedia we do not take files but folders!
         paths = [os.path.join(wiki_path, direc) for direc in os.listdir(wiki_path)]
@@ -265,8 +268,9 @@ def paths_loader(args, pos=False):
     if args.corpus == 'opensubs':
         opensubs_path = os.path.join(basic_folder, 'opensubs-2018_parsed_{}'.format(args.language))
         assert os.path.exists(opensubs_path)
-        ### for opensubs we do not take files but folders!
-        paths = [os.path.join(opensubs_path, direc) for direc in os.listdir(opensubs_path)]
+        ### for opensubs we split files in bunches of 1000 files... 
+        paths = [os.path.join(root, f) for root, direc, filez in os.walk(opensubs_path) for f in filez]
+        paths = [paths[start:start+1000] for start in range(0, len(paths), 1000)]
     if args.corpus == 'bnc':
         if args.language != 'en':
             raise RuntimeError('BNC is obviously only available in English!')
@@ -353,7 +357,7 @@ def load_pos_mappers(args):
         if args.language == 'de':
             mapper = {
                     }
-    if args.corpus == 'wiki':
+    if 'wiki' in args.corpus:
         mapper = {
                   }
     return mapper

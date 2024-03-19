@@ -1,10 +1,13 @@
 import argparse
 import fasttext
+import gensim
 import numpy
 import os
 import pickle
 import random
 import scipy
+
+import gensim.downloader as api
 
 from scipy import spatial, stats
 
@@ -13,7 +16,7 @@ from utils import build_ppmi_vecs, read_ratings, read_men, read_men_test, read_s
 ratings = read_ratings()
 
 men_sims = read_men()
-#men_sims = read_men_test()
+men_sims = read_men_test()
 men_words = set([w for ws in men_sims.keys() for w in ws])
 print('annotated MEN words: {}'.format(len(men_words)))
 
@@ -27,21 +30,23 @@ test_words = men_words.union(simlex_words)
 for corpus in [
                #'bnc',
                #'wac',
-               'wiki',
+               'tagged_wiki',
                #'opensubs',
                ]:
-    if corpus == 'bnc':
-        min_count = 10
-    elif corpus in ['opensubs', 'wac', 'wiki']:
+    if corpus in ['bnc', 'opensubs']:
+        min_count = 100
+    elif corpus in ['tagged_wiki', 'wac', 'wiki']:
         min_count = 100
     with open(os.path.join(
                            'pickles', 'en', corpus, 
                            'en_{}_uncased_word_freqs.pkl'.format(corpus),
                            ), 'rb') as i:
         freqs = pickle.load(i)
+    print('total size of the corpus: {} tokens'.format(sum(freqs.values())))
     with open(os.path.join(
                            'pickles', 'en', corpus, 
                            'en_{}_coocs_uncased_min_{}_win_20.pkl'.format(corpus, min_count),
+                           #'en_{}_coocs_uncased_min_{}_win_4.pkl'.format(corpus, min_count),
                            ), 'rb') as i:
         coocs = pickle.load(i)
     with open(os.path.join(
@@ -88,7 +93,7 @@ for corpus in [
     pruned_test_words = [w for w in test_words if w not in missing and vocab[w]!=0]
 
     ### removing rare words
-    pruned_ratings = {w : dct for w, dct in ratings.items() if w in freqs.keys() and freqs[w] >= 100 and vocab[w]!=0}
+    pruned_ratings = {w : dct for w, dct in ratings.items() if w in freqs.keys() and vocab[w]!=0}
     percent = int(len(pruned_ratings.items())*0.001)
     #percent = int(len(pruned_ratings.items())*0.05)
     ### context words
@@ -124,6 +129,8 @@ for corpus in [
                  'pmi',
                  'most_frequent_pmi',
                  'fasttext',
+                 'glove',
+                 'word2vec',
                  ]:
         if case == 'random':
             current_vecs = {k : numpy.array(random.sample(v.tolist(), k=len(v))) for k, v in vecs.items()}
@@ -138,6 +145,15 @@ for corpus in [
         elif case == 'fasttext':
             ft = fasttext.load_model('../../dataset/word_vectors/en/cc.en.300.bin')
             current_vecs = {k : ft[k] for k, v in vecs.items()}
+            del ft
+        elif case == 'glove':
+            model = api.load("glove-wiki-gigaword-300")
+            current_vecs = {k : model[k] for k, v in vecs.items()}
+            del model
+        elif case == 'word2vec':
+            model = api.load("word2vec-google-news-300")
+            current_vecs = {k : model[k] for k, v in vecs.items()}
+            del model
         for dataset_name, dataset in [
                                       ('MEN', men_sims),
                                       ('SimLex', simlex_sims),

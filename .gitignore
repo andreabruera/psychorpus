@@ -1,4 +1,6 @@
 pickles/
+data/Study1*
+data/Study2*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
