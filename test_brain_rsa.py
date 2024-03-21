@@ -20,29 +20,46 @@ ft = fasttext.load_model('../../dataset/word_vectors/en/cc.en.300.bin')
 print('loaded!')
 ratings = read_ratings()
 
+results = os.path.join(
+                       'results', 
+                       'fernandino',
+                       )
+os.makedirs(
+            results, 
+            exist_ok=True,
+            )
+
 for corpus in [
                'opensubs',
                #'tagged_wiki',
                #'bnc',
                #'wac',
                ]:
-    with open('all_results_{}.txt'.format(corpus), 'w') as o:
-        for min_count in [
-                          #10, 
-                          100,
-                          ]:
-            for percent_val in [
-                                #0.001, 
-                                #0.01, 
-                                0.1, 
-                                #1,
-                                ]:
-                for win_size in [
-                                 4, 
-                                 #20,
-                                 ]:
+    for min_count in [
+                      10, 
+                      #100,
+                      ]:
+        for percent_val in [
+                            #0.001, 
+                            #0.01, 
+                            #0.1, 
+                            1,
+                            ]:
+            for win_size in [
+                             4, 
+                             #20,
+                             ]:
+                with open(
+                      os.path.join(
+                          results,  
+                          'all_results_{}_min{}_{}.txt'.format(
+                                   corpus, 
+                                   min_count, 
+                                   percent_val, 
+                                   win_size,
+                                   )
+                          ), 'w') as o:
                     print('\n\n{} - min {} - {} percent - window size {}'.format(corpus, min_count, percent_val*100, win_size))
-                    o.write('\n{} - min {} - {} percent - window size {}\n'.format(corpus, min_count, percent_val*100, win_size))
                     with open(os.path.join(
                                            'pickles', 'en', corpus, 
                                            'en_{}_uncased_word_freqs.pkl'.format(corpus),
@@ -200,13 +217,24 @@ for corpus in [
                                 print(brain_area)
                                 print('{} model'.format(case))
                                 print('\n')
-                                o.write(brain_area)
-                                o.write('\n')
-                                o.write('{} model'.format(case))
-                                o.write('\n')
+                                o.write('{}\t'.format(dataset_number))
+                                o.write('{}\t'.format(brain_area))
+                                if 'pmi' in case:
+                                    o.write('{}_{}_min{}_{}_win{}\t'.format(
+                                                      case, 
+                                                      corpus, 
+                                                      min_count, 
+                                                      percent_val, 
+                                                      win_size,
+                                                      )
+                                                      )
+                                else:
+                                    o.write('{}\t'.format(case))
                                 print('correlation with {} - fernandino {} dataset:'.format(brain_area, dataset_number))
-                                o.write('correlation with {} - fernandino {} dataset:'.format(brain_area, dataset_number))
-                                o.write('\n')
+                                #o.write('correlation with {} - fernandino {} dataset:'.format(brain_area, dataset_number))
+                                #o.write('\n')
+                                for r in results:
+                                    o.write('{}\t'.format(float(r)))
                                 print(numpy.average(results))
-                                o.write('{}'.format(numpy.average(results)))
+                                #o.write('{}'.format(numpy.average(results)))
                                 o.write('\n')

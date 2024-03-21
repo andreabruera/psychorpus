@@ -1,6 +1,9 @@
 pickles/
 data/Study1*
 data/Study2*
+brain_plots/
+results/
+data/fernandino_*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

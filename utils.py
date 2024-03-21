@@ -1,8 +1,11 @@
 import numpy
 import os
+import pickle
 import re
 
-def read_ratings():
+from tqdm import tqdm
+
+def read_ratings(hand=False):
     ### sensory ratings
     file_path = os.path.join(
                              'data',
@@ -21,6 +24,8 @@ def read_ratings():
                      #'Mouth.mean', 
                      #'Torso.mean'
                      ]
+    if hand:
+        relevant_keys.append('Hand_arm.mean')
     norms = {k.lower().split('.')[0] : dict() for k in relevant_keys}
     with open(file_path) as i:
         counter = 0
@@ -69,10 +74,20 @@ def read_ratings():
 
     return final_norms
 
-def read_fernandino(vocab, pos):
+def read_fernandino(vocab, pos, return_dict=False):
 
     words = {1 : list(), 2 : list()}
     subjects_data = {1 : dict(), 2 : dict()}
+    full_subjects_data = {1 : dict(), 2 : dict()}
+    pkl_path = os.path.join('data', 'fernandino_rsa.pkl')
+    full_pkl_path = os.path.join('data', 'fernandino_pairwise.pkl')
+    marker = False
+    if os.path.exists(pkl_path):
+        with open(pkl_path, 'rb') as i:
+            subjects_data = pickle.load(i)
+        with open(full_pkl_path, 'rb') as i:
+            full_subjects_data = pickle.load(i)
+        marker = True
 
     for d in words.keys():
         missing_idxs = list()
@@ -89,6 +104,9 @@ def read_fernandino(vocab, pos):
         ### similarities
         ### other anterior-frontal areas
         ### reading mapper
+        if marker:
+            continue
+
         mapper = dict()
         with open(os.path.join('data', 'colortable_desikan_killiany.txt')) as i:
             for l in i:
@@ -98,11 +116,11 @@ def read_fernandino(vocab, pos):
                 mapper[line[0]] = 'L_{}'.format(line[1])
                 mapper[str(int(line[0])+35)] = 'R_{}'.format(line[1])
         folder = 'Study{}_neural_vectors_RSMs'.format(d)
-        for brain_area_folder in os.listdir(os.path.join('data', folder)):
+        for brain_area_folder in tqdm(os.listdir(os.path.join('data', folder))):
             brain_area = re.sub(r'ALE|DK_|roi|_mask', '', brain_area_folder)
             if brain_area in mapper.keys():
                 brain_area = mapper[brain_area]
-            print(brain_area)
+            #print(brain_area)
             for f in os.listdir(os.path.join('data', folder, brain_area_folder,)):
                 if 'txt' not in f:
                     continue
@@ -121,11 +139,27 @@ def read_fernandino(vocab, pos):
                 ### adding data
                 if brain_area not in subjects_data[d].keys():
                     subjects_data[d][brain_area] = dict()
+                    if return_dict:
+                        full_subjects_data[d][brain_area] = dict()
                 ### RSA
                 ### removing diagonal
-                subjects_data[d][brain_area][sub] = numpy.array([val for line_i, line in enumerate(mtrx) for val_i, val in enumerate(line) if val_i>line_i], dtype=numpy.float64)
+                subjects_data[d][brain_area][sub] = numpy.array([val for line_i, line in enumerate(mtrx) for val_i, val in enumerate(line) if val_i>line_i], dtype=numpy.float64).tolist()
+                if return_dict:
+                    full_subjects_data[d][brain_area][sub] = dict()
+                    for w_one_i, w_one in enumerate(words[d]):
+                        for w_two_i, w_two in enumerate(words[d]):
+                            if w_two_i > w_one_i:
+                                full_subjects_data[d][brain_area][sub][tuple(sorted([w_one, w_two]))] = float(mtrx[w_one_i][w_two_i])
+    if not marker:
+        with open(pkl_path, 'wb') as i:
+            pickle.dump(subjects_data, i)
+        with open(full_pkl_path, 'wb') as i:
+            pickle.dump(full_subjects_data, i)
 
-    return words, subjects_data
+    if return_dict:
+        return words, subjects_data, full_subjects_data
+    else:
+        return words, subjects_data
 
 def read_men():
     sims = dict()
