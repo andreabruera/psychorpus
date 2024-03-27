@@ -3,7 +3,9 @@ data/Study1*
 data/Study2*
 brain_plots/
 results/
+plots/
 data/fernandino_*
+damaged_pickles/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

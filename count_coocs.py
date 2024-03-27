@@ -81,6 +81,7 @@ parser.add_argument(
                     choices=[
                              5,
                              10, 
+                             20,
                              50, 
                              100,
                              500,

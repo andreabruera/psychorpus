@@ -7,23 +7,23 @@ import tqdm
 
 from tqdm import tqdm
 
-from utils import build_ppmi_vecs, read_ratings, read_men, read_men_test, read_simlex, read_fernandino
+from utils import build_ppmi_vecs, read_fernandino_ratings, read_ratings, read_men, read_men_test, read_simlex, read_fernandino
 
-def bins_rsa_test(words, ratings, model, brain_data, out_file):
+def bins_rsa_test(words, ratings, model, brain_data, splits, out_file):
 
-    n_items = 32
     n_items = 8
     dataset_results = dict()
     relevant_keys = ratings[words[0]].keys()
 
-    bins = {'{}_{}'.format(case, i) : list() for i in range(5) for case in relevant_keys}
+    bins = {'{}_{}'.format(case, i) : list() for i in range(len(splits)) for case in relevant_keys}
 
     for case_i, case in enumerate(relevant_keys):
         print(case)
         counter = 0
-        #for beg, end in tqdm([(0., 1.), (1, 2), (2, 3), (3, 4), (4, 5)]):
-        for beg, end in tqdm([(0., .2), (.2, .4), (.4, .6), (.6, .8), (.8, 1.)]):
+        for beg, end in tqdm(splits):
+            #bin_words = [w for w in words if ratings[w][case]>=beg and ratings[w][case]<=end]
             bin_words = [w for w in words if w in ratings.keys() and ratings[w][case]>=beg and ratings[w][case]<=end]
+            #print(len(bin_words))
             if len(bin_words) < n_items:
                 print('nan')
                 bins['{}_{}'.format(case, counter)] = [numpy.nan for s in brain_data.keys()]
@@ -33,11 +33,7 @@ def bins_rsa_test(words, ratings, model, brain_data, out_file):
             for _ in range(100):
                 iter_results = list()
                 current_bin_words = random.sample(bin_words, k=n_items)
-                #current_bin_idxs = [ctx_words.index(w) for w in current_bin_words]
 
-                #sim_model = numpy.array([[1 - scipy.spatial.distance.cosine(vecs[k], vecs[k_two]) for k_two_i, k_two in enumerate(current_bin_words) if k_two_i>k_i] for k_i, k in enumerate(current_bin_words)]).flatten()
-                #sim_model = numpy.array([1 - scipy.spatial.distance.cosine(vecs[k], vecs[k_two]) for k_two_i, k_two in enumerate(current_bin_words) if k_two_i>k_i] for k_i, k in enumerate(current_bin_words)])
-                #data = {k : numpy.array([[vec[i] for i_i, i in enumerate(current_bin_idxs) if all_words[i]!=k] for vec in v]) for k, v in all_data.items() if k in current_bin_words}
                 sim_model = [1-scipy.spatial.distance.cosine(vecs[w_one], vecs[w_two]) for w_one_i, w_one in enumerate(current_bin_words) for w_two_i, w_two in enumerate(current_bin_words) if w_two_i>w_one_i]
                 for s, s_data in brain_data.items():
                     sim_brain = [s_data[tuple(sorted([w_one, w_two]))] for w_one_i, w_one in enumerate(current_bin_words) for w_two_i, w_two in enumerate(current_bin_words) if w_two_i>w_one_i]
@@ -52,12 +48,13 @@ def bins_rsa_test(words, ratings, model, brain_data, out_file):
     with open(out_file, 'w') as o:
         o.write('bin\tresults\n')
         for k, v in bins.items():
-            assert len(v) == len(brain_data.keys())
             #print(len(v))
+            assert len(v) == len(brain_data.keys())
             o.write('{}\t'.format(k))
             for val in v:
                 o.write('{}\t'.format(val))
             o.write('\n')
+fern_ratings = read_fernandino_ratings(hand=True)
 
 ### reading files
 corpus = [
@@ -94,10 +91,9 @@ words, _, data = read_fernandino(vocab, pos, return_dict=True)
 
 with open(os.path.join(
                        'pickles', 'en', corpus, 
-                       'en_{}_coocs_uncased_min_{}_win_{}_pmi_rows_cols.pkl'.format(corpus, min_count, win_size),
+                       'en_{}_coocs_uncased_min_{}_win_{}_pmi75_rows_cols.pkl'.format(corpus, min_count, win_size),
                        ), 'rb') as i:
     ctx_words = pickle.load(i)
-ratings = {k : v for k, v in read_ratings(hand=True).items() if k in ctx_words}
 mtrxs = dict()
 with open(os.path.join(
                        'pickles', 'en', corpus, 
@@ -105,45 +101,53 @@ with open(os.path.join(
                        ), 'rb') as i:
     pmi_mtrx = pickle.load(i)
 
-out = os.path.join('results', 'rsa', 'bins')
-os.makedirs(out, exist_ok=True)
 
 selected_areas = [
                   '_semantic_network',
-                  'AMTG',
-                  'L_caudalmiddlefrontal',
+                  #'AMTG',
+                  #'L_caudalmiddlefrontal',
                   'L_IFG',
                   'L_inferiorparietal',
-                  'L_lateralorbitofrontal',
+                  #'L_lateralorbitofrontal',
                   'L_precuneus',
-                  'L_superiorfrontal',
-                  'ATL',
-                  'L_middletemporal',
-                  'R_IFG',
-                  'R_lateralorbitofrontal',
-                  'R_precuneus',
-                  'R_ATL',
+                  #'L_superiorfrontal',
+                  #'ATL',
+                  #'L_middletemporal',
+                  #'R_IFG',
+                  #'R_lateralorbitofrontal',
+                  #'R_precuneus',
+                  #'R_ATL',
                   ]
+unit = 25
+assert 100 % unit == 0
+splits = [(i*0.01, (i+unit)*0.01) for i in range(0, 100, unit)]
+relevant_keys = fern_ratings['accordion'].keys()
 
-damage_ratings = [r for r in ratings['dog'].keys()]
-for dataset, brain_data in data.items():
-    for area, area_data in tqdm(brain_data.items()):
-        if area not in selected_areas:
-            continue
-        print(area)
-        for rat in damage_ratings:
-            sorted_ws = sorted([(w, v[rat]) for w, v in ratings.items()], key=lambda item: item[1])
+for mode in [
+            'averaged_sub_mtrxs', 
+            'individual_sub_mtrxs',
+            ]:
+    for dataset, brain_data in data.items():
+        for area, area_data in tqdm(brain_data.items()):
+            if area not in selected_areas:
+                continue
+            out = os.path.join(
+                               'results', 
+                               'fernandino{}'.format(dataset), 
+                               'bins',
+                               mode,
+                               area,
+                               '75{}_{}_{}'.format(corpus, min_count, win_size),
+                               'undamaged',
+                               'undamaged',
+                               )
+            os.makedirs(out, exist_ok=True)
+            print(out)
             for damage_amount in ['undamaged']:
                 vecs = {k : v for k, v in zip(ctx_words, pmi_mtrx)}
                 out_file = os.path.join(
                                 out, 
-                                'fernandino{}_{}_{}_{}_{}_{}_{}.results'.format(
-                                    dataset,
-                                    area,
-                                    corpus, 
-                                    min_count, 
-                                    win_size, 
-                                    rat, 
-                                    damage_amount)
+                                '{}.results'.format(
+                                        damage_amount), 
                                 )
-                bins_rsa_test(words[dataset], ratings, vecs, area_data, out_file)
+                bins_rsa_test(words[dataset], fern_ratings, vecs, area_data, splits, out_file)

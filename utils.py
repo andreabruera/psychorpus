@@ -5,6 +5,80 @@ import re
 
 from tqdm import tqdm
 
+def read_exp48(words):
+    vecs = dict()
+    ### sensory ratings
+    file_path = os.path.join(
+                             'data',
+                             'fernandino_experiential_ratings.tsv',
+                             )
+    assert os.path.exists(file_path)
+    mapper = {
+              'UpperLimb' : 'Hand',
+              'LowerLimb' : 'Foot',
+              'Head' : 'Mouth',
+              }
+    with open(file_path) as i:
+        for l_i, l in enumerate(i):
+            line = l.replace(',', '.').strip().split('\t')
+            if l_i == 0:
+                dimensions = [w.strip() for w in line[1:]]
+                dimensions = [mapper[w].lower() if w in mapper.keys() else w.lower() for w in dimensions]
+                continue
+            vecs[line[0].lower().strip()] = numpy.array(line[1:], dtype=numpy.float64)
+    return vecs, list(dimensions)
+
+def read_fernandino_ratings(hand=False):
+    ### sensory ratings
+    file_path = os.path.join(
+                             'data',
+                             'fernandino_experiential_ratings.tsv',
+                             )
+    assert os.path.exists(file_path)
+    relevant_keys = {
+                    'Audition' : 'auditory',
+                    'Taste' : 'gustatory',
+                    'Touch' : 'haptic',
+                    'Smell' : 'olfactory',
+                    'Vision' : 'visual',
+                     }
+    if hand:
+        relevant_keys['UpperLimb'] = 'hand_arm'
+    norms = {k.lower().split('.')[0] : dict() for k in relevant_keys.values()}
+    with open(file_path) as i:
+        counter = 0
+        for l_i, l in enumerate(i):
+            line = l.replace(',', '.').strip().split('\t')
+            if l_i == 0:
+                header = line.copy()
+                continue
+            assert len(line) == len(header)
+            marker = False
+            for k, v in relevant_keys.items():
+                try:
+                    assert float(line[header.index(k)]) <= 6 
+                except AssertionError:
+                    #logging.info(line[0])
+                    marker = True
+            if marker:
+                continue
+            if len(line[0].split()) == 1:
+                for k, v in relevant_keys.items():
+                    val = float(line[header.index(k)])
+                    ### minimum is 0, max is 5
+                    assert val >= 0. and val <= 6.
+                    curr_val = float(val) / 6.
+                    norms[v][line[0].lower().strip()] = curr_val
+    ### checking that all went good...
+    for k, v in norms.items():
+        for w in v.keys():
+            for k_two, v_two in norms.items():
+                assert w in v_two.keys()
+    ### putting the dictionary together
+    final_norms = {k : {k_two : v_two[k] for k_two, v_two in norms.items()} for k in norms['auditory'].keys()}
+
+    return final_norms
+
 def read_ratings(hand=False):
     ### sensory ratings
     file_path = os.path.join(
@@ -74,7 +148,7 @@ def read_ratings(hand=False):
 
     return final_norms
 
-def read_fernandino(vocab, pos, return_dict=False):
+def read_fernandino(vocab, pos, return_dict=False, avg_subjects=False):
 
     words = {1 : list(), 2 : list()}
     subjects_data = {1 : dict(), 2 : dict()}
@@ -117,7 +191,7 @@ def read_fernandino(vocab, pos, return_dict=False):
                 mapper[str(int(line[0])+35)] = 'R_{}'.format(line[1])
         folder = 'Study{}_neural_vectors_RSMs'.format(d)
         for brain_area_folder in tqdm(os.listdir(os.path.join('data', folder))):
-            brain_area = re.sub(r'ALE|DK_|roi|_mask', '', brain_area_folder)
+            brain_area = re.sub(r'ALE_|DK_|roi|_mask', '', brain_area_folder)
             if brain_area in mapper.keys():
                 brain_area = mapper[brain_area]
             #print(brain_area)
@@ -155,6 +229,21 @@ def read_fernandino(vocab, pos, return_dict=False):
             pickle.dump(subjects_data, i)
         with open(full_pkl_path, 'wb') as i:
             pickle.dump(full_subjects_data, i)
+    ### replicating results by fernandino
+    if avg_subjects:
+        for d in subjects_data.keys():
+            for a in subjects_data[d].keys():
+                avg_corrs = numpy.average([v for v in subjects_data[d][a].values()], axis=0)
+                subjects_data[d][a] = {'all' : avg_corrs}
+                if return_dict:
+                    avg_sims = dict()
+                    for _, tups in full_subjects_data[d][a].items():
+                        for t, val in tups.items():
+                            try:
+                                avg_sims[t] = (avg_sims[t] + val)/2
+                            except KeyError:
+                                avg_sims[t] = val
+                    full_subjects_data[d][a] = {'all' : avg_sims}
 
     if return_dict:
         return words, subjects_data, full_subjects_data
@@ -197,7 +286,7 @@ def read_men_test():
             sims[(line[0].split('-')[0], line[1].split('-')[0])] = float(line[2])
     return sims
 
-def build_ppmi_vecs(coocs, vocab, row_words, col_words):
+def build_ppmi_vecs(coocs, vocab, row_words, col_words, smoothing=False):
     pmi_mtrx = numpy.array(
                              [
                               [coocs[vocab[w]][vocab[w_two]] if vocab[w_two] in coocs[vocab[w]].keys() else 0 for w_two in col_words]
@@ -207,11 +296,13 @@ def build_ppmi_vecs(coocs, vocab, row_words, col_words):
     #matrix_[matrix_ != 0] = np.array(1.0/matrix_[matrix_ != 0])
     axis_one_sum = pmi_mtrx.sum(axis=1)
     axis_one_mtrx = numpy.divide(1, axis_one_sum, where=axis_one_sum!=0).reshape(-1, 1)
-    ### raising to 0.75 as suggested in Levy & Goldberg 2015
-    axis_zero_sum = numpy.power(pmi_mtrx, 0.75).sum(axis=0)
     axis_zero_sum = pmi_mtrx.sum(axis=0)
     axis_zero_mtrx = numpy.divide(1, axis_zero_sum, where=axis_zero_sum!=0).reshape(1, -1)
-    total_sum = pmi_mtrx.sum()
+    ### raising to 0.75 as suggested in Levy & Goldberg 2015
+    if smoothing:
+        total_sum = numpy.power(pmi_mtrx, 0.75).sum()
+    else:
+        total_sum = pmi_mtrx.sum()
     #trans_pmi_mtrx = numpy.multiply(numpy.multiply(numpy.multiply(pmi_mtrx,1/pmi_mtrx.sum(axis=1).reshape(-1, 1)), 1/pmi_mtrx.sum(axis=0).reshape(1, -1)), pmi_mtrx.sum())
     trans_pmi_mtrx = numpy.multiply(
                                     numpy.multiply(
@@ -223,3 +314,77 @@ def build_ppmi_vecs(coocs, vocab, row_words, col_words):
     trans_pmi_vecs = {w : numpy.log2(trans_pmi_mtrx[w_i]) for w_i, w in enumerate(row_words)}
 
     return trans_pmi_vecs
+
+def read_brys_ratings():
+    ### valence, arousal and dominance
+    ratings = {
+               'valence' : dict(),
+               'arousal' : dict(),
+               'dominance' : dict(),
+               'concreteness' : dict(),
+               'aoa' : dict(),
+               }
+
+    counter = 0
+    with open(os.path.join('data', 'BRM-emot-submit.csv')) as i:
+        for l in i:
+            if counter == 0:
+                counter += 1
+                continue
+            line = l.strip().split(',')
+            ratings['valence'][line[1]] = (float(line[2]) - 1) / (9 - 1)
+            ratings['arousal'][line[1]] = (float(line[5]) - 1) / (9 -1)
+            ratings['dominance'][line[1]] = (float(line[8]) - 1) / (9 - 1)
+
+    counter = 0
+    with open(os.path.join('data', 'Concreteness_ratings_Brysbaert_et_al_BRM.txt')) as i:
+        for l in i:
+            if counter == 0:
+                counter += 1
+                continue
+            line = l.strip().split('\t')
+            curr_val = (float(line[2]) - 1) / (5 - 1)
+            ratings['concreteness'][line[0]] = curr_val
+
+    ### reading dataset aoa
+    with open(os.path.join('data', 'kuperman_aoa.tsv')) as i:
+        counter = 0
+        for l in i:
+            line = l.strip().replace(',', '.').split('\t')
+            if counter == 0:
+                header = [w.strip() for w in line]
+                counter += 1
+                continue
+            word = line[0].lower()
+            idx = header.index('Rating.Mean')
+            if line[idx] == 'NA':
+                print(word)
+                continue
+            ratings['aoa'][word] = float(line[idx])
+
+    return ratings
+
+def levenshtein(seq1, seq2):
+    size_x = len(seq1) + 1
+    size_y = len(seq2) + 1
+    matrix = numpy.zeros((size_x, size_y))
+    for x in range(size_x):
+        matrix [x, 0] = x
+    for y in range(size_y):
+        matrix [0, y] = y
+
+    for x in range(1, size_x):
+        for y in range(1, size_y):
+            if seq1[x-1] == seq2[y-1]:
+                matrix [x,y] = min(
+                    matrix[x-1, y] + 1,
+                    matrix[x-1, y-1],
+                    matrix[x, y-1] + 1
+                )
+            else:
+                matrix [x,y] = min(
+                    matrix[x-1,y] + 1,
+                    matrix[x-1,y-1] + 1,
+                    matrix[x,y-1] + 1
+                )
+    return (matrix[size_x - 1, size_y - 1])

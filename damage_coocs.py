@@ -138,52 +138,74 @@ print('considering {} context words'.format(len(ctx_words)))
 ctx_words = sorted(ctx_words)
 ctx_idxs = [vocab[w] for w in ctx_words]
 vecs = {w : numpy.array([coocs[vocab[w]][idx] if idx in coocs[vocab[w]].keys() else 0 for idx in ctx_idxs]) for w in pruned_test_words}
+powers = [
+          0.05, 0.1,
+          0.25, 0.5, 0.75,
+          1.25, 1.5, 1.75
+          ]
 ### pmi
 ### building the PPMI matrix
 ### things are better when including in the rows the words from MEN...
-trans_pmi_vecs = build_ppmi_vecs(coocs, vocab, ctx_words, ctx_words)
-### re-building the matrix
-mtrx = numpy.array([trans_pmi_vecs[w] for w in ctx_words])
-assert mtrx.shape == (len(ctx_words), len(ctx_words))
-with open(os.path.join(
-                       'pickles', 'en', corpus, 
-                       'en_{}_coocs_uncased_min_{}_win_{}_pmi_rows_cols.pkl'.format(corpus, min_count, win_size),
-                       ), 'wb') as i:
-    pickle.dump(ctx_words, i)
-with open(os.path.join(
-                       'pickles', 'en', corpus, 
-                       'en_{}_coocs_uncased_min_{}_win_{}_pmi.pkl'.format(corpus, min_count, win_size),
-                       ), 'wb') as i:
-    pickle.dump(mtrx, i)
-rng = numpy.random.default_rng()
-### shuffled
-curr_mtrx = numpy.copy(mtrx)
-rng.shuffle(curr_mtrx, axis=1)
-with open(os.path.join(
-                       'pickles', 'en', corpus, 
-                       'en_{}_coocs_uncased_min_{}_win_{}_rand.pkl'.format(corpus, min_count, win_size),
-                       ), 'wb') as i:
-    pickle.dump(curr_mtrx, i)
-### powers
-### power + shuffle
-for power in [
-              0.05, 0.1,
-              #0.25, 0.5, 0.75,
-              ]:
+full_corpus = '{}_coocs_uncased_min_{}_win_{}'.format(corpus, min_count, win_size)
+for smoothing, marker in [(True,'pmi_smooth75'), (False, 'pmi_unsmoothed')]:
+    trans_pmi_vecs = build_ppmi_vecs(coocs, vocab, ctx_words, ctx_words, smoothing=smoothing)
+    ### re-building the matrix
+    mtrx = numpy.array([trans_pmi_vecs[w] for w in ctx_words])
+    assert mtrx.shape == (len(ctx_words), len(ctx_words))
+    out_f = os.path.join(
+                         'damaged_pickles', 'en', full_corpus, marker, 
+                           )
+    os.makedirs(out_f, exist_ok=True)
     with open(os.path.join(
-                           'pickles', 'en', corpus, 
-                           'en_{}_coocs_uncased_min_{}_win_{}_rand_pow_{}.pkl'.format(corpus, min_count, win_size, power),
+                            out_f,
+                           'words_rows_cols.pkl',
                            ), 'wb') as i:
-        pickle.dump(numpy.power(mtrx, power), i)
-    curr_mtrx = numpy.copy(mtrx)
-### power only
-for power in [0.05, 0.1,
-               #0.25, 0.5, 0.75,
-               ]:
-    curr_mtrx = numpy.copy(mtrx)
+        pickle.dump(ctx_words, i)
+    marker = 'pmi' if not smoothing else 'pmi75'
     with open(os.path.join(
-                           'pickles', 'en', corpus, 
-                           'en_{}_coocs_uncased_min_{}_win_{}_pow_{}.pkl'.format(corpus, min_count, win_size, power),
+                           out_f,
+                           'undamaged_coocs.pkl',
                            ), 'wb') as i:
-        pickle.dump(numpy.power(mtrx, power), i)
+        pickle.dump(mtrx, i)
+    rng = numpy.random.default_rng()
+    ### shuffled
     curr_mtrx = numpy.copy(mtrx)
+    ### columns
+    rng.shuffle(curr_mtrx, axis=1)
+    with open(os.path.join(
+                           out_f,
+                           'rand_cols.pkl',
+                           ), 'wb') as i:
+        pickle.dump(curr_mtrx, i)
+    ### powers
+    ### power + shuffle
+    for power in powers:
+        with open(os.path.join(
+                           out_f,
+                               'rand_cols_pow_{}.pkl'.format(power),
+                               ), 'wb') as i:
+            pickle.dump(numpy.power(curr_mtrx, power), i)
+    ### shuffled
+    curr_mtrx = numpy.copy(mtrx)
+    ### columns
+    rng.shuffle(curr_mtrx, axis=0)
+    with open(os.path.join(
+                           out_f,
+                           'rand_rows.pkl',
+                           ), 'wb') as i:
+        pickle.dump(curr_mtrx, i)
+    ### power + shuffle
+    for power in powers:
+        with open(os.path.join(
+                           out_f,
+                               'rand_rows_pow_{}.pkl'.format(power),
+                               ), 'wb') as i:
+            pickle.dump(numpy.power(curr_mtrx, power), i)
+    ### power only
+    for power in powers:
+        curr_mtrx = numpy.copy(mtrx)
+        with open(os.path.join(
+                           out_f,
+                               'pow_{}.pkl'.format(power),
+                               ), 'wb') as i:
+            pickle.dump(numpy.power(curr_mtrx, power), i)
