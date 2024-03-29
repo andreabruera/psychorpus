@@ -28,6 +28,7 @@ def bins_rsa_test(words, ratings, model, brain_data, splits, out_file):
                 counter += 1
                 continue
             bin_results = list()
+            random.seed(seed)
             for _ in range(100):
                 iter_results = list()
                 current_bin_words = random.sample(bin_words, k=n_items)
@@ -74,6 +75,7 @@ win_size = [
                  4, 
                  #20,
                  ][0]
+seed = 12
 with open(os.path.join(
                        'pickles', 'en', corpus, 
                        'en_{}_uncased_word_pos.pkl'.format(corpus),
@@ -109,16 +111,18 @@ powers = [
           ]
 
 mtrxs = dict()
-#mtrxs['zeroing'] = dict()
+mtrxs['zeroing'] = dict()
 #mtrxs['oneing'] = dict()
 
-'''
-for r_c in ['rand_cols', 'rand_rows']:
+for r_c in [
+            'rand',
+            ]:
     with open(os.path.join(
                                out_f,
-                               '{}.pkl'.format(r_c),
+                               '{}_rows.pkl'.format(r_c),
                            ), 'rb') as i:
         mtrxs[r_c] = pickle.load(i)
+    '''
     ### powers
     ### power + shuffle
     for power in powers:
@@ -128,7 +132,7 @@ for r_c in ['rand_cols', 'rand_rows']:
                                ), 'rb') as i:
             mtrxs['{}_pow_{}'.format(r_c, power)] = pickle.load(i)
 
-'''
+    '''
 ### power only
 for power in powers:
     with open(os.path.join(
@@ -136,7 +140,6 @@ for power in powers:
                            'pow_{}.pkl'.format(power),
                            ), 'rb') as i:
         mtrxs['pow_{}'.format(power)] = pickle.load(i)
-    mtrxs['{}ing'.format(power)] = dict()
 
 selected_areas = [
                   '_semantic_network',
@@ -179,7 +182,6 @@ for mode in [
         for area, area_data in tqdm(brain_data.items()):
             if area not in selected_areas:
                 continue
-            '''
             ### undamaged
             out = os.path.join(
                                'results', 
@@ -202,7 +204,6 @@ for mode in [
                                         damage_amount), 
                                 )
                 bins_rsa_test(words[dataset], fern_ratings, vecs, area_data, splits, out_file)
-            '''
             ### damaged
             for rat in damage_ratings:
                 ### here we use sensorimotor ratings
@@ -220,20 +221,37 @@ for mode in [
                         damaged_pmi_mtrx = numpy.copy(mtrx)
                         if damage_type == 'zeroing':
                             for idx in idxs:
+                                ### rows
                                 damaged_pmi_mtrx[:, idx][idxs] = 0.
+                                ### columns
+                                damaged_pmi_mtrx[idx, :][idxs] = 0.
+                        elif 'pow' in damage_type:
+                            for idx in idxs:
+                                vals = damage_mtrx[:, idx][idxs]
+                                ### rows
+                                damaged_pmi_mtrx[:, idx][idxs] = vals 
+                                ### columns
+                                damaged_pmi_mtrx[idx, :][idxs] = vals 
+                        elif damage_type == 'rand':
+                            random.seed(seed)
+                            for idx in idxs:
+                                vals = numpy.array(random.sample(damage_mtrx[:, idx].tolist(), k=len(idxs)))
+                                ### rows
+                                damaged_pmi_mtrx[:, idx][idxs] = vals
+                                ### columns
+                                damaged_pmi_mtrx[idx, :][idxs] = vals
+                        else:
+                            raise RuntimeError('not yet implemented')
+                        '''
                         elif damage_type == 'oneing':
                             for idx in idxs:
                                 damaged_pmi_mtrx[:, idx][idxs] = 1.
-                        elif 'ing' in damage_type:
+                        elif damage_type == 'rand':
+                            random.seed(seed)
                             for idx in idxs:
-                                damaged_pmi_mtrx[:, idx][idxs] = mtrxs['pow_{}'.format(damage_type.replace('ing', ''))][:, idx][idxs] 
-                        elif damage_type == 'rand_rows':
-                            for idx in idxs:
-                                damaged_pmi_mtrx[idx, :] = numpy.array(random.sample(damaged_pmi_mtrx[idx, :].tolist(), k=len(ctx_words)))
-                        else:
-                            for idx in idxs:
-                                damaged_pmi_mtrx[:, idx] = damage_mtrx[:, idx]
-                                #damaged_pmi_mtrx[idx, :] = damage_mtrx[idx, :]
+                                to_be_dam = damaged_pmi_mtrx[idx, :][idxs].tolist()
+                                damaged_pmi_mtrx[idx, :][idxs] = numpy.array(random.sample(to_be_dam), k=len(to_be_dam))
+                        '''
                         vecs = {k : v for k, v in zip(ctx_words, damaged_pmi_mtrx)}
                         out = os.path.join(
                                            'results', 
