@@ -79,7 +79,7 @@ def read_fernandino_ratings(hand=False):
 
     return final_norms
 
-def read_ratings(hand=False):
+def read_ratings(hand=False, concreteness=False):
     ### sensory ratings
     file_path = os.path.join(
                              'data',
@@ -126,25 +126,26 @@ def read_ratings(hand=False):
                     curr_val = float(val) / 5
                     norms[k.lower().split('.')[0]][line[0].lower().strip()] = curr_val
     ### concreteness
-    norms['concreteness'] = dict()
-    with open(os.path.join('data', 'Concreteness_ratings_Brysbaert_et_al_BRM.txt')) as i:
-        for l_i, l in enumerate(i):
-            if l_i == 0:
-                continue
-            line = l.strip().split('\t')
-            ### minimum is 1, max is 5
-            assert val >= 1. and val <= 5.
-            curr_val = (float(line[2]) - 1) / (5 - 1)
-            w = line[0].lower().strip()
-            if w in norms['visual'].keys():
-                norms['concreteness'][w] = curr_val
+    if concreteness:
+        norms['concreteness'] = dict()
+        with open(os.path.join('data', 'Concreteness_ratings_Brysbaert_et_al_BRM.txt')) as i:
+            for l_i, l in enumerate(i):
+                if l_i == 0:
+                    continue
+                line = l.strip().split('\t')
+                ### minimum is 1, max is 5
+                assert val >= 1. and val <= 5.
+                curr_val = (float(line[2]) - 1) / (5 - 1)
+                w = line[0].lower().strip()
+                if w in norms['visual'].keys():
+                    norms['concreteness'][w] = curr_val
     ### checking that all went good...
     for k, v in norms.items():
         for w in v.keys():
             for k_two, v_two in norms.items():
                 assert w in v_two.keys()
     ### putting the dictionary together
-    final_norms = {k : {k_two : v_two[k] for k_two, v_two in norms.items()} for k in norms['concreteness'].keys()}
+    final_norms = {k : {k_two : v_two[k] for k_two, v_two in norms.items()} for k in norms['visual'].keys()}
 
     return final_norms
 

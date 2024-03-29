@@ -52,7 +52,7 @@ def bins_rsa_test(words, ratings, model, brain_data, splits, out_file):
             for val in v:
                 o.write('{}\t'.format(val))
             o.write('\n')
-ratings = read_ratings(hand=True)
+ratings = read_ratings(hand=True,)
 
 ### reading files
 corpus = [
@@ -188,6 +188,7 @@ for mode in [
                                'fernandino{}'.format(dataset), 
                                'bins',
                                mode,
+                               'undamaged',
                                area,
                                '{}_{}_{}'.format(corpus, min_count, win_size),
                                marker,
@@ -205,70 +206,80 @@ for mode in [
                                 )
                 bins_rsa_test(words[dataset], fern_ratings, vecs, area_data, splits, out_file)
             ### damaged
-            for rat in damage_ratings:
-                ### here we use sensorimotor ratings
-                sorted_ws = sorted([(w, v[rat]) for w, v in ratings.items() if w in ctx_words], key=lambda item: item[1])
-                for damage_amount in [
-                                      0.01, 0.05, 0.1, 0.25, 0.5, 0.75, 0.9]:
-                    percent = int(len(sorted_ws)*damage_amount)
-                    lim_ctx_words = [w for w, val in sorted_ws[-percent:]]
-                    idxs = [ctx_words.index(w) for w in lim_ctx_words]
-                    assert len(idxs) > 0
+            for ranking_mode in ['dominance', 'absolute_val', 'dominance_and_val']:
+                for rat in damage_ratings:
+                    ### here we use sensorimotor ratings
+                    if ranking_mode == 'absolute_val':
+                        sorted_ws = sorted([(w, v[rat]) for w, v in ratings.items() if w in ctx_words], key=lambda item: item[1])
+                    elif ranking_mode == 'dominance':
+                        curr_doms = [(w, numpy.average([v[rat]-v[rat_two] for rat_two in v.keys() if rat!=rat_two])) for w, v in ratings.items() if w in ctx_words]
+                        sorted_ws = sorted(curr_doms, key=lambda item: item[1])
+                        #print(sorted_ws)
+                    elif ranking_mode == 'dominance_and_val':
+                        curr_complexes = [(w, v[rat]+numpy.average([v[rat]-v[rat_two] for rat_two in v.keys() if rat!=rat_two])) for w, v in ratings.items() if w in ctx_words]
+                        sorted_ws = sorted([(w, curr_complexes) for w, v in ratings.items() if w in ctx_words], key=lambda item: item[1])
+                    for damage_amount in [
+                                          0.01, 0.05, 0.1, 0.25, 0.5, 0.75, 0.9]:
+                        percent = int(len(sorted_ws)*damage_amount)
+                        lim_ctx_words = [w for w, val in sorted_ws[-percent:]]
+                        idxs = [ctx_words.index(w) for w in lim_ctx_words]
+                        assert len(idxs) > 0
 
-                    ### other damages
-                    for damage_type, damage_mtrx in mtrxs.items():
-                        print(damage_type)
-                        damaged_pmi_mtrx = numpy.copy(mtrx)
-                        if damage_type == 'zeroing':
-                            for idx in idxs:
-                                ### rows
-                                damaged_pmi_mtrx[:, idx][idxs] = 0.
-                                ### columns
-                                damaged_pmi_mtrx[idx, :][idxs] = 0.
-                        elif 'pow' in damage_type:
-                            for idx in idxs:
-                                vals = damage_mtrx[:, idx][idxs]
-                                ### rows
-                                damaged_pmi_mtrx[:, idx][idxs] = vals 
-                                ### columns
-                                damaged_pmi_mtrx[idx, :][idxs] = vals 
-                        elif damage_type == 'rand':
-                            random.seed(seed)
-                            for idx in idxs:
-                                vals = numpy.array(random.sample(damage_mtrx[:, idx].tolist(), k=len(idxs)))
-                                ### rows
-                                damaged_pmi_mtrx[:, idx][idxs] = vals
-                                ### columns
-                                damaged_pmi_mtrx[idx, :][idxs] = vals
-                        else:
-                            raise RuntimeError('not yet implemented')
-                        '''
-                        elif damage_type == 'oneing':
-                            for idx in idxs:
-                                damaged_pmi_mtrx[:, idx][idxs] = 1.
-                        elif damage_type == 'rand':
-                            random.seed(seed)
-                            for idx in idxs:
-                                to_be_dam = damaged_pmi_mtrx[idx, :][idxs].tolist()
-                                damaged_pmi_mtrx[idx, :][idxs] = numpy.array(random.sample(to_be_dam), k=len(to_be_dam))
-                        '''
-                        vecs = {k : v for k, v in zip(ctx_words, damaged_pmi_mtrx)}
-                        out = os.path.join(
-                                           'results', 
-                                           'fernandino{}'.format(dataset), 
-                                           'bins',
-                                           mode,
-                                           area,
-                                           '{}_{}_{}'.format(corpus, min_count, win_size),
-                                           marker,
-                                           rat,
-                                           damage_type,
-                                           )
-                        os.makedirs(out, exist_ok=True)
-                        print(out)
-                        out_file = os.path.join(
-                                        out, 
-                                        '{}.results'.format(
-                                            damage_amount)
-                                        )
-                        bins_rsa_test(words[dataset], fern_ratings, vecs, area_data, splits, out_file)
+                        ### other damages
+                        for damage_type, damage_mtrx in mtrxs.items():
+                            print(damage_type)
+                            damaged_pmi_mtrx = numpy.copy(mtrx)
+                            if damage_type == 'zeroing':
+                                for idx in idxs:
+                                    ### rows
+                                    damaged_pmi_mtrx[:, idx][idxs] = 0.
+                                    ### columns
+                                    damaged_pmi_mtrx[idx, :][idxs] = 0.
+                            elif 'pow' in damage_type:
+                                for idx in idxs:
+                                    vals = damage_mtrx[:, idx][idxs]
+                                    ### rows
+                                    damaged_pmi_mtrx[:, idx][idxs] = vals 
+                                    ### columns
+                                    damaged_pmi_mtrx[idx, :][idxs] = vals 
+                            elif damage_type == 'rand':
+                                random.seed(seed)
+                                for idx in idxs:
+                                    vals = numpy.array(random.sample(damage_mtrx[:, idx].tolist(), k=len(idxs)))
+                                    ### rows
+                                    damaged_pmi_mtrx[:, idx][idxs] = vals
+                                    ### columns
+                                    damaged_pmi_mtrx[idx, :][idxs] = vals
+                            else:
+                                raise RuntimeError('not yet implemented')
+                            '''
+                            elif damage_type == 'oneing':
+                                for idx in idxs:
+                                    damaged_pmi_mtrx[:, idx][idxs] = 1.
+                            elif damage_type == 'rand':
+                                random.seed(seed)
+                                for idx in idxs:
+                                    to_be_dam = damaged_pmi_mtrx[idx, :][idxs].tolist()
+                                    damaged_pmi_mtrx[idx, :][idxs] = numpy.array(random.sample(to_be_dam), k=len(to_be_dam))
+                            '''
+                            vecs = {k : v for k, v in zip(ctx_words, damaged_pmi_mtrx)}
+                            out = os.path.join(
+                                               'results', 
+                                               'fernandino{}'.format(dataset), 
+                                               'bins',
+                                               mode,
+                                               ranking_mode,
+                                               area,
+                                               '{}_{}_{}'.format(corpus, min_count, win_size),
+                                               marker,
+                                               rat,
+                                               damage_type,
+                                               )
+                            os.makedirs(out, exist_ok=True)
+                            print(out)
+                            out_file = os.path.join(
+                                            out, 
+                                            '{}.results'.format(
+                                                damage_amount)
+                                            )
+                            bins_rsa_test(words[dataset], fern_ratings, vecs, area_data, splits, out_file)

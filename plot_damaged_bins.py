@@ -30,7 +30,9 @@ with tqdm() as counter:
                 marker= split_root[-3]
                 model = '{}_{}'.format(marker, split_root[-4])
                 area = split_root[-5]
-                mode = split_root[-6]
+                ranking = split_root[-6]
+                damage_variable = '{}_{}'.format(damage_variable, ranking)
+                mode = split_root[-7]
                 if model not in results.keys():
                     results[model] = dict()
                 if mode not in results[model].keys():
@@ -69,7 +71,7 @@ with tqdm() as counter:
                 hlines=[y*0.01 for y in range(ymin+1, ymax, 2)]
                 for area, area_d in mode_d.items():
                     for damage_variable, d_var_d in area_d.items():
-                        if damage_variable == 'undamaged':
+                        if 'undamaged' in damage_variable:
                             continue
                         for damage_type, d_type_d in d_var_d.items():
                             plots_folder = os.path.join(
@@ -93,7 +95,7 @@ with tqdm() as counter:
                                     mod_dam_ys = numpy.nanmean(dam_results, axis=1)
                                     ax.plot(xs, mod_dam_ys, label=case.replace('_', ' '))
                                 ### undamaged
-                                undam_results = results[model][mode][area]['undamaged']['undamaged'][curr_var]['undamaged']
+                                undam_results = results[model][mode][area]['undamaged_undamaged']['undamaged'][curr_var]['undamaged']
                                 mod_undam_ys = numpy.nanmean(undam_results, axis=1)
                                 ax.plot(xs, mod_undam_ys, label='undamaged', color='black', linestyle='-')
                                 ax.set_xlim(left=-.5, right=len(splits)-.5)
