@@ -51,6 +51,7 @@ def bins_rsa_test(words, ratings, model, brain_data, splits, out_file):
             for val in v:
                 o.write('{}\t'.format(val))
             o.write('\n')
+ratings = read_ratings(hand=True)
 
 ### reading files
 corpus = [
@@ -83,47 +84,59 @@ with open(os.path.join(
                        'en_{}_uncased_vocab_min_{}.pkl'.format(corpus, min_count),
                        ), 'rb') as i:
     vocab = pickle.load(i)
-mtrxs = dict()
+full_corpus = '{}_coocs_uncased_min_{}_win_{}'.format(corpus, min_count, win_size)
+marker = 'pmi_smooth75'
+out_f = os.path.join(
+                     'damaged_pickles', 'en', full_corpus, marker, 
+                       )
+assert os.path.exists(out_f)
 with open(os.path.join(
-                       'pickles', 'en', corpus, 'randomization',
-                       'en_{}_coocs_uncased_min_{}_win_{}_pmi_rows_cols.pkl'.format(corpus, min_count, win_size),
+                        out_f,
+                       'words_rows_cols.pkl',
                        ), 'rb') as i:
     ctx_words = pickle.load(i)
-smoothing = True
-if smoothing:
-    marker = 'pmi75'
-else:
-    marker = 'pmi'
 with open(os.path.join(
-                       'pickles', 'en', corpus, 'randomization', 
-                       'en_{}_coocs_uncased_min_{}_win_{}_{}.pkl'.format(corpus, min_count, win_size, marker),
+                       out_f,
+                       'undamaged_coocs.pkl',
                        ), 'rb') as i:
-    pmi_mtrx = pickle.load(i)
+    mtrx = pickle.load(i)
+assert mtrx.shape == (len(ctx_words), len(ctx_words))
+powers = [
+          #0.05, 
+          #0.1,
+          0.25, 0.5, 0.75,
+          #1.25, 1.5, 1.75
+          ]
+
+mtrxs = dict()
+#mtrxs['zeroing'] = dict()
+#mtrxs['oneing'] = dict()
+
 '''
-with open(os.path.join(
-                       'pickles', 'en', corpus, 
-                       'en_{}_coocs_uncased_min_{}_win_{}_rand.pkl'.format(corpus, min_count, win_size),
-                       ), 'rb') as i:
-    mtrxs['rand'] = pickle.load(i)
-### powers
-### power + shuffle
-for power in [0.05, 0.1, 0.25, 0.5, 0.75]:
+for r_c in ['rand_cols', 'rand_rows']:
     with open(os.path.join(
-                           'pickles', 'en', corpus, 
-                           'en_{}_coocs_uncased_min_{}_win_{}_rand_pow_{}.pkl'.format(corpus, min_count, win_size, power),
+                               out_f,
+                               '{}.pkl'.format(r_c),
                            ), 'rb') as i:
-        mtrxs['rand_pow_{}'.format(power)] = pickle.load(i)
+        mtrxs[r_c] = pickle.load(i)
+    ### powers
+    ### power + shuffle
+    for power in powers:
+        with open(os.path.join(
+                           out_f,
+                               '{}_pow_{}.pkl'.format(r_c, power),
+                               ), 'rb') as i:
+            mtrxs['{}_pow_{}'.format(r_c, power)] = pickle.load(i)
+
+'''
 ### power only
-for power in [0.05, 0.1, 0.25, 0.5, 0.75]:
+for power in powers:
     with open(os.path.join(
-                           'pickles', 'en', corpus, 
-                           'en_{}_coocs_uncased_min_{}_win_{}_pow_{}.pkl'.format(corpus, min_count, win_size, power),
+                           out_f,
+                           'pow_{}.pkl'.format(power),
                            ), 'rb') as i:
         mtrxs['pow_{}'.format(power)] = pickle.load(i)
-'''
-
-mtrxs['zeroing'] = dict()
-mtrxs['rand_rows'] = dict()
+    mtrxs['{}ing'.format(power)] = dict()
 
 selected_areas = [
                   '_semantic_network',
@@ -144,14 +157,16 @@ selected_areas = [
                   #'R_ATL',
                   ]
 
-ratings = read_ratings()
 fern_ratings = read_fernandino_ratings(hand=True)
 unit = 25
 assert 100 % unit == 0
 splits = [(i*0.01, (i+unit)*0.01) for i in range(0, 100, unit)]
 relevant_keys = fern_ratings['accordion'].keys()
 
-damage_ratings = ['auditory', 'hand_arm']
+damage_ratings = [
+                  'auditory', 
+                  'hand_arm',
+                  ]
 for mode in [
             'averaged_sub_mtrxs', 
             'individual_sub_mtrxs',
@@ -164,22 +179,23 @@ for mode in [
         for area, area_data in tqdm(brain_data.items()):
             if area not in selected_areas:
                 continue
-            ### undamaged
             '''
+            ### undamaged
             out = os.path.join(
                                'results', 
                                'fernandino{}'.format(dataset), 
                                'bins',
                                mode,
                                area,
-                               '{}{}_{}_{}'.format(marker.replace('pmi', ''), corpus, min_count, win_size),
+                               '{}_{}_{}'.format(corpus, min_count, win_size),
+                               marker,
                                'undamaged',
                                'undamaged',
                                )
             os.makedirs(out, exist_ok=True)
             print(out)
             for damage_amount in ['undamaged']:
-                vecs = {k : v for k, v in zip(ctx_words, pmi_mtrx)}
+                vecs = {k : v for k, v in zip(ctx_words, mtrx)}
                 out_file = os.path.join(
                                 out, 
                                 '{}.results'.format(
@@ -192,21 +208,25 @@ for mode in [
                 ### here we use sensorimotor ratings
                 sorted_ws = sorted([(w, v[rat]) for w, v in ratings.items() if w in ctx_words], key=lambda item: item[1])
                 for damage_amount in [
-                                      #0.0005, 0.001, 0.005, 
                                       0.01, 0.05, 0.1, 0.25, 0.5, 0.75, 0.9]:
                     percent = int(len(sorted_ws)*damage_amount)
                     lim_ctx_words = [w for w, val in sorted_ws[-percent:]]
                     idxs = [ctx_words.index(w) for w in lim_ctx_words]
                     assert len(idxs) > 0
-                    print(idxs)
 
                     ### other damages
                     for damage_type, damage_mtrx in mtrxs.items():
                         print(damage_type)
-                        damaged_pmi_mtrx = numpy.copy(pmi_mtrx)
+                        damaged_pmi_mtrx = numpy.copy(mtrx)
                         if damage_type == 'zeroing':
                             for idx in idxs:
                                 damaged_pmi_mtrx[:, idx][idxs] = 0.
+                        elif damage_type == 'oneing':
+                            for idx in idxs:
+                                damaged_pmi_mtrx[:, idx][idxs] = 1.
+                        elif 'ing' in damage_type:
+                            for idx in idxs:
+                                damaged_pmi_mtrx[:, idx][idxs] = mtrxs['pow_{}'.format(damage_type.replace('ing', ''))][:, idx][idxs] 
                         elif damage_type == 'rand_rows':
                             for idx in idxs:
                                 damaged_pmi_mtrx[idx, :] = numpy.array(random.sample(damaged_pmi_mtrx[idx, :].tolist(), k=len(ctx_words)))
@@ -221,7 +241,8 @@ for mode in [
                                            'bins',
                                            mode,
                                            area,
-                                           '{}{}_{}_{}'.format(marker.replace('pmi', ''), corpus, min_count, win_size),
+                                           '{}_{}_{}'.format(corpus, min_count, win_size),
+                                           marker,
                                            rat,
                                            damage_type,
                                            )

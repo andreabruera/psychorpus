@@ -139,9 +139,9 @@ ctx_words = sorted(ctx_words)
 ctx_idxs = [vocab[w] for w in ctx_words]
 vecs = {w : numpy.array([coocs[vocab[w]][idx] if idx in coocs[vocab[w]].keys() else 0 for idx in ctx_idxs]) for w in pruned_test_words}
 powers = [
-          0.05, 0.1,
+          #0.05, 0.1,
           0.25, 0.5, 0.75,
-          1.25, 1.5, 1.75
+          #1.25, 1.5, 1.75
           ]
 ### pmi
 ### building the PPMI matrix
@@ -178,13 +178,6 @@ for smoothing, marker in [(True,'pmi_smooth75'), (False, 'pmi_unsmoothed')]:
                            ), 'wb') as i:
         pickle.dump(curr_mtrx, i)
     ### powers
-    ### power + shuffle
-    for power in powers:
-        with open(os.path.join(
-                           out_f,
-                               'rand_cols_pow_{}.pkl'.format(power),
-                               ), 'wb') as i:
-            pickle.dump(numpy.power(curr_mtrx, power), i)
     ### shuffled
     curr_mtrx = numpy.copy(mtrx)
     ### columns
@@ -194,16 +187,12 @@ for smoothing, marker in [(True,'pmi_smooth75'), (False, 'pmi_unsmoothed')]:
                            'rand_rows.pkl',
                            ), 'wb') as i:
         pickle.dump(curr_mtrx, i)
-    ### power + shuffle
-    for power in powers:
-        with open(os.path.join(
-                           out_f,
-                               'rand_rows_pow_{}.pkl'.format(power),
-                               ), 'wb') as i:
-            pickle.dump(numpy.power(curr_mtrx, power), i)
     ### power only
-    for power in powers:
-        curr_mtrx = numpy.copy(mtrx)
+    for power in tqdm(powers):
+        power_trans_pmi_vecs = build_ppmi_vecs(coocs, vocab, ctx_words, ctx_words, smoothing=smoothing, power=power)
+        ### re-building the matrix
+        curr_mtrx = numpy.array([trans_pmi_vecs[w] for w in ctx_words])
+        assert curr_mtrx.shape == (len(ctx_words), len(ctx_words))
         with open(os.path.join(
                            out_f,
                                'pow_{}.pkl'.format(power),

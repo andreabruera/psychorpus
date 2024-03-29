@@ -286,13 +286,15 @@ def read_men_test():
             sims[(line[0].split('-')[0], line[1].split('-')[0])] = float(line[2])
     return sims
 
-def build_ppmi_vecs(coocs, vocab, row_words, col_words, smoothing=False):
+def build_ppmi_vecs(coocs, vocab, row_words, col_words, smoothing=False, power=1.):
     pmi_mtrx = numpy.array(
                              [
                               [coocs[vocab[w]][vocab[w_two]] if vocab[w_two] in coocs[vocab[w]].keys() else 0 for w_two in col_words]
                               for w in row_words])
     assert pmi_mtrx.shape[0] == len(row_words)
     assert pmi_mtrx.shape[1] == len(col_words)
+    if power != 1.:
+        pmi_mtrx = numpy.power(pmi_mtrx, power)
     #matrix_[matrix_ != 0] = np.array(1.0/matrix_[matrix_ != 0])
     axis_one_sum = pmi_mtrx.sum(axis=1)
     axis_one_mtrx = numpy.divide(1, axis_one_sum, where=axis_one_sum!=0).reshape(-1, 1)

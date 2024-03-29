@@ -27,9 +27,10 @@ with tqdm() as counter:
                 split_root = root.split('/')
                 damage_type = split_root[-1]
                 damage_variable = split_root[-2]
-                model = split_root[-3]
-                area = split_root[-4]
-                mode = split_root[-5]
+                marker= split_root[-3]
+                model = '{}_{}'.format(marker, split_root[-4])
+                area = split_root[-5]
+                mode = split_root[-6]
                 if model not in results.keys():
                     results[model] = dict()
                 if mode not in results[model].keys():
