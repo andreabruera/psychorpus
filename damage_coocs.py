@@ -139,15 +139,28 @@ ctx_words = sorted(ctx_words)
 ctx_idxs = [vocab[w] for w in ctx_words]
 vecs = {w : numpy.array([coocs[vocab[w]][idx] if idx in coocs[vocab[w]].keys() else 0 for idx in ctx_idxs]) for w in pruned_test_words}
 powers = [
-          #0.05, 0.1,
-          0.25, 0.5, 0.75,
+          0.05, 
+          0.1,
+          0.25,
+          0.5,
+          0.75,
+          #0.3, 
+          #0.4, 
+          #0.5,
+          #0.6,
+          #0.7,
+          #0.8,
+          #0.9
           #1.25, 1.5, 1.75
           ]
 ### pmi
 ### building the PPMI matrix
 ### things are better when including in the rows the words from MEN...
 full_corpus = '{}_coocs_uncased_min_{}_win_{}'.format(corpus, min_count, win_size)
-for smoothing, marker in [(True,'pmi_smooth75'), (False, 'pmi_unsmoothed')]:
+for smoothing, marker in [ 
+                          (True,'pmi_smooth75'), 
+                          #(False, 'pmi_unsmoothed')
+                          ]:
     trans_pmi_vecs = build_ppmi_vecs(coocs, vocab, ctx_words, ctx_words, smoothing=smoothing)
     ### re-building the matrix
     mtrx = numpy.array([trans_pmi_vecs[w] for w in ctx_words])
@@ -191,7 +204,7 @@ for smoothing, marker in [(True,'pmi_smooth75'), (False, 'pmi_unsmoothed')]:
     for power in tqdm(powers):
         power_trans_pmi_vecs = build_ppmi_vecs(coocs, vocab, ctx_words, ctx_words, smoothing=smoothing, power=power)
         ### re-building the matrix
-        curr_mtrx = numpy.array([trans_pmi_vecs[w] for w in ctx_words])
+        curr_mtrx = numpy.array([power_trans_pmi_vecs[w] for w in ctx_words])
         assert curr_mtrx.shape == (len(ctx_words), len(ctx_words))
         with open(os.path.join(
                            out_f,

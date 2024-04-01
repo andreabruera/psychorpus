@@ -104,16 +104,14 @@ with open(os.path.join(
     mtrx = pickle.load(i)
 assert mtrx.shape == (len(ctx_words), len(ctx_words))
 powers = [
-          #0.05, 
-          #0.1,
-          0.25, 0.5, 0.75,
-          #1.25, 1.5, 1.75
+          0.05, 
+          0.1,
+          0.25, 
+          0.5, 
+          0.75,
           ]
 
 mtrxs = dict()
-mtrxs['zeroing'] = dict()
-#mtrxs['oneing'] = dict()
-
 for r_c in [
             'rand',
             ]:
@@ -122,17 +120,13 @@ for r_c in [
                                '{}_rows.pkl'.format(r_c),
                            ), 'rb') as i:
         mtrxs[r_c] = pickle.load(i)
-    '''
-    ### powers
-    ### power + shuffle
-    for power in powers:
-        with open(os.path.join(
-                           out_f,
-                               '{}_pow_{}.pkl'.format(r_c, power),
-                               ), 'rb') as i:
-            mtrxs['{}_pow_{}'.format(r_c, power)] = pickle.load(i)
+        #mtrxs['rand_anywhere'] = pickle.load(i)
+mtrxs['zeroing'] = dict()
+'''
+mtrxs['rand_zeroing'] = dict()
+#mtrxs['oneing'] = dict()
+'''
 
-    '''
 ### power only
 for power in powers:
     with open(os.path.join(
@@ -206,7 +200,11 @@ for mode in [
                                 )
                 bins_rsa_test(words[dataset], fern_ratings, vecs, area_data, splits, out_file)
             ### damaged
-            for ranking_mode in ['dominance', 'absolute_val', 'dominance_and_val']:
+            for ranking_mode in [
+                                 'dominance', 
+                                 'absolute_val', 
+                                 #'dominance_and_val',
+                                 ]:
                 for rat in damage_ratings:
                     ### here we use sensorimotor ratings
                     if ranking_mode == 'absolute_val':
@@ -219,7 +217,18 @@ for mode in [
                         curr_complexes = [(w, v[rat]+numpy.average([v[rat]-v[rat_two] for rat_two in v.keys() if rat!=rat_two])) for w, v in ratings.items() if w in ctx_words]
                         sorted_ws = sorted([(w, curr_complexes) for w, v in ratings.items() if w in ctx_words], key=lambda item: item[1])
                     for damage_amount in [
-                                          0.01, 0.05, 0.1, 0.25, 0.5, 0.75, 0.9]:
+                                          0.05, 
+                                          0.1, 
+                                          0.2,
+                                          0.3,
+                                          0.4,
+                                          0.5, 
+                                          0.6,
+                                          0.7,
+                                          0.8, 
+                                          0.9,
+                                          1.,
+                                          ]:
                         percent = int(len(sorted_ws)*damage_amount)
                         lim_ctx_words = [w for w, val in sorted_ws[-percent:]]
                         idxs = [ctx_words.index(w) for w in lim_ctx_words]
@@ -227,9 +236,12 @@ for mode in [
 
                         ### other damages
                         for damage_type, damage_mtrx in mtrxs.items():
+                            if 'anywhere' in damage_type:
+                                random.seed(12)
+                                idxs = random.sample(range(len(ctx_words)), k=len(idxs))
                             print(damage_type)
                             damaged_pmi_mtrx = numpy.copy(mtrx)
-                            if damage_type == 'zeroing':
+                            if 'zeroing' in damage_type:
                                 for idx in idxs:
                                     ### rows
                                     damaged_pmi_mtrx[:, idx][idxs] = 0.
@@ -242,7 +254,7 @@ for mode in [
                                     damaged_pmi_mtrx[:, idx][idxs] = vals 
                                     ### columns
                                     damaged_pmi_mtrx[idx, :][idxs] = vals 
-                            elif damage_type == 'rand':
+                            elif 'rand' in damage_type:
                                 random.seed(seed)
                                 for idx in idxs:
                                     vals = numpy.array(random.sample(damage_mtrx[:, idx].tolist(), k=len(idxs)))
@@ -252,16 +264,6 @@ for mode in [
                                     damaged_pmi_mtrx[idx, :][idxs] = vals
                             else:
                                 raise RuntimeError('not yet implemented')
-                            '''
-                            elif damage_type == 'oneing':
-                                for idx in idxs:
-                                    damaged_pmi_mtrx[:, idx][idxs] = 1.
-                            elif damage_type == 'rand':
-                                random.seed(seed)
-                                for idx in idxs:
-                                    to_be_dam = damaged_pmi_mtrx[idx, :][idxs].tolist()
-                                    damaged_pmi_mtrx[idx, :][idxs] = numpy.array(random.sample(to_be_dam), k=len(to_be_dam))
-                            '''
                             vecs = {k : v for k, v in zip(ctx_words, damaged_pmi_mtrx)}
                             out = os.path.join(
                                                'results', 

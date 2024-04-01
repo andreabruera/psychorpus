@@ -12,7 +12,6 @@ unit = 25
 assert 100 % unit == 0
 splits = [(i*0.01, (i+unit)*0.01) for i in range(0, 100, unit)]
 
-
 with tqdm() as counter:
     for dataset in [1, 2]:
         results_folder = os.path.join(
@@ -89,8 +88,12 @@ with tqdm() as counter:
 
                                 ### plotting
                                 fig, ax = pyplot.subplots(constrained_layout=True)
+                                cmap = matplotlib.colormaps['Set3']
+                                colors=cmap(numpy.linspace(0.,1,12))
+                                ax.set_prop_cycle(color=colors)
                                 xs = list(range(len(splits)))
-                                for case, dam_results in c_var_d.items():
+                                for case in sorted(c_var_d.keys()):
+                                    dam_results = c_var_d[case]
                                     #print(dam_results)
                                     mod_dam_ys = numpy.nanmean(dam_results, axis=1)
                                     ax.plot(xs, mod_dam_ys, label=case.replace('_', ' '))
@@ -122,6 +125,11 @@ with tqdm() as counter:
                                                 plots_folder, 
                                                 '{}.jpeg'.format(curr_var),
                                                 )
+                                title = 'damaging: {} in: {} - method: {}'.format(
+                                        damage_variable,
+                                        area,
+                                        damage_type)
+                                pyplot.title(label=title)
                                 print(file_out)
                                 pyplot.savefig(file_out)
                                 pyplot.clf()
