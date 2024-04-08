@@ -11,7 +11,7 @@ import gensim.downloader as api
 
 from scipy import spatial, stats
 
-from utils import build_ppmi_vecs, read_brys_ratings, read_exp48, read_ratings, read_men, read_men_test, read_simlex, read_fernandino
+from utils import build_ppmi_vecs, read_binder_ratings, read_brys_ratings, read_exp48,read_fernandino_ratings, divide_binder_ratings, read_ratings, read_men, read_men_test, read_simlex, read_fernandino
 
 print('now loading pre-trained models...')
 #w2v = api.load("word2vec-google-news-300")
@@ -74,15 +74,18 @@ for corpus in [
                 
                 words, data = read_fernandino(vocab, pos)
                 exp48, exp48_words = read_exp48(words)
+                fern_ratings = read_fernandino_ratings()
+                bind_sections = divide_binder_ratings(fern_ratings)
                 sm = [
-                      'taste',
-                      'smell',
-                      'audition',
-                      'vision',
-                      'touch',
-                      'hand',
-                      'foot',
-                      'mouth',
+                      'Taste',
+                      'Smell',
+                      'Audition',
+                      'Vision',
+                      'Touch',
+                      'UpperLimb',
+                      'LowerLimb',
+                      'Head',
+                      #'Practice'
                       ]
                 idxs = [w_i for w_i, w in enumerate(exp48_words) if w in sm]
                 assert len(idxs) == 8
@@ -163,7 +166,9 @@ for corpus in [
                 ### pmi
                 ### building the PPMI matrix
                 ### things are better when including in the rows the words from MEN...
+                '''
                 trans_pmi_vecs = build_ppmi_vecs(coocs, vocab, ctx_words, ctx_words)
+                '''
                 #trans_pmi_vecs = build_ppmi_vecs(coocs, vocab, test_men_words, ctx_words)
                 '''
                 ### using most frequent words
@@ -186,7 +191,7 @@ for corpus in [
                                  #'raw',
                                  #'log2', 
                                  #'pmi',
-                                 'pmi75',
+                                 #'pmi75',
                                  #'most_frequent_pmi',
                                  #'fasttext',
                                  #'exp48',
@@ -202,12 +207,25 @@ for corpus in [
                                  #'valence',
                                  #'aoa',
                                  #'concreteness',
-                                  #'taste',
-                                  #'smell',
-                                  #'audition',
-                                  #'vision',
-                                  #'touch',
-                                  #'hand',
+                                  'Taste',
+                                  'Smell',
+                                  'Audition',
+                                  'Vision',
+                                  'Touch',
+                                  'Practice',
+                                  'UpperLimb',
+                                 #'Audition_section',
+                                 #'Somatic_section',
+                                 #'Vision_section',
+                                 #'Somatic_section',
+                                 #'Motor_section',
+                                 #'Spatial_section',
+                                 #'Temporal_section',
+                                 #'Causal_section',
+                                 #'Social_section',
+                                 #'Emotion_section',
+                                 #'Drive_section',
+                                 #'Attention_section',
                                  ]:
                         if case == 'random':
                             current_vecs = {k : numpy.array(random.sample(v.tolist(), k=len(v))) for k, v in vecs.items()}
@@ -216,14 +234,19 @@ for corpus in [
                         elif case in ['arousal', 'dominance', 'valence', 'concreteness', 'aoa']:
                             current_vecs = {k : brys_ratings[case][k] for k in pruned_test_words}
                         elif case in [
-                                  'taste',
-                                  'smell',
-                                  'audition',
-                                  'vision',
-                                  'touch',
-                                  'hand',
+                                  'Taste',
+                                  'Smell',
+                                  'Audition',
+                                  'Vision',
+                                  'Touch',
+                                  'Practice',
+                                  'UpperLimb',
                                 ]:
-                            current_vecs = {k : v[exp48_words.index(case)] for k, v in exp48.items()}
+                            current_vecs = {k : v[case] for k, v in fern_ratings.items()}
+                        elif 'section' in case:
+                            current_vecs = {k : v[case] for k, v in bind_sections.items()}
+                            if list(set([len(v) for v in current_vecs.values()]))[0] == 0:
+                                continue
                         elif case == 'raw_freqs':
                             current_vecs = {k : freqs[k] for k, v in vecs.items()}
                         elif case == 'log_freqs':
@@ -259,7 +282,8 @@ for corpus in [
                                                    'results', 
                                                    'fernandino{}'.format(dataset_number),
                                                    'full_dataset',
-                                                   mode
+                                                   mode,
+                                                   'undamaged'
                                                    )
                             os.makedirs(
                                         results, 
@@ -284,7 +308,8 @@ for corpus in [
                                     ### creating word vectors sim matrices
                                     ### RSA
                                     ### removing diagonal
-                                    if case in ['word_length', 'raw_freqs', 'log_freqs'] + sm:
+                                    #if case in ['word_length', 'raw_freqs', 'log_freqs'] + sm:
+                                    if type(current_vecs[dataset_words[0]]) == float:
                                         pred = [-abs(current_vecs[k_one]-current_vecs[k_two]) for k_one_i, k_one in enumerate(dataset_words) for k_two_i, k_two in enumerate(dataset_words) if k_two_i>k_one_i]
                                     else:
                                         pred = [1 - scipy.spatial.distance.cosine(current_vecs[k_one], current_vecs[k_two]) for k_one_i, k_one in enumerate(dataset_words) for k_two_i, k_two in enumerate(dataset_words) if k_two_i>k_one_i]

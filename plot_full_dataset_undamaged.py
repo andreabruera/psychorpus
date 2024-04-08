@@ -18,8 +18,8 @@ for dataset in [1, 2]:
             results[mode] = dict()
         if dataset not in results[mode].keys():
             results[mode][dataset] = dict()
-        for f in os.listdir(os.path.join(results_folder, mode)):
-            with open(os.path.join(results_folder, mode, f)) as i:
+        for f in os.listdir(os.path.join(results_folder, mode, 'undamaged')):
+            with open(os.path.join(results_folder, mode, 'undamaged', f)) as i:
                 for l in i:
                     line = l.strip().split('\t')
                     #print(line)
@@ -32,6 +32,7 @@ for dataset in [1, 2]:
                     scores = numpy.array(line[1:], dtype=numpy.float64)
                     #results[dataset].append([(area, model), scores])
                     results[mode][dataset][area][model] = scores
+'''
 colors = [
           'grey', 
           'goldenrod', 
@@ -50,6 +51,9 @@ colors = [
           'blueviolet',
           'cyan',
           ]
+'''
+cmap = matplotlib.colormaps['hsv']
+colors = cmap(numpy.linspace(0.,1,30))
 ### plotting
 
 with tqdm() as counter:
@@ -60,6 +64,7 @@ with tqdm() as counter:
                                       'fernandino{}'.format(dataset),
                                       'full_dataset',
                                       mode,
+                                      'undamaged',
                                       )
             os.makedirs(plots, exist_ok=True)
             for area, area_data in dataset_data.items():
@@ -115,8 +120,9 @@ with tqdm() as counter:
                                            )
                 pyplot.xticks(
                           ticks=range(len(models)), 
-                          labels=[m[:15].replace('_', '\n') for m in models],
-                          rotation=45,
+                          labels=[m[:15].replace('_', ' ') for m in models],
+                          #rotation=45,
+                          rotation=90,
                           )
                 pyplot.title(area)
                 pyplot.savefig(os.path.join(plots, '{}.jpg'.format(area)))

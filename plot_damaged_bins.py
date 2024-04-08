@@ -120,7 +120,8 @@ with tqdm() as counter:
                                           alpha=0.1,
                                           linestyles='--',
                                           )
-                                ax.legend()
+                                ax.legend(ncols=6,
+                                          loc=4)
                                 file_out = os.path.join(
                                                 plots_folder, 
                                                 '{}.jpeg'.format(curr_var),

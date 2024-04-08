@@ -30,11 +30,11 @@ test_words = men_words.union(simlex_words)
 for corpus in [
                #'bnc',
                #'wac',
-               'tagged_wiki',
-               #'opensubs',
+               #'tagged_wiki',
+               'opensubs',
                ]:
     if corpus in ['bnc', 'opensubs']:
-        min_count = 100
+        min_count = 10
     elif corpus in ['tagged_wiki', 'wac', 'wiki']:
         min_count = 100
     with open(os.path.join(
@@ -45,8 +45,8 @@ for corpus in [
     print('total size of the corpus: {} tokens'.format(sum(freqs.values())))
     with open(os.path.join(
                            'pickles', 'en', corpus, 
-                           'en_{}_coocs_uncased_min_{}_win_20.pkl'.format(corpus, min_count),
-                           #'en_{}_coocs_uncased_min_{}_win_4.pkl'.format(corpus, min_count),
+                           #'en_{}_coocs_uncased_min_{}_win_20.pkl'.format(corpus, min_count),
+                           'en_{}_coocs_uncased_min_{}_win_4.pkl'.format(corpus, min_count),
                            ), 'rb') as i:
         coocs = pickle.load(i)
     with open(os.path.join(
@@ -123,7 +123,7 @@ for corpus in [
     freq_pmi_vecs = build_ppmi_vecs(coocs, vocab, freq_ctx_words, freq_ctx_words)
     
     for case in [
-                 'random',
+                 #'random',
                  'raw',
                  #'log2', 
                  'pmi',

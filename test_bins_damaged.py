@@ -120,12 +120,6 @@ for r_c in [
                                '{}_rows.pkl'.format(r_c),
                            ), 'rb') as i:
         mtrxs[r_c] = pickle.load(i)
-        #mtrxs['rand_anywhere'] = pickle.load(i)
-mtrxs['zeroing'] = dict()
-'''
-mtrxs['rand_zeroing'] = dict()
-#mtrxs['oneing'] = dict()
-'''
 
 ### power only
 for power in powers:
@@ -134,9 +128,10 @@ for power in powers:
                            'pow_{}.pkl'.format(power),
                            ), 'rb') as i:
         mtrxs['pow_{}'.format(power)] = pickle.load(i)
+mtrxs['pow_0.'] = dict()
 
 selected_areas = [
-                  '_semantic_network',
+                  'semantic_network',
                   ###
                   #'L_IFG',
                   #'L_inferiorparietal',
@@ -154,12 +149,22 @@ selected_areas = [
                   #'R_ATL',
                   ]
 
-fern_ratings = read_fernandino_ratings(hand=True)
+fern_ratings = read_fernandino_ratings()
 unit = 25
 assert 100 % unit == 0
 splits = [(i*0.01, (i+unit)*0.01) for i in range(0, 100, unit)]
-relevant_keys = fern_ratings['accordion'].keys()
 
+global relevant_keys
+relevant_keys = [
+            'Audition',
+            'Practice',
+            'UpperLimb',
+            'Touch',
+            'Vision',
+            'Taste',
+            'Smell',
+            'Sound',
+            ]
 damage_ratings = [
                   'auditory', 
                   'hand_arm',
@@ -241,19 +246,20 @@ for mode in [
                                 idxs = random.sample(range(len(ctx_words)), k=len(idxs))
                             print(damage_type)
                             damaged_pmi_mtrx = numpy.copy(mtrx)
-                            if 'zeroing' in damage_type:
-                                for idx in idxs:
-                                    ### rows
-                                    damaged_pmi_mtrx[:, idx][idxs] = 0.
-                                    ### columns
-                                    damaged_pmi_mtrx[idx, :][idxs] = 0.
-                            elif 'pow' in damage_type:
-                                for idx in idxs:
-                                    vals = damage_mtrx[:, idx][idxs]
-                                    ### rows
-                                    damaged_pmi_mtrx[:, idx][idxs] = vals 
-                                    ### columns
-                                    damaged_pmi_mtrx[idx, :][idxs] = vals 
+                            if 'pow' in damage_type:
+                                if damage_type == 'pow_0.':
+                                    for idx in idxs:
+                                        ### rows
+                                        damaged_pmi_mtrx[:, idx][idxs] = 0.
+                                        ### columns
+                                        damaged_pmi_mtrx[idx, :][idxs] = 0.
+                                else:
+                                    for idx in idxs:
+                                        vals = damage_mtrx[:, idx][idxs]
+                                        ### rows
+                                        damaged_pmi_mtrx[:, idx][idxs] = vals 
+                                        ### columns
+                                        damaged_pmi_mtrx[idx, :][idxs] = vals 
                             elif 'rand' in damage_type:
                                 random.seed(seed)
                                 for idx in idxs:

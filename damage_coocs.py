@@ -144,14 +144,6 @@ powers = [
           0.25,
           0.5,
           0.75,
-          #0.3, 
-          #0.4, 
-          #0.5,
-          #0.6,
-          #0.7,
-          #0.8,
-          #0.9
-          #1.25, 1.5, 1.75
           ]
 ### pmi
 ### building the PPMI matrix
@@ -182,18 +174,18 @@ for smoothing, marker in [
         pickle.dump(mtrx, i)
     rng = numpy.random.default_rng()
     ### shuffled
-    curr_mtrx = numpy.copy(mtrx)
+    '''
     ### columns
+    curr_mtrx = numpy.copy(mtrx)
     rng.shuffle(curr_mtrx, axis=1)
     with open(os.path.join(
                            out_f,
                            'rand_cols.pkl',
                            ), 'wb') as i:
         pickle.dump(curr_mtrx, i)
-    ### powers
-    ### shuffled
+    '''
     curr_mtrx = numpy.copy(mtrx)
-    ### columns
+    ### rows
     rng.shuffle(curr_mtrx, axis=0)
     with open(os.path.join(
                            out_f,

@@ -5,6 +5,20 @@ import re
 
 from tqdm import tqdm
 
+def divide_binder_ratings(ratings):
+    subdivisions = dict()
+    with open(os.path.join('data', 'binder_sections.tsv')) as i:
+        for l in i:
+            line = l.strip().split('\t')
+            if line[1] not in ratings['actor'].keys():
+                print(line)
+                continue
+            if line[0] not in subdivisions.keys():
+                subdivisions[line[0]] = list()
+            subdivisions[line[0]].append(line[1])
+    section_vecs = {w : {'{}_section'.format(k) : [ratings[w][dim] for dim in v] for k, v in subdivisions.items()} for w in ratings.keys()}
+    return section_vecs
+
 def read_exp48(words):
     vecs = dict()
     ### sensory ratings
@@ -13,38 +27,24 @@ def read_exp48(words):
                              'fernandino_experiential_ratings.tsv',
                              )
     assert os.path.exists(file_path)
-    mapper = {
-              'UpperLimb' : 'Hand',
-              'LowerLimb' : 'Foot',
-              'Head' : 'Mouth',
-              }
     with open(file_path) as i:
         for l_i, l in enumerate(i):
             line = l.replace(',', '.').strip().split('\t')
             if l_i == 0:
                 dimensions = [w.strip() for w in line[1:]]
-                dimensions = [mapper[w].lower() if w in mapper.keys() else w.lower() for w in dimensions]
                 continue
             vecs[line[0].lower().strip()] = numpy.array(line[1:], dtype=numpy.float64)
+
     return vecs, list(dimensions)
 
-def read_fernandino_ratings(hand=False):
+def read_fernandino_ratings():
     ### sensory ratings
     file_path = os.path.join(
                              'data',
                              'fernandino_experiential_ratings.tsv',
                              )
     assert os.path.exists(file_path)
-    relevant_keys = {
-                    'Audition' : 'auditory',
-                    'Taste' : 'gustatory',
-                    'Touch' : 'haptic',
-                    'Smell' : 'olfactory',
-                    'Vision' : 'visual',
-                     }
-    if hand:
-        relevant_keys['UpperLimb'] = 'hand_arm'
-    norms = {k.lower().split('.')[0] : dict() for k in relevant_keys.values()}
+    norms = dict()
     with open(file_path) as i:
         counter = 0
         for l_i, l in enumerate(i):
@@ -53,29 +53,65 @@ def read_fernandino_ratings(hand=False):
                 header = line.copy()
                 continue
             assert len(line) == len(header)
-            marker = False
-            for k, v in relevant_keys.items():
-                try:
-                    assert float(line[header.index(k)]) <= 6 
-                except AssertionError:
-                    #logging.info(line[0])
-                    marker = True
-            if marker:
-                continue
             if len(line[0].split()) == 1:
-                for k, v in relevant_keys.items():
-                    val = float(line[header.index(k)])
+                for h_i, h in zip(range(len(header)), header):
+                    if h_i == 0:
+                        continue
+                    val = float(line[h_i])
                     ### minimum is 0, max is 5
                     assert val >= 0. and val <= 6.
                     curr_val = float(val) / 6.
-                    norms[v][line[0].lower().strip()] = curr_val
+                    if h not in norms.keys():
+                        norms[h] = dict()
+                    norms[h][line[0].lower().strip()] = curr_val
     ### checking that all went good...
     for k, v in norms.items():
         for w in v.keys():
             for k_two, v_two in norms.items():
                 assert w in v_two.keys()
     ### putting the dictionary together
-    final_norms = {k : {k_two : v_two[k] for k_two, v_two in norms.items()} for k in norms['auditory'].keys()}
+    final_norms = {k : {k_two : v_two[k] for k_two, v_two in norms.items()} for k in norms['Audition'].keys()}
+
+    return final_norms
+
+def read_binder_ratings():
+    ### sensory ratings
+    file_path = os.path.join(
+                             'data',
+                             'binder_ratings.tsv',
+                             )
+    assert os.path.exists(file_path)
+    norms = dict()
+    with open(file_path) as i:
+        counter = 0
+        for l_i, l in enumerate(i):
+            line = l.replace(',', '.').strip().split('\t')
+            if l_i == 0:
+                header = line.copy()
+                continue
+            assert len(line) == len(header)
+            for h_i, h in zip(range(len(header)), header):
+                if h_i in [0, 1, 2, 3, 4] or h_i>69:
+                    print(h)
+                    continue
+                if line[h_i] == 'na':
+                    curr_val = numpy.nan
+                else:
+                    val = float(line[h_i])
+                    ### minimum is 0, max is 5
+                    assert val >= 0. and val <= 6.
+                    curr_val = float(val) / 6.
+                if h not in norms.keys():
+                    norms[h] = dict()
+                norms[h][line[1].lower().strip()] = curr_val
+    assert len(norms.keys()) == 65
+    ### checking that all went good...
+    for k, v in norms.items():
+        for w in v.keys():
+            for k_two, v_two in norms.items():
+                assert w in v_two.keys()
+    ### putting the dictionary together
+    final_norms = {k : {k_two : v_two[k] for k_two, v_two in norms.items()} for k in norms['Audition'].keys()}
 
     return final_norms
 
@@ -171,10 +207,14 @@ def read_fernandino(vocab, pos, return_dict=False, avg_subjects=False):
             for l_i, l in enumerate(i):
                 line = l.strip()
                 if line != '':
-                    if vocab[line] == 0:
-                        missing_idxs.append(l_i)
-                        print('missing: {}'.format([line, pos[line]]))
-                        continue
+                    try:
+                        if vocab[line] == 0:
+                            missing_idxs.append(l_i)
+                            print('missing: {}'.format([line, pos[line]]))
+                            continue
+                    except KeyError:
+                        print('missing: {} - unknown POS'.format(line))
+
                     words[d].append(line)
         ### similarities
         ### other anterior-frontal areas
