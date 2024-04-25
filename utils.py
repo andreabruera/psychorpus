@@ -1,8 +1,11 @@
 import numpy
 import os
 import pickle
+import random
 import re
+import scipy
 
+from scipy import stats
 from tqdm import tqdm
 
 def divide_binder_ratings(ratings):
@@ -128,6 +131,7 @@ def read_ratings(hand=False, concreteness=False):
                      'Haptic.mean',
                      'Olfactory.mean',
                      'Visual.mean',
+                     #'Hand_arm.mean',
                      #'Foot_leg.mean',
                      #'Hand_arm.mean', 
                      #'Head.mean', 
@@ -431,3 +435,83 @@ def levenshtein(seq1, seq2):
                     matrix[x,y-1] + 1
                 )
     return (matrix[size_x - 1, size_y - 1])
+
+def bins_rsa_test(inputs):
+    words = inputs[0]
+    brain_data = inputs[1]
+    model = inputs[2]
+    out_file = inputs[3]
+    splits = inputs[4]
+    relevant_keys = inputs[5]
+    ratings = inputs[6]
+
+    '''
+    words = [w for w in all_words[mode][dataset]]
+    brain_data = {k : v for k, v in all_data[mode][dataset][area].items()}
+    if type(model) == tuple:
+        model = pow_rand_damage(variable[0], variable[1], variable[2], variable[3])
+    else:
+        model = models[variable]
+    '''
+    n_items = 20
+    seed = 12
+
+    dataset_results = dict()
+
+    bins = {'{}_{}'.format(case, i) : list() for i in range(len(splits)) for case in relevant_keys}
+
+    for case_i, case in enumerate(relevant_keys):
+        #print(case)
+        counter = 0
+        for beg, end in tqdm(splits):
+            bin_words = [w for w in words if w in ratings.keys() and ratings[w][case]>=beg and ratings[w][case]<=end]
+            if len(bin_words) < n_items:
+                print('nan')
+                bins['{}_{}'.format(case, counter)] = [numpy.nan for s in brain_data.keys()]
+                counter += 1
+                continue
+            bin_results = list()
+            random.seed(seed)
+            for _ in range(100):
+                iter_results = list()
+                current_bin_words = random.sample(bin_words, k=n_items)
+                if type(model[list(model.keys())[0]]) == float:
+                    sim_model = [-abs(model[w_one]-model[w_two]) for w_one_i, w_one in enumerate(current_bin_words) for w_two_i, w_two in enumerate(current_bin_words) if w_two_i>w_one_i]
+                else:
+                    sim_model = [1-scipy.spatial.distance.cosine(model[w_one], model[w_two]) for w_one_i, w_one in enumerate(current_bin_words) for w_two_i, w_two in enumerate(current_bin_words) if w_two_i>w_one_i]
+                for s, s_data in brain_data.items():
+                    sim_brain = [s_data[tuple(sorted([w_one, w_two]))] for w_one_i, w_one in enumerate(current_bin_words) for w_two_i, w_two in enumerate(current_bin_words) if w_two_i>w_one_i]
+                    corr = scipy.stats.spearmanr(sim_model, sim_brain)[0]
+                    iter_results.append(corr)
+                bin_results.append(iter_results)
+            bin_results = numpy.average(bin_results, axis=0)
+            #print(bin_results)
+            bins['{}_{}'.format(case, counter)] = bin_results
+            counter += 1
+
+    print(out_file)
+    with open(out_file, 'w') as o:
+        o.write('bin\tresults\n')
+        for k, v in bins.items():
+            assert len(v) == len(brain_data.keys())
+            #print(len(v))
+            o.write('{}\t'.format(k))
+            for val in v:
+                o.write('{}\t'.format(val))
+            o.write('\n')
+
+def full_dataset_rsa_test(inputs):
+    words = inputs[0]
+    brain_data = inputs[1]
+    model = inputs[2]
+
+    if type(model[list(model.keys())[0]]) == float:
+        sim_model = [-abs(model[w_one]-model[w_two]) for w_one_i, w_one in enumerate(words) for w_two_i, w_two in enumerate(words) if w_two_i>w_one_i]
+    else:
+        sim_model = [1-scipy.spatial.distance.cosine(model[w_one], model[w_two]) for w_one_i, w_one in enumerate(words) for w_two_i, w_two in enumerate(words) if w_two_i>w_one_i]
+    results = list()
+    for s, s_data in brain_data.items():
+        sim_brain = [s_data[tuple(sorted([w_one, w_two]))] for w_one_i, w_one in enumerate(words) for w_two_i, w_two in enumerate(words) if w_two_i>w_one_i]
+        corr = scipy.stats.spearmanr(sim_model, sim_brain)[0]
+        results.append(corr)
+    return results

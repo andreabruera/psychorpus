@@ -10,7 +10,7 @@ import tqdm
 from sklearn import linear_model
 from tqdm import tqdm
 
-from utils import bins_rsa_test, build_ppmi_vecs, read_fernandino_ratings, read_ratings, read_men, read_men_test, read_simlex, read_fernandino
+from utils import bins_rsa_test, full_dataset_rsa_test, build_ppmi_vecs, read_fernandino_ratings, read_ratings, read_men, read_men_test, read_simlex, read_fernandino
 
 def rank_words(ratings, ctx_words, ranking_modes, to_be_damaged, damage_amounts):
     rankings = dict()
@@ -91,7 +91,6 @@ win_size = 4
 marker = 'pmi_smooth75'
 full_corpus = '{}_coocs_uncased_min_{}_win_{}'.format(corpus, min_count, win_size)
 marker = 'pmi_smooth75'
-seed = 12
 with open(os.path.join(
                        'pickles', 'en', corpus, 
                        'en_{}_uncased_word_pos.pkl'.format(corpus),
@@ -137,8 +136,6 @@ for r_c in [
                                '{}_rows.pkl'.format(r_c),
                            ), 'rb') as i:
         mtrxs[r_c] = pickle.load(i)
-mtrxs['pow_0.'] = dict()
-
 ### power only
 for power in powers:
     with open(os.path.join(
@@ -146,8 +143,9 @@ for power in powers:
                            'pow_{}.pkl'.format(power),
                            ), 'rb') as i:
         mtrxs['pow_{}'.format(power)] = pickle.load(i)
-'''
 mtrxs['residualization'] = dict()
+'''
+mtrxs['pow_0.'] = dict()
 
 selected_areas = [
                   'semantic_network',
@@ -175,37 +173,23 @@ selected_areas = [
 debugging = False
 ratings = read_fernandino_ratings()
 lancaster_ratings = read_ratings(hand=True) 
-unit = 25
-assert 100 % unit == 0
-splits = [(i*0.01, (i+unit)*0.01) for i in range(0, 100, unit)]
 
-global relevant_keys
-relevant_keys = [
-            'Audition',
-            'Sound',
-            'Practice',
-            'UpperLimb',
-            'Touch',
-            'Vision',
-            'Taste',
-            'Smell',
-            ]
 to_be_damaged = [
                  'auditory',
                  'hand_arm',
                   ]
 damage_amounts = [
-                  0.05, 
-                  0.1, 
+                  #0.05, 
+                  #0.1, 
                   0.2,
                   0.3,
                   0.4,
                   0.5, 
-                  0.6,
-                  0.7,
-                  0.8, 
+                  #0.6,
+                  #0.7,
+                  #0.8, 
                   0.9,
-                  1.,
+                  #1.,
                   ]
 
 ### doing the word rankings first
@@ -217,8 +201,10 @@ ranking_modes = [
                  ]
 rankings = rank_words(lancaster_ratings, ctx_words, ranking_modes, to_be_damaged, damage_amounts)
 
+'''
 ### residualizing the matrix
 print('now residualizing...')
+residualized_mtrx = {k : clean_mtrx.copy() for k in to_be_damaged}
 step = int(len(ctx_words)/10)
 all_idxs = [w_i for w_i, w in enumerate(ctx_words) if w in lancaster_ratings.keys()]
 print('number of words missing from the ratings: {}'.format(len(ctx_words)-len(all_idxs)))
@@ -227,10 +213,9 @@ for k in to_be_damaged:
     f = os.path.join('damaged_pickles', 'residualized_{}.pkl'.format(k))
     if os.path.exists(f):
         with open(f, 'rb') as i:
-            residualized_mtrx[k] = pickle.load(i)[k]
+            residualized_mtrx[k] = pickle.load(i)
     else:
 
-        residualized_mtrx = clean_mtrx.copy()
         split_points = list(range(0, len(ctx_words), step))[:-1]
         for start in split_points:
             train_idxs = all_idxs[0:start] + all_idxs[start+step:]
@@ -248,9 +233,10 @@ for k in to_be_damaged:
                                   )
             assert preds.shape[0] == len(test_idxs)
             for idx_i, idx in enumerate(test_idxs):
-                residualized_mtrx[idx] = clean_mtrx[idx] - preds[idx_i]
+                residualized_mtrx[k][idx] = clean_mtrx[idx] - preds[idx_i]
         with open(f, 'wb') as o:
             pickle.dump(residualized_mtrx, o)
+'''
 
 modes = [
         'averaged_sub_mtrxs', 
@@ -278,57 +264,48 @@ print('preparing inputs...')
 models = dict()
 inputs = list()
 for dataset in [1, 2]:
-    for area in selected_areas:
-        for mode in modes:
-            ### damages
-            for damage_type, damage_mtrx in mtrxs.items():
-                ###
-                for ranking_mode, r_dict in rankings.items():
-                    for rat, rat_dict in r_dict.items():
-                        for damage_amount, idxs in rat_dict.items():
-                            out = os.path.join(
-                                               'results', 
-                                               'fernandino{}'.format(dataset), 
-                                               'bins',
-                                               mode,
-                                               ranking_mode,
-                                               area,
-                                               '{}_{}_{}'.format(corpus, min_count, win_size),
-                                               marker,
-                                               rat,
-                                               damage_type,
-                                               )
-                            os.makedirs(out, exist_ok=True)
-                            print(out)
-                            out_file = os.path.join(
-                                            out, 
-                                            '{}.results'.format(
-                                                damage_amount)
-                                            )
-                            if 'residualization' in damage_type:
-                                vecs = residualize(ctx_words, idxs, rat)
-                            else:
-                                vecs = pow_rand_damage(damage_type, ctx_words, damage_mtrx, idxs)
+    for mode in modes:
+        ### damages
+        for damage_type, damage_mtrx in mtrxs.items():
+            ###
+            for ranking_mode, r_dict in rankings.items():
+                for rat, rat_dict in r_dict.items():
+                    for damage_amount, idxs in rat_dict.items():
+                        model_results = list()
+                        out = os.path.join(
+                                           'results', 
+                                           'fernandino{}'.format(dataset), 
+                                           'full_dataset',
+                                           mode,
+                                           '{}_{}_{}_{}'.format(
+                                                rat, 
+                                                damage_type, 
+                                                damage_amount, 
+                                                ranking_mode,
+                                                ),
+                                           )
+                        os.makedirs(out, exist_ok=True)
+                        print(out)
+                        out_file = os.path.join(
+                                        out, 
+                                        '{}.results'.format(
+                                           '{}_{}_{}_{}'.format(marker, corpus, min_count, win_size),
+                                           )
+                                        )
+                        if 'residualization' in damage_type:
+                            vecs = residualize(ctx_words, idxs, rat)
+                        else:
+                            vecs = pow_rand_damage(damage_type, ctx_words, damage_mtrx, idxs)
+                        for area in selected_areas:
                             ins = [
                                     all_words[mode][dataset],
                                     all_data[mode][dataset][area],
-                                    #pow_rand_damage(ranking_mode, rat, damage_amount, damage_type),
                                     vecs, 
-                                    out_file,
-                                    splits,
-                                    relevant_keys,
-                                    ratings,
                                     ]
-                            #inputs.append(ins)
-                            bins_rsa_test(ins)
-
-'''
-print('ready!')
-if debugging:
-    for inp in inputs:
-else:
-    with multiprocessing.Pool(processes=int(os.cpu_count()/4)) as pool:
-        pool.map(bins_rsa_test, inputs)
-        pool.terminate()
-        pool.join()
-'''
+                            model_results.append((area, full_dataset_rsa_test(ins)))
+                        with open(out_file, 'w') as o:
+                            for area, l in model_results:
+                                o.write('{}\t'.format(area))
+                                for val in l:
+                                    o.write('{}\t'.format(val))
+                                o.write('\n')

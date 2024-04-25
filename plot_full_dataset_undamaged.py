@@ -70,7 +70,10 @@ with tqdm() as counter:
             for area, area_data in dataset_data.items():
                 fig, ax = pyplot.subplots(constrained_layout=True)
                 ymin=-7
-                ymax=29
+                if 'individual' in mode:
+                    ymax = 16
+                else:
+                    ymax=29
                 hlines=[y*0.01 for y in range(ymin+1, ymax, 2)]
                 ax.set_ylim(bottom=ymin*0.01, top=ymax*0.01)
                 models = sorted(area_data.keys())

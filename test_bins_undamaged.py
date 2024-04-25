@@ -8,75 +8,18 @@ import tqdm
 
 from tqdm import tqdm
 
-from utils import build_ppmi_vecs, read_fernandino_ratings, read_ratings, read_men, read_men_test, read_simlex, read_fernandino
-
-def bins_rsa_test(inputs):
-    mode = inputs[0]
-    dataset = inputs[1]
-    area = inputs[2]
-    variable = inputs[3]
-    out_file = inputs[4]
-
-    words = all_words[mode][dataset]
-    brain_data = all_data[mode][dataset][area]
-    #import pdb; pdb.set_trace()
-    model = variables[variable]
-
-    dataset_results = dict()
-
-    bins = {'{}_{}'.format(case, i) : list() for i in range(len(splits)) for case in relevant_keys}
-
-    for case_i, case in enumerate(relevant_keys):
-        #print(case)
-        counter = 0
-        for beg, end in tqdm(splits):
-            bin_words = [w for w in words if w in ratings.keys() and ratings[w][case]>=beg and ratings[w][case]<=end]
-            if len(bin_words) < n_items:
-                print('nan')
-                bins['{}_{}'.format(case, counter)] = [numpy.nan for s in brain_data.keys()]
-                counter += 1
-                continue
-            bin_results = list()
-            random.seed(seed)
-            for _ in range(100):
-                iter_results = list()
-                current_bin_words = random.sample(bin_words, k=n_items)
-                if type(model[list(model.keys())[0]]) == float:
-                    sim_model = [-abs(model[w_one]-model[w_two]) for w_one_i, w_one in enumerate(current_bin_words) for w_two_i, w_two in enumerate(current_bin_words) if w_two_i>w_one_i]
-                else:
-                    sim_model = [1-scipy.spatial.distance.cosine(model[w_one], model[w_two]) for w_one_i, w_one in enumerate(current_bin_words) for w_two_i, w_two in enumerate(current_bin_words) if w_two_i>w_one_i]
-                for s, s_data in brain_data.items():
-                    sim_brain = [s_data[tuple(sorted([w_one, w_two]))] for w_one_i, w_one in enumerate(current_bin_words) for w_two_i, w_two in enumerate(current_bin_words) if w_two_i>w_one_i]
-                    corr = scipy.stats.spearmanr(sim_model, sim_brain)[0]
-                    iter_results.append(corr)
-                bin_results.append(iter_results)
-            bin_results = numpy.average(bin_results, axis=0)
-            #print(bin_results)
-            bins['{}_{}'.format(case, counter)] = bin_results
-            counter += 1
-
-    print(out_file)
-    with open(out_file, 'w') as o:
-        o.write('bin\tresults\n')
-        for k, v in bins.items():
-            assert len(v) == len(brain_data.keys())
-            #print(len(v))
-            o.write('{}\t'.format(k))
-            for val in v:
-                o.write('{}\t'.format(val))
-            o.write('\n')
-
-debugging = False
-#debugging = True
-global n_items
-n_items = 20
+from utils import bins_rsa_test, build_ppmi_vecs, read_fernandino_ratings, read_ratings, read_men, read_men_test, read_simlex, read_fernandino
 
 selected_areas = [
                   'semantic_network',
                   ###
-                  #'L_IFG',
-                  #'L_inferiorparietal',
-                  #'L_precuneus',
+                  'L_IFG',
+                  'L_inferiorparietal',
+                  'L_supramarginal',
+                  'L_middletemporal',
+                  'AMTG',
+                  'PMTG',
+                  'L_precuneus',
                   ###
                   #'AMTG',
                   #'L_caudalmiddlefrontal',
@@ -131,9 +74,10 @@ relevant_keys = [
             'Smell',
             'Sound',
             ]
-global variables
-variables = {k : {w : vals[k] for w, vals in ratings.items()} for k in relevant_keys}
-variables['{}_{}'.format(marker, full_corpus)] = {w : mtrx[w_i] for w_i, w in enumerate(ctx_words)}
+global models
+#models = {k : {w : vals[k] for w, vals in ratings.items()} for k in relevant_keys}
+models = dict()
+models[(marker, corpus)] = {w : mtrx[w_i] for w_i, w in enumerate(ctx_words)}
 ### dummy variables
 global vocab
 vocab = {k : 1 for k in ratings.keys()}
@@ -163,7 +107,12 @@ for mode, data in all_data.items():
         for area, area_data in brain_data.items():
             if area not in selected_areas:
                 continue
-            for variable, vecs in variables.items():
+            for variable, vecs in models.items():
+                if type(variable) == tuple:
+                    marker = variable[0]
+                    variable = '{}_{}_{}'.format(corpus, min_count, win_size)
+                else:
+                    marker = 'raw_score'
                 ### undamaged
                 out = os.path.join(
                                    'results', 
@@ -173,9 +122,7 @@ for mode, data in all_data.items():
                                    'undamaged',
                                    area,
                                    variable,
-                                   variable,
-                                   'undamaged',
-                                   'undamaged',
+                                   marker,
                                    )
                 os.makedirs(out, exist_ok=True)
                 #print(out)
@@ -183,14 +130,25 @@ for mode, data in all_data.items():
                                 out, 
                                 'undamaged.results'
                                 )
-                inputs.append([mode, dataset, area, variable, out_file])
+                #inputs.append([mode, dataset, area, variable, out_file])
+                inp = [
+                        all_words[mode][dataset],
+                        all_data[mode][dataset][area],
+                        vecs,
+                        out_file,
+                        splits,
+                        relevant_keys, 
+                        ratings,
+                        ]
+                bins_rsa_test(inp)
+'''
 print('ready!')
 if debugging:
     #bins_rsa_test(words[dataset], fern_ratings, vecs, area_data, splits, out_file)
     for inp in inputs:
-        bins_rsa_test(inp)
 else:
     with multiprocessing.Pool(processes=int(os.cpu_count()/2)) as pool:
         pool.map(bins_rsa_test, inputs)
         pool.terminate()
         pool.join()
+'''
