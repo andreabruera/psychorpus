@@ -133,7 +133,6 @@ def read_ratings(hand=False, concreteness=False):
                      'Visual.mean',
                      #'Hand_arm.mean',
                      #'Foot_leg.mean',
-                     #'Hand_arm.mean', 
                      #'Head.mean', 
                      #'Mouth.mean', 
                      #'Torso.mean'
@@ -165,6 +164,29 @@ def read_ratings(hand=False, concreteness=False):
                     assert val >= 0. and val <= 5.
                     curr_val = float(val) / 5
                     norms[k.lower().split('.')[0]][line[0].lower().strip()] = curr_val
+    ### reading missing ones
+    file_path = os.path.join(
+                             'data',
+                             'fernandino_predicted_missing_norms.tsv'
+                             )
+    assert os.path.exists(file_path)
+    with open(file_path) as i:
+        counter = 0
+        for l_i, l in enumerate(i):
+            line = l.strip().split('\t')
+            if l_i == 0:
+                header = line.copy()
+                continue
+            assert len(line) == len(header)
+            w = line[0].strip()
+            for h_i, h in enumerate(header):
+                if h_i == 0:
+                    continue
+                if hand == False and h == 'hand_arm':
+                    continue
+                val = float(line[h_i])
+                assert w not in norms[h].keys()
+                norms[h][w] = curr_val
     ### concreteness
     if concreteness:
         norms['concreteness'] = dict()
@@ -189,7 +211,7 @@ def read_ratings(hand=False, concreteness=False):
 
     return final_norms
 
-def read_fernandino(vocab, pos, return_dict=False, avg_subjects=False):
+def read_fernandino(vocab, pos, lang='en', trans=dict(), return_dict=False, avg_subjects=False):
 
     words = {1 : list(), 2 : list()}
     subjects_data = {1 : dict(), 2 : dict()}
@@ -210,16 +232,20 @@ def read_fernandino(vocab, pos, return_dict=False, avg_subjects=False):
         with open(os.path.join('data', 'fernandino{}_words.txt'.format(d))) as i:
             for l_i, l in enumerate(i):
                 line = l.strip()
+                word = '{}'.format(line)
                 if line != '':
                     try:
+                        if lang == 'de':
+                            line = trans[line]
                         if vocab[line] == 0:
                             missing_idxs.append(l_i)
                             print('missing: {}'.format([line, pos[line]]))
                             continue
                     except KeyError:
                         print('missing: {} - unknown POS'.format(line))
-
-                    words[d].append(line)
+                        missing_idxs.append(l_i)
+                        continue
+                    words[d].append(word)
         ### similarities
         ### other anterior-frontal areas
         ### reading mapper
@@ -250,6 +276,7 @@ def read_fernandino(vocab, pos, return_dict=False, avg_subjects=False):
                         if l_i in missing_idxs:
                             continue
                         line = [sim for sim_i, sim in enumerate(l.strip().split('\t')) if sim_i not in missing_idxs]
+                        assert len(line) == len(words[d])
                         mtrx.append(line)
                 ### checks
                 assert len(mtrx) == len(words[d])
@@ -342,9 +369,13 @@ def build_ppmi_vecs(coocs, vocab, row_words, col_words, smoothing=False, power=1
         pmi_mtrx = numpy.power(pmi_mtrx, power)
     #matrix_[matrix_ != 0] = np.array(1.0/matrix_[matrix_ != 0])
     axis_one_sum = pmi_mtrx.sum(axis=1)
-    axis_one_mtrx = numpy.divide(1, axis_one_sum, where=axis_one_sum!=0).reshape(-1, 1)
+    #axis_one_mtrx = numpy.divide(1, axis_one_sum, where=axis_one_sum!=0).reshape(-1, 1)
+    axis_one_mtrx = numpy.array([1/val if val!=0 else val for val in axis_one_sum]).reshape(-1, 1)
+    assert True not in numpy.isnan(axis_one_mtrx)
     axis_zero_sum = pmi_mtrx.sum(axis=0)
-    axis_zero_mtrx = numpy.divide(1, axis_zero_sum, where=axis_zero_sum!=0).reshape(1, -1)
+    #axis_zero_mtrx = numpy.divide(1, axis_zero_sum, where=axis_zero_sum!=0).reshape(1, -1)
+    axis_zero_mtrx = numpy.array([1/val if val!=0 else val for val in axis_zero_sum]).reshape(-1, 1)
+    assert True not in numpy.isnan(axis_one_mtrx)
     ### raising to 0.75 as suggested in Levy & Goldberg 2015
     if smoothing:
         total_sum = numpy.power(pmi_mtrx, 0.75).sum()
@@ -358,7 +389,11 @@ def build_ppmi_vecs(coocs, vocab, row_words, col_words, smoothing=False, power=1
                                                    axis_zero_mtrx), 
                                     total_sum)
     trans_pmi_mtrx[trans_pmi_mtrx<1.] = 1
+    assert True not in numpy.isnan(trans_pmi_mtrx.flatten())
+    ### checking for nans
     trans_pmi_vecs = {w : numpy.log2(trans_pmi_mtrx[w_i]) for w_i, w in enumerate(row_words)}
+    for v in trans_pmi_vecs.values():
+        assert True not in numpy.isnan(v)
 
     return trans_pmi_vecs
 

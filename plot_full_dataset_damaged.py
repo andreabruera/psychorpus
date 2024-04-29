@@ -1,6 +1,7 @@
 import matplotlib
 import numpy
 import os
+import re
 import scipy
 
 from matplotlib import pyplot
@@ -18,40 +19,26 @@ for dataset in [1, 2]:
             results[mode] = dict()
         if dataset not in results[mode].keys():
             results[mode][dataset] = dict()
-        for f in os.listdir(os.path.join(results_folder, mode, 'undamaged')):
-            with open(os.path.join(results_folder, mode, 'undamaged', f)) as i:
+        for damage in os.listdir(os.path.join(results_folder, mode)):
+            full_path = os.path.join(results_folder, mode, damage)
+            fs = os.listdir(full_path)
+            if damage == 'undamaged':
+                fs = [f for f in fs if 'pmi75_opensubs' in f and 'de_' not in f]
+            else:
+                if 'domin' not in damage:
+                    continue
+            assert len(fs) == 1
+            with open(os.path.join(full_path, fs[0])) as i:
                 for l in i:
                     line = l.strip().split('\t')
                     #print(line)
-                    area = line[0].replace('_sem', 'sem')
+                    area = line[0].replace('_seman', 'seman')
                     if area not in results[mode][dataset].keys():
                         results[mode][dataset][area] = dict()
-                    model = f.replace('.txt', '').replace('word2vec', 'gensim_w2v').replace('opensubs', 'subs')
-                    if 'freqs'  in model:
-                        model = 'freqs_{}'.format(model[:3])
+                    #model = f.replace('.txt', '')
                     scores = numpy.array(line[1:], dtype=numpy.float64)
                     #results[dataset].append([(area, model), scores])
-                    results[mode][dataset][area][model] = scores
-'''
-colors = [
-          'grey', 
-          'goldenrod', 
-          'skyblue', 
-          'mediumseagreen', 
-          'yellow', 
-          'royalblue', 
-          'orchid', 
-          'chocolate', 
-          'black', 
-          'yellowgreen',
-          'hotpink',
-          'orange',
-          'mediumturquoise',
-          'coral',
-          'blueviolet',
-          'cyan',
-          ]
-'''
+                    results[mode][dataset][area][damage] = scores
 cmap = matplotlib.colormaps['hsv']
 ### plotting
 
@@ -63,16 +50,19 @@ with tqdm() as counter:
                                       'fernandino{}'.format(dataset),
                                       'full_dataset',
                                       mode,
-                                      'undamaged',
+                                      'damaged',
                                       )
             os.makedirs(plots, exist_ok=True)
             for area, area_data in dataset_data.items():
+                colors = cmap(numpy.linspace(0.,1,len(area_data.keys())))
+                if len(area_data.keys()) == 1:
+                    continue
                 fig, ax = pyplot.subplots(constrained_layout=True)
                 ymin=-7
                 if 'individual' in mode:
-                    ymax = 16
+                    ymax = 10
                 else:
-                    ymax=29
+                    ymax = 11
                 hlines=[y*0.01 for y in range(ymin+1, ymax, 2)]
                 ax.set_ylim(bottom=ymin*0.01, top=ymax*0.01)
                 models = sorted(area_data.keys())
@@ -93,7 +83,6 @@ with tqdm() as counter:
                           alpha=0.1,
                           linestyles='--',
                           )
-                colors = cmap(numpy.linspace(0.,1,len(models)))
                 plot_colors = {k : colors[k_i] for k_i, k in enumerate(models)}
                 for m_i, m in enumerate(models):
                     if 'individual' in mode:
@@ -121,9 +110,10 @@ with tqdm() as counter:
                                            edgecolors='white',
                                            marker='D',
                                            )
+                x_models = [re.sub(r'dominance|pow_0\.', '', m) for m in models]
                 pyplot.xticks(
                           ticks=range(len(models)), 
-                          labels=[m[:15].replace('_', ' ') for m in models],
+                          labels=x_models,
                           #rotation=45,
                           rotation=90,
                           )

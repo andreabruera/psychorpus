@@ -128,6 +128,7 @@ powers = [
 
 
 mtrxs = dict()
+mtrxs['pow_0.'] = dict()
 '''
 for r_c in [
             'rand',
@@ -137,7 +138,6 @@ for r_c in [
                                '{}_rows.pkl'.format(r_c),
                            ), 'rb') as i:
         mtrxs[r_c] = pickle.load(i)
-mtrxs['pow_0.'] = dict()
 
 ### power only
 for power in powers:
@@ -146,8 +146,8 @@ for power in powers:
                            'pow_{}.pkl'.format(power),
                            ), 'rb') as i:
         mtrxs['pow_{}'.format(power)] = pickle.load(i)
-'''
 mtrxs['residualization'] = dict()
+'''
 
 selected_areas = [
                   'semantic_network',
@@ -195,17 +195,18 @@ to_be_damaged = [
                  'hand_arm',
                   ]
 damage_amounts = [
-                  0.05, 
-                  0.1, 
-                  0.2,
-                  0.3,
-                  0.4,
-                  0.5, 
-                  0.6,
-                  0.7,
-                  0.8, 
-                  0.9,
-                  1.,
+                  #0.05, 
+                  #0.1, 
+                  #0.2,
+                  #0.3,
+                  #0.4,
+                  #0.5, 
+                  #0.6,
+                  #0.7,
+                  #0.8, 
+                  #0.9,
+                  #0.95,
+                  0.99,
                   ]
 
 ### doing the word rankings first
@@ -217,6 +218,7 @@ ranking_modes = [
                  ]
 rankings = rank_words(lancaster_ratings, ctx_words, ranking_modes, to_be_damaged, damage_amounts)
 
+'''
 ### residualizing the matrix
 print('now residualizing...')
 step = int(len(ctx_words)/10)
@@ -251,6 +253,7 @@ for k in to_be_damaged:
                 residualized_mtrx[idx] = clean_mtrx[idx] - preds[idx_i]
         with open(f, 'wb') as o:
             pickle.dump(residualized_mtrx, o)
+'''
 
 modes = [
         'averaged_sub_mtrxs', 

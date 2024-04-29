@@ -13,6 +13,7 @@ from tqdm import tqdm
 from utils import bins_rsa_test, full_dataset_rsa_test, build_ppmi_vecs, read_fernandino_ratings, read_ratings, read_men, read_men_test, read_simlex, read_fernandino
 
 def rank_words(ratings, ctx_words, ranking_modes, to_be_damaged, damage_amounts):
+    print('missing words: {}'.format([w for w in ctx_words if w not in ratings.keys()]))
     rankings = dict()
     for ranking_mode in ranking_modes:
         rankings[ranking_mode] = dict()
@@ -173,23 +174,25 @@ selected_areas = [
 debugging = False
 ratings = read_fernandino_ratings()
 lancaster_ratings = read_ratings(hand=True) 
+missing_norms = [w for w in ctx_words if w not in lancaster_ratings.keys()]
+assert len(missing_norms) == 0
 
 to_be_damaged = [
                  'auditory',
                  'hand_arm',
                   ]
 damage_amounts = [
-                  #0.05, 
-                  #0.1, 
+                  0.05, 
+                  0.1, 
                   0.2,
                   0.3,
                   0.4,
                   0.5, 
-                  #0.6,
-                  #0.7,
-                  #0.8, 
+                  0.6,
+                  0.7,
+                  0.8, 
                   0.9,
-                  #1.,
+                  0.95,
                   ]
 
 ### doing the word rankings first

@@ -3,6 +3,24 @@ import re
 
 from tqdm import tqdm
 
+def load_indices(args):
+    if args.language == 'en':
+        indices = {
+                   'word' : 0,
+                   'pos' : 2,
+                   }
+    if args.language == 'de':
+        indices = {
+                   'word' : 0,
+                   'pos' : 1,
+                   }
+    if args.language == 'it':
+        indices = {
+                   'word' : 0,
+                   'pos' : 1,
+                   }
+    return indices
+
 def wiki_reader(args, folder_path, pos=False, file_paths=False):
     pos_mapper = load_pos_mappers(args)
     sentences = list()
@@ -57,6 +75,7 @@ def wiki_reader(args, folder_path, pos=False, file_paths=False):
 
 def wac_reader(args, file_path, pos=False):
     pos_mapper = load_pos_mappers(args)
+    idxs = load_indices(args)
     sentences = list()
     with open(file_path) as i:
         if pos:
@@ -90,12 +109,12 @@ def wac_reader(args, file_path, pos=False):
                 if '$' in line[1]:
                     continue
                 else:
-                    sentence['word'].append(line[0])
+                    sentence['word'].append(line[idxs['word']])
                     if pos:
                         try:
-                            pos = pos_mapper[line[2]]
+                            pos = pos_mapper[line[idxs['pos']]]
                         except KeyError:
-                            pos = line[2]
+                            pos = line[idxs['pos']]
                         sentence['pos'].append(pos)
         if len(sentence['word']) > 1:
             #yield(sentence)
@@ -356,7 +375,22 @@ def load_pos_mappers(args):
                       }
         if args.language == 'de':
             mapper = {
+                    'VVPP' : 'VERB',
+                    'VVIZU' : 'VERB',
+                    'VVINF' : 'VERB',
+                    'VVIMP' : 'VERB',
+                    'VVFIN' : 'VERB',
+                    'ADJA' : 'ADJ',
+                    'ADJD' : 'ADJ',
+                    'ADV' : 'ADV',
+                    'NA' : 'NOUN',
+                    'NE' : 'PROPN',
+                    'NN' : 'NOUN', 
+                    'PAV' : 'ADV',
+                    'PROADV' : 'ADV',
+                    'PAVREL' : 'ADV',
                     }
+
     if 'wiki' in args.corpus:
         mapper = {
                   }
