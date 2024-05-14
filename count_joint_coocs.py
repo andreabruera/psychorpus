@@ -16,8 +16,9 @@ for win_size in [
                  #20,
                  ]:
     for lang in [
-                 'de',
+                 #'de',
                  #'en',
+                 'it',
                  ]:
         ### we load all models with min_count==10
         min_count = 10
@@ -70,7 +71,7 @@ for win_size in [
         with open(pos_file, 'wb') as o:
             pickle.dump(general_pos, o)
 
-        if lang == 'de':
+        if lang in ['de', 'it']:
             min_count = 10
         else:
             min_count = 100
@@ -151,7 +152,7 @@ for win_size in [
                         counter.update(1)
             del coocs
 
-        if lang == 'de':
+        if lang in ['de', 'it']:
             min_count = 10
         else:
             min_count = 100

@@ -193,6 +193,7 @@ damage_amounts = [
                   0.8, 
                   0.9,
                   0.95,
+                  0.99
                   ]
 
 ### doing the word rankings first

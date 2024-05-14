@@ -14,6 +14,9 @@ from scipy import spatial, stats
 from utils import build_ppmi_vecs, read_binder_ratings, read_brys_ratings, read_exp48,read_fernandino_ratings, divide_binder_ratings, read_ratings, read_men, read_men_test, read_simlex, read_fernandino
 
 smoothing = False
+#smoothing = None
+#smoothing = True
+
 cases = [
          #'random',
          #'raw',
@@ -36,6 +39,8 @@ cases = [
           #'Taste',
           #'Smell',
           #'Audition',
+          #'Audition_section',
+          #'Sound'
          #'Vision',
           #'Touch',
           #'Practice',
@@ -65,7 +70,7 @@ for corpus in [
                #'opensubs',
                #'tagged_wiki',
                #'bnc',
-               #'wac',
+               'wac',
                'joint'
                ]:
     for min_count in [
@@ -85,13 +90,14 @@ for corpus in [
                              #20,
                              ]:
                 for lang in [
-                             'de',
+                             #'de',
                              #'en', 
+                             'it'
                              ]:
                     ### adding computational model
-                    if smoothing:
+                    if smoothing == True:
                         cases.append('{}_pmi75'.format(lang))
-                    else:
+                    elif smoothing == False:
                         cases.append('{}_pmi'.format(lang))
                     ### loading
                     print('\n\n{} - min {} - {} percent - window size {}'.format(corpus, min_count, percent_val*100, win_size))
@@ -121,12 +127,11 @@ for corpus in [
                                            ), 'rb') as i:
                         vocab = pickle.load(i)
                     trans = dict()
-                    if lang == 'de':
+                    if lang != 'en':
                         ### reading translations
                         inv_trans = dict()
                         fs = [
-                             'lancaster_english_to_german.tsv',
-                             'fernandino_english_to_german.tsv', 
+                                'en_to_{}.tsv'.format(lang)
                              ]
                         for f in fs:
                             gers = dict()
@@ -134,18 +139,22 @@ for corpus in [
                                 for l_i, l in enumerate(i):
                                     if l_i == 0:
                                         continue
-                                    line = l.strip().split('\t')
-                                    if f == fs[-1]:
-                                        try:
-                                            gers[line[1].strip()] += 1
-                                        except KeyError:
-                                            gers[line[1].strip()] = 1
+                                    line = l.lower().strip().split('\t')
                                     trans[line[0].strip()] = line[1].strip().replace('-', '_').lower()
                                     inv_trans[line[1].strip().replace('-', '_').lower()] = line[0].strip()
-                        for w, val in gers.items():
-                            if val > 1:
-                                print(w)
                     words, data = read_fernandino(vocab, pos, lang=lang, trans=trans)
+                    all_ws = [w for _, ws in words.items() for w in ws]
+                    for w in all_ws:
+                        ### checking
+                        if inv_trans[trans[w]] != trans[w]:
+                            ### finding the culprit
+                            to_be_removed = [e for e, t in trans.items() if t==trans[w]]
+                            for k in to_be_removed:
+                                if k not in all_ws:
+                                    del trans[k]
+                                    inv_trans[trans[w]] = trans[w]
+                                else:
+                                    print(k)
                     exp48, exp48_words = read_exp48(words)
                     fern_ratings = read_fernandino_ratings()
                     bind_sections = divide_binder_ratings(fern_ratings)
@@ -169,7 +178,7 @@ for corpus in [
                     print('missing words:')
                     missing = list()
                     for w in test_words:
-                        if lang == 'de':
+                        if lang != 'en':
                             try:
                                 w = trans[w].lower()
                             except KeyError:
@@ -219,7 +228,7 @@ for corpus in [
 
                     print('total number of ratings words available: {}'.format(len(ratings.keys())))
                     ### removing rare words
-                    if lang == 'de':
+                    if lang != 'en':
                         pruned_test_words = [w for w in present.keys()]
                         pruned_ratings = {trans[w] : dct for w, dct in ratings.items() if w in trans.keys() and trans[w] in freqs.keys() and vocab[trans[w]]!=0 and vocab[trans[w]] in coocs.keys()}
                     else:
@@ -254,13 +263,13 @@ for corpus in [
                     ### pmi
                     ### building the PPMI matrix
                     ### things are better when including in the rows the words from MEN...
-                    if smoothing:
+                    if smoothing == True:
                         trans_pmi75_vecs = build_ppmi_vecs(coocs, vocab, ctx_words, ctx_words, smoothing=True)
-                        if lang == 'de':
+                        if lang != 'en':
                             trans_pmi75_vecs = {inv_trans[w] : v for w, v in trans_pmi75_vecs.items()}
-                    else:
+                    elif smoothing == False:
                         trans_pmi_vecs = build_ppmi_vecs(coocs, vocab, ctx_words, ctx_words, smoothing=False)
-                        if lang == 'de':
+                        if lang != 'en':
                             trans_pmi_vecs = {inv_trans[w] : v for w, v in trans_pmi_vecs.items()}
                     #trans_pmi_vecs = build_ppmi_vecs(coocs, vocab, test_men_words, ctx_words)
                     '''
@@ -341,6 +350,10 @@ for corpus in [
                             elif case == 'word2vec':
                                 current_vecs = {k : w2v[k.replace('axe', 'ax')] for k, v in vecs.items()}
                             for dataset_number, dataset_words in words.items():
+                                ### reducing dataset words
+                                dataset_words = [w for w in dataset_words if w in current_vecs.keys()]
+                                data_missing_words = [w for w in dataset_words if w not in current_vecs.keys()]
+                                print('missing {} test words'.format(len(data_missing_words)))
                                 results = os.path.join(
                                                        'results', 
                                                        'fernandino{}'.format(dataset_number),

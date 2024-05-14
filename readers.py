@@ -334,6 +334,11 @@ def load_pos_mappers(args):
                       'DET:num' : 'DET',
                       'DET:poss' : 'DET',
                       'DET:wh' : 'DET',
+                      'VER:infi' : 'VERB',
+                      'VER:fin' : 'VERB',
+                      'VER:ppre' : 'VERB',
+                      'VER:ppast' : 'VERB',
+                      'VER:geru' : 'VERB',
                     }
         if args.language == 'en':
             mapper = {

@@ -28,7 +28,7 @@ test_words = men_words.union(simlex_words)
 #test_words = men_words
 
 for corpus in [
-               #'bnc',
+               'bnc',
                #'wac',
                #'tagged_wiki',
                'opensubs',
@@ -47,6 +47,7 @@ for corpus in [
                            'pickles', 'en', corpus, 
                            #'en_{}_coocs_uncased_min_{}_win_20.pkl'.format(corpus, min_count),
                            'en_{}_coocs_uncased_min_{}_win_4.pkl'.format(corpus, min_count),
+                           #'en_{}_coocs_uncased_min_{}_win_10.pkl'.format(corpus, min_count),
                            ), 'rb') as i:
         coocs = pickle.load(i)
     with open(os.path.join(
@@ -96,6 +97,7 @@ for corpus in [
     pruned_ratings = {w : dct for w, dct in ratings.items() if w in freqs.keys() and vocab[w]!=0}
     percent = int(len(pruned_ratings.items())*0.001)
     #percent = int(len(pruned_ratings.items())*0.05)
+    #percent = int(len(pruned_ratings.items())*0.1)
     ### context words
     ### things improve when including the words directly
     ctx_words = set(pruned_test_words)
@@ -116,11 +118,11 @@ for corpus in [
     ### pmi
     ### building the PPMI matrix
     ### things are better when including in the rows the words from MEN...
-    trans_pmi_vecs = build_ppmi_vecs(coocs, vocab, ctx_words, ctx_words)
+    trans_pmi_vecs = build_ppmi_vecs(coocs, vocab, ctx_words, ctx_words, smoothing=True)
     #trans_pmi_vecs = build_ppmi_vecs(coocs, vocab, test_men_words, ctx_words)
     ### using most frequent words
     freq_ctx_words = pruned_test_words + [w[0] for w in sorted(freqs.items(), key=lambda item: item[1], reverse=True) if vocab[w[0]]!=0][:4000]
-    freq_pmi_vecs = build_ppmi_vecs(coocs, vocab, freq_ctx_words, freq_ctx_words)
+    freq_pmi_vecs = build_ppmi_vecs(coocs, vocab, freq_ctx_words, freq_ctx_words, smoothing=True)
     
     for case in [
                  #'random',
@@ -128,9 +130,9 @@ for corpus in [
                  #'log2', 
                  'pmi',
                  'most_frequent_pmi',
-                 'fasttext',
-                 'glove',
-                 'word2vec',
+                 #'fasttext',
+                 #'glove',
+                 #'word2vec',
                  ]:
         if case == 'random':
             current_vecs = {k : numpy.array(random.sample(v.tolist(), k=len(v))) for k, v in vecs.items()}

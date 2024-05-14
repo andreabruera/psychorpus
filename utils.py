@@ -196,8 +196,9 @@ def read_ratings(hand=False, concreteness=False):
                     continue
                 line = l.strip().split('\t')
                 ### minimum is 1, max is 5
+                val = float(line[2])
                 assert val >= 1. and val <= 5.
-                curr_val = (float(line[2]) - 1) / (5 - 1)
+                curr_val = (val - 1) / (5 - 1)
                 w = line[0].lower().strip()
                 if w in norms['visual'].keys():
                     norms['concreteness'][w] = curr_val
@@ -235,7 +236,7 @@ def read_fernandino(vocab, pos, lang='en', trans=dict(), return_dict=False, avg_
                 word = '{}'.format(line)
                 if line != '':
                     try:
-                        if lang == 'de':
+                        if lang != 'en':
                             line = trans[line]
                         if vocab[line] == 0:
                             missing_idxs.append(l_i)
@@ -374,7 +375,7 @@ def build_ppmi_vecs(coocs, vocab, row_words, col_words, smoothing=False, power=1
     assert True not in numpy.isnan(axis_one_mtrx)
     axis_zero_sum = pmi_mtrx.sum(axis=0)
     #axis_zero_mtrx = numpy.divide(1, axis_zero_sum, where=axis_zero_sum!=0).reshape(1, -1)
-    axis_zero_mtrx = numpy.array([1/val if val!=0 else val for val in axis_zero_sum]).reshape(-1, 1)
+    axis_zero_mtrx = numpy.array([1/val if val!=0 else val for val in axis_zero_sum]).reshape(1, -1)
     assert True not in numpy.isnan(axis_one_mtrx)
     ### raising to 0.75 as suggested in Levy & Goldberg 2015
     if smoothing:
