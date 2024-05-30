@@ -144,7 +144,10 @@ with open(pos_file, 'rb') as i:
     print('loaded!')
 
 global vocab
-vocab_file = os.path.join(pkls, '{}_{}_{}_vocab_min_{}.pkl'.format(args.language, args.corpus, args.case, args.min_mentions))
+if args.no_entities:
+    vocab_file = os.path.join(pkls, '{}_{}_{}_vocab_min_{}_no-entities.pkl'.format(args.language, args.corpus, args.case, args.min_mentions))
+else:
+    vocab_file = os.path.join(pkls, '{}_{}_{}_vocab_min_{}.pkl'.format(args.language, args.corpus, args.case, args.min_mentions))
 if os.path.exists(vocab_file):
     with open(vocab_file, 'rb') as i:
         print('loading the vocab')
@@ -183,7 +186,7 @@ general_coocs = {i_one : dict() for i_one in ids}
 final_coocs = general_coocs.copy()
 print('ready!')
 if args.no_entities:
-    coocs_file = os.path.join(pkls, '{}_{}_coocs_{}_min_{}_win_{}_no_entities.pkl'.format(args.language, args.corpus, args.case, args.min_mentions, args.window_size))
+    coocs_file = os.path.join(pkls, '{}_{}_coocs_{}_min_{}_win_{}_no-entities.pkl'.format(args.language, args.corpus, args.case, args.min_mentions, args.window_size))
 else:
     coocs_file = os.path.join(pkls, '{}_{}_coocs_{}_min_{}_win_{}.pkl'.format(args.language, args.corpus, args.case, args.min_mentions, args.window_size))
 

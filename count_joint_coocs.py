@@ -6,10 +6,16 @@ from tqdm import tqdm
 corpora = [
            'wac',
            'opensubs',
-           #'tagged_wiki',
+           'tagged_wiki',
            ]
 
-selected_pos = ['PROPN', 'VERB', 'NOUN', 'ADV', 'ADJ', ]
+selected_pos = [
+                'PROPN', 
+                'VERB', 
+                'NOUN', 
+                'ADV', 
+                'ADJ', 
+                ]
 
 for win_size in [
                  4, 
@@ -17,15 +23,18 @@ for win_size in [
                  ]:
     for lang in [
                  #'de',
-                 #'en',
-                 'it',
+                 'en',
+                 #'it',
                  ]:
-        ### we load all models with min_count==10
-        min_count = 10
         ### dealing with the basics: freqs and pos
         general_freqs = dict()
         general_pos = dict()
         for corpus in corpora:
+            ### we load all models with min_count==10
+            min_count = 10
+            if lang not in ['de', 'it']:
+                if corpus == 'tagged_wiki': 
+                    min_count = 100
             with open(os.path.join(
                                    'pickles', lang, corpus, 
                                    '{}_{}_uncased_word_freqs.pkl'.format(lang, corpus),
@@ -104,8 +113,11 @@ for win_size in [
         ### now finally joining coocs
         general_coocs = dict()
         ### loading min_count==10
-        min_count = 10
         for corpus in corpora:
+            min_count = 10
+            if lang not in ['de', 'it']:
+                if corpus == 'tagged_wiki': 
+                    min_count = 100
             try:
                 with open(os.path.join(
                                        'pickles', lang, corpus, 
