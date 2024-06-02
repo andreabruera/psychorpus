@@ -21,6 +21,24 @@ def load_indices(args):
                    }
     return indices
 
+def cc100_original_reader(args, file_path):
+    idxs = load_indices(args)
+    sentences = list()
+    with open(file_path) as i:
+        sentence = {
+                    'word' : list(), 
+                    }
+        for l in i:
+            line = l.split()
+            sentence['word'].extend(line)
+            if len(sentence['word']) > 1:
+                sentences.append(sentence)
+            sentence = {
+                'word' : list(), 
+                }
+
+    return sentences
+
 def wiki_reader(args, folder_path, pos=False, file_paths=False):
     pos_mapper = load_pos_mappers(args)
     sentences = list()
@@ -275,6 +293,10 @@ def paths_loader(args, pos=False):
         assert os.path.exists(wiki_path)
         ### for wikipedia we do not take files but folders!
         paths = [os.path.join(wiki_path, direc) for direc in os.listdir(wiki_path)]
+    if args.corpus == 'cc100':
+        cc100_path = os.path.join(basic_folder, 'cc100-{}'.format(args.language))
+        assert os.path.exists(cc100_path)
+        paths = [os.path.join(root, f) for root, direc, filez in os.walk(cc100_path) for f in filez]
     if args.corpus == 'wac':
         if args.language == 'en':
             wac_path = os.path.join(basic_folder, 'PukWaC_smaller_files')
@@ -397,6 +419,9 @@ def load_pos_mappers(args):
                     }
 
     if 'wiki' in args.corpus:
+        mapper = {
+                  }
+    if 'cc100' in args.corpus:
         mapper = {
                   }
     return mapper

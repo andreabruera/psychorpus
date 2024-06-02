@@ -7,7 +7,7 @@ import re
 
 from tqdm import tqdm
 
-from readers import tagged_wiki_reader, wiki_reader, wac_reader, bnc_reader, opensubs_reader, paths_loader
+from readers import cc100_original_reader, tagged_wiki_reader, wiki_reader, wac_reader, bnc_reader, opensubs_reader, paths_loader
 
 def multiprocessing_counter(file_path):
 
@@ -21,6 +21,8 @@ def multiprocessing_counter(file_path):
         all_sentences = opensubs_reader(args, file_path)
     if args.corpus == 'bnc':
         all_sentences = bnc_reader(args, file_path)
+    if args.corpus == 'cc100':
+        all_sentences = cc100_original_reader(args, file_path)
 
     cased = dict()
     with tqdm() as counter:
@@ -52,6 +54,7 @@ parser.add_argument(
                              'wac', 
                              'bnc', 
                              'opensubs',
+                             'cc100',
                              ],
                     required=True,
                     )

@@ -7,7 +7,7 @@ import re
 
 from tqdm import tqdm
 
-from readers import tagged_wiki_reader, wiki_reader, wac_reader, bnc_reader, opensubs_reader, paths_loader
+from readers import cc100_original_reader, tagged_wiki_reader, wiki_reader, wac_reader, bnc_reader, opensubs_reader, paths_loader
 
 def coocs_counter(keyed_sentence, coocs):
     for start_i, start in enumerate(keyed_sentence):
@@ -42,13 +42,21 @@ def multiprocessing_counter(all_args):
         all_sentences = opensubs_reader(args, file_path)
     if args.corpus == 'bnc':
         all_sentences = bnc_reader(args, file_path)
+    if args.corpus == 'cc100':
+        all_sentences = cc100_original_reader(args, file_path)
 
     for sentence in tqdm(all_sentences):
         #print(sentence)
-        if args.case == 'cased':
-            keyed_sentence = [vocab[w] for w in sentence['word']]
-        else:
-            keyed_sentence = [vocab[w.lower()] for w in sentence['word']]
+        keyed_sentence = list()
+        for w in sentence['word']:
+            if args.case == 'uncased':
+                w = w.lower()
+            try:
+                idx = vocab[w]
+            except KeyError:
+                idx = 0
+            keyed_sentence.append(idx)
+
         coocs = coocs_counter(keyed_sentence, coocs)
     ### remove coocs for 0, which is the empty case
     #try:
@@ -110,10 +118,14 @@ parser.add_argument(
                              'wac', 
                              'bnc', 
                              'opensubs',
+                             'cc100',
                              ],
                     required=True,
                     )
-parser.add_argument('--no_entities', action='store_true')
+parser.add_argument(
+                    '--no_entities', 
+                    action='store_true',
+        )
 global args
 args = parser.parse_args()
 
@@ -133,9 +145,9 @@ with open(freqs_file, 'rb') as i:
     print('loading freqs')
     freqs = pickle.load(i)
     print('loaded!')
-if args.corpus == 'wiki':
+if args.corpus in ['wiki', 'cc100']:
     ### wiki does not come with pos tagging...
-    pos_file = os.path.join(pkls.replace('wiki', 'wac'), '{}_wac_{}_word_pos.pkl'.format(args.language, args.case))
+    pos_file = os.path.join(pkls.replace(args.corpus, 'tagged_wiki'), '{}_tagged_wiki_{}_word_pos.pkl'.format(args.language, args.case))
 else:
     pos_file = os.path.join(pkls, '{}_{}_{}_word_pos.pkl'.format(args.language, args.corpus, args.case))
 with open(pos_file, 'rb') as i:
