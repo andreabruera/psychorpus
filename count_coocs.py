@@ -93,6 +93,7 @@ parser.add_argument(
                              50, 
                              100,
                              500,
+                             1000,
                              ],
                     required=True,
                     type=int,
