@@ -13,12 +13,8 @@ def coocs_counter(keyed_sentence, coocs):
     for start_i, start in enumerate(keyed_sentence):
         if start == 0:
             continue
-        ### in forward we only look at future words
-        if args.forward:
-            sent_slice = keyed_sentence[start_i+1:start_i+int(half_win*2)]
-        ### otherwise we look both back and forth
-        else:
-            sent_slice = keyed_sentence[min(0, start_i-half_win):start_i] + keyed_sentence[start_i+1:start_i+half_win]
+        #sent_slice = keyed_sentence[min(0, start_i-half_win):start_i] + keyed_sentence[start_i+1:start_i+half_win]
+        sent_slice = keyed_sentence[start_i+1:start_i+win]
         #print(sent_slice)
         for other in sent_slice:
             if other == 0:
@@ -131,9 +127,6 @@ parser.add_argument(
 parser.add_argument(
                     '--no_entities', 
                     action='store_true',
-parser.add_argument(
-                    '--forward', 
-                    action='store_true',
         )
 global args
 args = parser.parse_args()
@@ -143,8 +136,8 @@ if args.no_entities:
 else:
     selected_pos = ['PROPN', 'VERB', 'NOUN', 'ADV', 'ADJ', 'ENT',]
 
-global half_win
-half_win = int(args.window_size/2)
+global win
+win = int(args.window_size)
 
 pkls = os.path.join(
                     #'pickles', 
@@ -191,11 +184,13 @@ else:
         if v > args.min_mentions:
             ### checking pos
             try:
+                ### only if dominant
                 #dom_pos = sorted(list(pos[k].items()), key=lambda item : item[1], reverse=True)[0][0]
                 #if dom_pos in selected_pos:
                 #    vocab[k] = counter
                 #    counter += 1
-                fifth = sum([val for val in pos[k].values()])*0.2
+                ### soft threshold at 0.3
+                fith = sum([val for val in pos[k].values()])*0.2
                 dom_pos = [val for val, count in pos[k].items() if count>fifth]
                 marker = False
                 for sel in selected_pos:
@@ -224,11 +219,9 @@ general_coocs = {i_one : dict() for i_one in ids}
 final_coocs = general_coocs.copy()
 print('ready!')
 if args.no_entities:
-    coocs_file = os.path.join(pkls, '{}_{}_coocs_{}_min_{}_win_{}_no-entities.pkl'.format(args.language, args.corpus, args.case, args.min_mentions, args.window_size))
+    coocs_file = os.path.join(pkls, '{}_{}_forward-coocs_{}_min_{}_win_{}_no-entities.pkl'.format(args.language, args.corpus, args.case, args.min_mentions, args.window_size))
 else:
-    coocs_file = os.path.join(pkls, '{}_{}_coocs_{}_min_{}_win_{}.pkl'.format(args.language, args.corpus, args.case, args.min_mentions, args.window_size))
-if args.forward:
-    coocs_file = coocs_file.replace('coocs', 'forward-coocs')
+    coocs_file = os.path.join(pkls, '{}_{}_forward-coocs_{}_min_{}_win_{}.pkl'.format(args.language, args.corpus, args.case, args.min_mentions, args.window_size))
 
 for file_path in tqdm(paths):
     general_coocs = multiprocessing_counter([file_path, general_coocs])

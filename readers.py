@@ -285,7 +285,13 @@ def bnc_reader(args, file_path, pos=False):
 def paths_loader(args, pos=False):
     ### loading sentences
     print('now collecting paths...')
-    basic_folder = os.path.join('/', 'import', 'cogsci', 'andrea', 'dataset', 'corpora', args.language)
+    basic_folder = os.path.join(
+                                '/', 
+                                'data',
+                                'tu_bruera',
+                                'corpora', 
+                                args.language, 
+                                )
     assert os.path.exists(basic_folder)
     if args.corpus in ['wiki', 'tagged_wiki']:
         marker = args.corpus.replace('wiki', '')
