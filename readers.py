@@ -21,6 +21,30 @@ def load_indices(args):
                    }
     return indices
 
+def leipzig_reader(args, file_path):
+    idxs = load_indices(args)
+    sentences = list()
+    with open(file_path) as i:
+        sentence = {
+                    'word' : list(), 
+                    }
+        for l in i:
+            relevant_line = l.strip().split('\t')
+            try:
+                assert len(relevant_line) == 2
+            except AssertionError:
+                print(relevant_line)
+                continue
+            line = relevant_line[1].split()
+            sentence['word'].extend(line)
+            if len(sentence['word']) > 1:
+                sentences.append(sentence)
+            sentence = {
+                'word' : list(), 
+                }
+
+    return sentences
+
 def cc100_original_reader(args, file_path):
     idxs = load_indices(args)
     sentences = list()
@@ -312,6 +336,10 @@ def paths_loader(args, pos=False):
             wac_path = os.path.join(basic_folder, 'itwac_smaller_files')
         assert os.path.exists(wac_path)
         paths = [os.path.join(root, f) for root, direc, filez in os.walk(wac_path) for f in filez]
+    if args.corpus == 'leipzig':
+        lpzg_path = os.path.join(basic_folder, 'leipzig_news_{}'.format(args.language))
+        assert os.path.exists(lpzg_path)
+        paths = [os.path.join(root, f) for root, direc, filez in os.walk(lpzg_path) for f in filez if 'sentences' in f]
     if args.corpus == 'opensubs':
         opensubs_path = os.path.join(basic_folder, 'opensubs-2018_parsed_{}'.format(args.language))
         assert os.path.exists(opensubs_path)
@@ -428,6 +456,9 @@ def load_pos_mappers(args):
         mapper = {
                   }
     if 'cc100' in args.corpus:
+        mapper = {
+                  }
+    if 'leipzig' in args.corpus:
         mapper = {
                   }
     return mapper

@@ -131,10 +131,11 @@ parser.add_argument(
 parser.add_argument(
                     '--no_entities', 
                     action='store_true',
+                    )
 parser.add_argument(
                     '--forward', 
                     action='store_true',
-        )
+                    )
 global args
 args = parser.parse_args()
 

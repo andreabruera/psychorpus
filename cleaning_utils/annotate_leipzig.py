@@ -9,15 +9,18 @@ import sys
 from tqdm import tqdm
 
 sys.path.append('..')
-from readers import leipzig_reader, wiki_reader, wac_reader, bnc_reader, opensubs_reader, paths_loader
+from readers import leipzig_reader, paths_loader
 
-def preprocess(folder_path):
-    all_sentences, file_paths = wiki_reader(args, folder_path, file_paths=True)
-    old_path = ''
-    o = open(os.path.join('..', '__pycache__', 'rubbish'), 'w')
-    for sentence, path in zip(all_sentences, file_paths):
-        cleaned_lines = list()
-        l = ' '.join(sentence['word']).replace('[[[', 'ENTSTART').replace(']]]', 'ENTEND')
+def preprocess(ins):
+
+    file_path = ins[0]
+    out_folder = ins[1]  
+    n = ins[2]
+
+    all_sentences = leipzig_reader(args, file_path)
+    cleaned_lines = list()
+    for sentence in tqdm(all_sentences):
+        l = ' '.join(sentence['word'])
 
         ### annotating with spacy
         spacy_l = model(l)
@@ -29,13 +32,9 @@ def preprocess(folder_path):
 
         for t_i, token in enumerate(spacy_l):
 
-            if 'ENTSTART' in token.text and 'ENTEND' in token.text:
-                ent = token.text.replace('ENTSTART', '').replace('ENTEND', '').replace('_', ' ')
-                line = [ent, ent, 'ENT', 'WIKI_ENT']
-                cleaned_lines.append(line)
-            elif t_i in entity_indices:
+            if t_i in entity_indices:
                 entity_ind = entity_indices.index(t_i)
-                ent = ents[entity_ind].text.replace('ENTSTART', '').replace('ENTEND', '').replace('_', ' ')
+                ent = ents[entity_ind].text
                 ent_type = ents[entity_ind].label_
                 line = [ent, ent, 'ENT', ent_type]
                 cleaned_lines.append(line)
@@ -47,24 +46,19 @@ def preprocess(folder_path):
                 cleaned_lines.append(line)
         cleaned_lines.append(['<EOS>', '<EOS>', '<EOS>', '<EOS>'])
 
-        ### writing to file
-        out_path = folder_path.replace('art_by_art', 'tagged_art_by_art')
-        os.makedirs(out_path, exist_ok=True)
-        full_out_path = os.path.join(out_path, path)
-        print(full_out_path)
-        if full_out_path != old_path:
-            o.close()
-            o = open(full_out_path, 'w', encoding='utf-8')
-            o.write('Word\tLemma\tWord type\tEntity type or POS\n')
-            old_path = '{}'.format(full_out_path)
-        for l in tqdm(cleaned_lines):
+    ### writing to file
+    marker = file_path.split('/')[-1].replace('deu_', '').replace('ita_', '').replace('_1M_sentences.txt', '')
+    full_out_path = os.path.join(out_folder,  '{}.leipzig_tagged'.format(marker))
+    with open(full_out_path, 'w', encoding='utf-8') as o:
+        o.write('Word\tLemma\tWord type\tEntity type or POS\n')
+        for l in cleaned_lines:
             for w in l:
                 o.write('{}\t'.format(w))
             o.write('\n')
+    print([len(cleaned_lines), full_out_path])
 
 logging.basicConfig(format='%(asctime)s %(message)s', level=logging.INFO)
 logging.info('Now loading Spacy')
-
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
@@ -78,14 +72,7 @@ parser.add_argument(
                     )
 parser.add_argument(
                     '--corpus', 
-                    choices=[
-                             'leipzig',
-                             'wiki', 
-                             'wac', 
-                             'bnc', 
-                             'opensubs',
-                             ],
-                    default='wiki',
+                    default='leipzig',
                     )
 global args
 args = parser.parse_args()
@@ -99,13 +86,16 @@ if args.language == 'en':
 if args.language == 'de':
     model = spacy.load('de_core_news_lg')
 
-paths = paths_loader(args)
+#out_folder = os.path.join('/', 'import', 'cogsci', 'andrea', 'dataset', 'corpora', args.language, 'cc100-{}_tagged'.format(args.language))
+out_folder = os.path.join('/', 'data', 'tu_bruera', 'corpora', args.language, 'leipzig-news_{}_tagged'.format(args.language))
+os.makedirs(out_folder, exist_ok=True)
+paths = [(p, out_folder, p_i) for p_i, p in enumerate(paths_loader(args))]
 
-logging.info('Now annotating Wikipedia!')
+logging.info('Now annotating the leipzig corpus!')
 
 if __name__ == '__main__':
     
-    with multiprocessing.Pool(processes=int(os.cpu_count()/3)) as p:
+    with multiprocessing.Pool(processes=int(os.cpu_count()/4)) as p:
         p.map(preprocess, paths)
     p.terminate()
     p.join()
